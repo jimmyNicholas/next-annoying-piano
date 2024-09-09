@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Create Next App",
+  title: "Annoying Piano",
   description: "A web based piano that changes pitch as you play it",
 };
 
