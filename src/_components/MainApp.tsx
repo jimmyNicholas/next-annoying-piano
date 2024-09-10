@@ -1,4 +1,4 @@
-import OptionsPanel from "./OptionsPanel";
+import OptionsPanel from "./optionsPanel/OptionsPanel";
 
 export default function MainApp() {
     return (
