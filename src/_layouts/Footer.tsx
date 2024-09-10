@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-        <div>
+        <div className="border-2 border-black">
             footer
         </div>
     );
