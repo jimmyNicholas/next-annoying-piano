@@ -2,12 +2,12 @@ import { notePitches } from "@/_lib/_data/noteNames";
 
 export function getKeys(startPitch: string, startOctave: number, endPitch: string, endOctave: number) {
     const startPitchIndex = notePitches.indexOf(startPitch);
-    const endPitchIndex = notePitches.indexOf(startPitch);
+    const endPitchIndex = notePitches.indexOf(endPitch);
     const midiNumberStart = 24 + startOctave * 12 + startPitchIndex;
     const midiNumberEnd = 24 + endOctave * 12 + endPitchIndex;
 
     if (midiNumberStart > midiNumberEnd) {
-        return;
+        throw new Error(`Invalid input: start note ${startPitch + startOctave} is higher that end note ${endPitch + endOctave}`);
     }
 
     const keysArray = [];
