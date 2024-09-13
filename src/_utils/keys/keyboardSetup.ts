@@ -13,7 +13,7 @@ export function getKeys(startPitch: string, startOctave: number, endPitch: strin
     const keysArray = [];
     let octave = startOctave;
     const numberOfKeys = midiNumberEnd - midiNumberStart;
-    for(let i = 0; i < numberOfKeys; i++) {
+    for(let i = 0; i <= numberOfKeys; i++) {
         const pitch = notePitches[i % 12 + startPitchIndex];
         if (i !== 0 && pitch === 'C') {
             octave++;
