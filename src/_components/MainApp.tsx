@@ -3,7 +3,7 @@ import Keyboard from "./Keyboard";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
 
 export default function MainApp() {
-    const keys = getKeys('C', 2, 'C', 4);
+    const keys = getKeys('C', 2, 'B', 4);
 
     return (
         <div className="border-2 border-black">
