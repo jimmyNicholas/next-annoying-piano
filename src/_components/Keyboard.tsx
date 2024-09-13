@@ -9,7 +9,21 @@ export default function Keyboard({
 
     return (
         <div className='grid content-center h-full'>
-            <div className="relative flex h-[9.4375em] w-auto mx-auto my-[2.5em] p-[1.5em] border border-[#160801] rounded-[0.5em] bg-gradient-to-br from-black/30 to-black/0 bg-pink-600 shadow-[inset_0_0_50px_rgba(0,0,0,0.5),inset_0_1px_rgba(212,152,125,0.2),0_5px_15px_rgba(0,0,0,0.5)] box-border">
+            <div 
+                className="
+                    relative 
+                    flex 
+                    h-[9.4375em] 
+                    w-auto 
+                    mx-auto 
+                    my-10 
+                    p-6 
+                    border 
+                    border-[#160801] 
+                    rounded-lg 
+                    bg-gradient-to-br from-black/30 to-black/0 
+                    bg-pink-600 
+                    shadow-[inset_0_0_50px_rgba(0,0,0,0.5),inset_0_1px_rgba(212,152,125,0.2),0_5px_15px_rgba(0,0,0,0.5)] box-border">
                 {keys.map((key) => {
                     let whiteKeyMargin = '-ml-[0.5em]';
                     if (key.pitch === 'C' || key.pitch === 'F') {
@@ -23,11 +37,11 @@ export default function Keyboard({
                                     className=' 
                                         relative 
                                         float-left 
-                                        h-[4em] 
-                                        w-[1em] 
-                                        z-[1] 
+                                        h-16 
+                                        w-4 
+                                        z-20 
                                         -ml-[0.7em] 
-                                        border-[1px] 
+                                        border 
                                         border-black 
                                         rounded-b-[3px] 
                                         shadow-[inset_-1px_-1px_2px_rgba(255,255,255,0.2),inset_0_-5px_2px_3px_rgba(0,0,0,0.6),0_2px_4px_rgba(0,0,0,0.5)] 
@@ -43,20 +57,19 @@ export default function Keyboard({
                                     className={`    
                                         relative 
                                         float-left 
-                                        h-[8em] 
-                                        w-[2em] 
-                                        z-[0.5] 
+                                        h-32 
+                                        w-8 
+                                        z-10 
                                         ${whiteKeyMargin} 
-                                        border-l-[1px] 
-                                        border-b-[1px] 
-                                        border-[#bbb] 
+                                        border-l 
+                                        border-b 
+                                        border-gray-400 
                                         rounded-b-[5px] 
                                         shadow-[inset_-1px_0_0_rgba(255,255,255,0.8),inset_0_0_5px_#ccc,inset_0_0_3px_rgba(0,0,0,0.2)] 
-                                        bg-gradient-to-b 
-                                        from-[#eee] to-white 
-                                        active:border-t-[1px] 
-                                        active:border-l-[1px] 
-                                        active:border-b-[1px] 
+                                        bg-gradient-to-b from-[#eee] to-white 
+                                        active:border-t 
+                                        active:border-l 
+                                        active:border-b 
                                         active:border-[#999] 
                                         active:shadow-[inset_2px_0_3px_rgba(0,0,0,0.1),inset_-5px_5px_20px_rgba(0,0,0,0.2),inset_0_0_3px_rgba(0,0,0,0.2)] 
                                         active:bg-gradient-to-b from-white to-[#e9e9e9]`}>
