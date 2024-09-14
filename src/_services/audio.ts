@@ -1,3 +1,4 @@
+import { log } from "console";
 import * as Tone from "tone";
 
 export async function setupAudio() {
@@ -7,10 +8,21 @@ export async function setupAudio() {
 const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 const now = Tone.now();
 
-export function playHertz(hertz: number) {
-    synth.triggerAttack(hertz, now);
-}
+interface Note {
+    keyName: string;
+    hertz: number;
+};
 
-export function stopHertz(hertz: number) {
-    synth.triggerRelease(hertz, now)
-}
+let playingNotes: Note[] = [];
+
+export function playHertz(keyName: string, hertz: number) {
+    synth.triggerAttack(hertz, now);
+    playingNotes.push({keyName, hertz});
+};
+
+export function stopHertz(keyName: string) {
+    const currentNote = playingNotes.find((playingNote) => {return playingNote.keyName === keyName });
+    if (typeof currentNote === 'undefined') {return};
+    synth.triggerRelease(currentNote.hertz, now);
+    playingNotes = playingNotes.filter(playingNote => playingNote !== currentNote);
+};
