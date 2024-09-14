@@ -22,7 +22,7 @@ export default function MainApp() {
             <button 
                 onClick={async () => {
                     const {playHertz} = await import('../_services/audio');
-                    playHertz(440);
+                    playHertz('A4', 440);
                 }}
             >
                 -Test Audio-
@@ -30,7 +30,7 @@ export default function MainApp() {
             <button 
                 onClick={async () => {
                     const {stopHertz} = await import('../_services/audio');
-                    stopHertz(440);
+                    stopHertz('A4');
                 }}
             >
                 -Stop Audio-
