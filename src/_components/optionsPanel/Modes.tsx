@@ -30,7 +30,6 @@ export default function Modes({
 
     return (
         <div className="border-2 border-black grid grid-cols-4">
-            Modes
             {modes.map((mode) => (
                 <button
                     key={mode.value}
