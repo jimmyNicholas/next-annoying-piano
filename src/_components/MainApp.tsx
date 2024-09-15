@@ -34,11 +34,11 @@ export default function MainApp() {
 
     return (
         <div className="border-2 border-black">
-            Main App 
-            <button 
+            <button
+                className="bg-slate-300 border border-black" 
                 onClick={enableAudio}
             >
-                -Enable Audio-
+                Enable Audio
             </button>
             <OptionsPanel/>
             <Keyboard
