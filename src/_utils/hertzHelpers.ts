@@ -1,4 +1,5 @@
 import { notePitches } from "@/_lib/_data/noteNames";
+import { log } from "console";
 
 function calculateHertz(baseHertz: number, interval: number) {
     if (interval === 0) {
@@ -18,10 +19,30 @@ function getInterval(targetName: string, targetOctave: number, baseName: string,
     return targetIndex - baseIndex + octaveInterval;
 }
 
-export function convertPitchToHertz(targetName: string, targetOctave: number) {
+function convertPitchToHertz(targetName: string, targetOctave: number) {
     const baseName: string = 'A';
     const baseOctave: number = 4;
     const baseHertz: number = 440;
     const interval = getInterval(targetName, targetOctave, baseName, baseOctave);
     return calculateHertz(baseHertz, interval);
+};
+
+export function getHertzTable(startPitch: string, startOctave: number, endPitch: string, endOctave: number) {
+    const startPitchIndex = notePitches.indexOf(startPitch);
+    const numberOfKeys = getInterval(endPitch, endOctave, startPitch, startOctave);
+    if (numberOfKeys < 0) { throw new Error(`Invalid input: start note ${startPitch + startOctave} is higher that end note ${endPitch + endOctave}`)};
+    
+    const hertzTable: {[key: string]: number} = {};
+    let octave = startOctave;
+    for (let i = 0; i <= numberOfKeys; i++) {
+        const pitch = notePitches[i % 12 + startPitchIndex];
+        if (i !== 0 && pitch === 'C') {
+            octave++;
+        }
+        const hertz = convertPitchToHertz(pitch, octave);
+        const keyName = pitch + octave;
+        hertzTable[keyName] = hertz;
+    }
+
+    return hertzTable;
 };
