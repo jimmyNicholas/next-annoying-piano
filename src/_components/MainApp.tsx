@@ -3,8 +3,9 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
+import { Key, HertzTable } from '@/_lib/_types/types';
 import { getHertzTable } from "@/_utils/hertzHelpers";
-import { useState, useRef, RefObject } from "react";
+import { useState, useRef } from "react";
 import { AudioModule } from "@/_lib/_types/types";
 
 export default function MainApp() {
@@ -18,13 +19,20 @@ export default function MainApp() {
             .then(() => setAudioService(audioModule));
     };
 
-    const keys = getKeys('C', 2, 'B', 4);
-    const hertzTable = getHertzTable('C', 2, 'B', 4);
+    const [keys] = useState<Key[]>( getKeys('C', 2, 'B', 4) );
+    const hertzTable = useRef<HertzTable>(getHertzTable('C', 2, 'B', 4));
 
     function onKeyDown(keyName: string){
         if (!audioIsLoaded || !audioService) { return };
-        const hertz = hertzTable[keyName];
+        const hertz = hertzTable.current[keyName];
         audioService.playHertz(keyName, hertz);
+    };
+
+    function swapHertz(lastKey: string, currentKey: string, hertzTable: HertzTable) {
+        const lastHertz = hertzTable[lastKey];
+        const currentHertz = hertzTable[currentKey];
+        hertzTable[lastKey] = currentHertz;
+        hertzTable[currentKey] = lastHertz;
     };
 
     const lastReleased = useRef<string | null>(null);
@@ -34,8 +42,9 @@ export default function MainApp() {
         audioService.stopHertz(keyName);
         if (!lastReleased.current) {
             lastReleased.current = keyName;
-        } else {
-            console.log('swap');
+        } else if (lastReleased.current !== keyName){
+            swapHertz(lastReleased.current, keyName, hertzTable.current);
+            lastReleased.current = keyName;
         }
     }
 
