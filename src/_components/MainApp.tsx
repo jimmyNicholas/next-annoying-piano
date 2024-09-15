@@ -4,7 +4,7 @@ import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
 import { getHertzTable } from "@/_utils/hertzHelpers";
-import { useState } from "react";
+import { useState, useRef, RefObject } from "react";
 import { AudioModule } from "@/_lib/_types/types";
 
 export default function MainApp() {
@@ -21,15 +21,22 @@ export default function MainApp() {
     const keys = getKeys('C', 2, 'B', 4);
     const hertzTable = getHertzTable('C', 2, 'B', 4);
 
-    async function onKeyDown(keyName: string){
+    function onKeyDown(keyName: string){
         if (!audioIsLoaded || !audioService) { return };
         const hertz = hertzTable[keyName];
         audioService.playHertz(keyName, hertz);
     };
 
-    async function onKeyUp(keyName: string) {
+    const lastReleased = useRef<string | null>(null);
+
+    function onKeyUp(keyName: string) {
         if (!audioIsLoaded || !audioService) { return };
         audioService.stopHertz(keyName);
+        if (!lastReleased.current) {
+            lastReleased.current = keyName;
+        } else {
+            console.log('swap');
+        }
     }
 
     return (
