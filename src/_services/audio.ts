@@ -26,3 +26,9 @@ export function stopHertz(keyName: string) {
     synth.triggerRelease(currentNote.hertz, now);
     playingNotes = playingNotes.filter(playingNote => playingNote !== currentNote);
 };
+
+export const audioModule = {
+    setupAudio,
+    playHertz,
+    stopHertz,
+};
