@@ -5,10 +5,11 @@ import Keyboard from "./Keyboard";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
 import { getHertzTable } from "@/_utils/hertzHelpers";
 import { useState } from "react";
+import { AudioModule } from "@/_lib/_types/types";
 
 export default function MainApp() {
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
-    const [audioService, setAudioService] = useState<any>(null);
+    const [audioService, setAudioService] = useState<AudioModule | null>(null);
 
     async function enableAudio() {
         const {audioModule} = await import('../_services/audio');
@@ -21,13 +22,13 @@ export default function MainApp() {
     const hertzTable = getHertzTable('C', 2, 'B', 4);
 
     async function onKeyDown(keyName: string){
-        if (!audioIsLoaded) { return };
+        if (!audioIsLoaded || !audioService) { return };
         const hertz = hertzTable[keyName];
         audioService.playHertz(keyName, hertz);
     };
 
     async function onKeyUp(keyName: string) {
-        if (!audioIsLoaded) { return };
+        if (!audioIsLoaded || !audioService) { return };
         audioService.stopHertz(keyName);
     }
 
