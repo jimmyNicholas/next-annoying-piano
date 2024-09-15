@@ -1,4 +1,4 @@
-import { Key } from '@/_lib/_types/types'
+import { Key } from '@/_lib/_types/types';
 import React from 'react';
 
 export default function Keyboard({

@@ -3,9 +3,11 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
+import { Key, HertzTable } from '@/_lib/_types/types';
 import { getHertzTable } from "@/_utils/hertzHelpers";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { AudioModule } from "@/_lib/_types/types";
+import getMode from "@/_utils/modes/getMode";
 
 export default function MainApp() {
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
@@ -18,19 +20,32 @@ export default function MainApp() {
             .then(() => setAudioService(audioModule));
     };
 
-    const keys = getKeys('C', 2, 'B', 4);
-    const hertzTable = getHertzTable('C', 2, 'B', 4);
-
-    async function onKeyDown(keyName: string){
+    const [keys] = useState<Key[]>( getKeys('C', 2, 'B', 4) );
+    const hertzTable = useRef<HertzTable>(getHertzTable('C', 2, 'B', 4));
+    const lastReleased = useRef<string | null>(null);
+    
+    
+    function onKeyDown(keyName: string){
         if (!audioIsLoaded || !audioService) { return };
-        const hertz = hertzTable[keyName];
+        const hertz = hertzTable.current[keyName];
         audioService.playHertz(keyName, hertz);
     };
 
-    async function onKeyUp(keyName: string) {
+    function onKeyUp(keyName: string) {
         if (!audioIsLoaded || !audioService) { return };
         audioService.stopHertz(keyName);
+        if (!lastReleased.current) {
+            lastReleased.current = keyName;
+        } else if (lastReleased.current !== keyName){
+            getMode(mode.current, lastReleased.current, keyName, hertzTable.current);
+            lastReleased.current = keyName;
+        }
     }
+
+    const mode = useRef<string>('SWAP');
+    function updateMode(newMode: string) {
+        mode.current = newMode;
+    };
 
     return (
         <div className="border-2 border-black">
@@ -40,7 +55,10 @@ export default function MainApp() {
             >
                 Enable Audio
             </button>
-            <OptionsPanel/>
+            <OptionsPanel
+                mode={mode.current}
+                updateMode={updateMode}
+            />
             <Keyboard
                 keys={keys}
                 onKeyDown={onKeyDown}
