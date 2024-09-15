@@ -17,7 +17,6 @@ export default function MainApp() {
             .then(() => setAudioService(audioModule));
     };
 
-
     const keys = getKeys('C', 2, 'B', 4);
     const hertzTable = getHertzTable('C', 2, 'B', 4);
 
