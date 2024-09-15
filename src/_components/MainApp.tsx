@@ -9,6 +9,14 @@ export default function MainApp() {
     const keys = getKeys('C', 2, 'B', 4);
     const hertzTable = getHertzTable('C', 2, 'B', 4);
 
+    function onKeyDown(keyName: string){
+        console.log(keyName);  
+    };
+
+    function onKeyUp(keyName: string) {
+        console.log(keyName);
+    }
+
     return (
         <div className="border-2 border-black">
             Main App 
@@ -39,6 +47,8 @@ export default function MainApp() {
             <OptionsPanel/>
             <Keyboard
                 keys={keys}
+                onKeyDown={onKeyDown}
+                onKeyUp={onKeyUp}
             />
         </div>
     );

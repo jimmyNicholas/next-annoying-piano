@@ -3,8 +3,12 @@ import React from 'react';
 
 export default function Keyboard({
     keys,
+    onKeyDown,
+    onKeyUp
 }: {
     keys: Key[];
+    onKeyDown: (keyName: string) => void;
+    onKeyUp: (keyName: string) => void;
 }) {
 
     return (
@@ -34,6 +38,8 @@ export default function Keyboard({
                             {key.pitch[1] === '#' ? 
                                 //black key
                                 <button
+                                    onMouseDown={() => onKeyDown(key.name)}
+                                    onMouseUp={() => onKeyUp(key.name)}
                                     className=' 
                                         relative 
                                         float-left 
@@ -53,7 +59,8 @@ export default function Keyboard({
                                 : 
                                 //white key
                                 <button 
-                                    key={key.name} 
+                                    onMouseDown={() => onKeyDown(key.name)}
+                                    onMouseUp={() => onKeyUp(key.name)}
                                     className={`    
                                         relative 
                                         float-left 
