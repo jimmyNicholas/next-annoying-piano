@@ -33,6 +33,7 @@ export default function Modes({
             Modes
             {modes.map((mode) => (
                 <button
+                    key={mode.value}
                     className={`
                         ${mode.isSelected ? 'bg-orange-400' : 'bg-slate-400'}
                         m-2
