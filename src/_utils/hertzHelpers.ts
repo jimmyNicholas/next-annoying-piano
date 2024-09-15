@@ -1,5 +1,4 @@
 import { notePitches } from "@/_lib/_data/noteNames";
-import { log } from "console";
 
 function calculateHertz(baseHertz: number, interval: number) {
     if (interval === 0) {
