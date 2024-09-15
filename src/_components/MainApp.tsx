@@ -7,6 +7,7 @@ import { Key, HertzTable } from '@/_lib/_types/types';
 import { getHertzTable } from "@/_utils/hertzHelpers";
 import { useState, useRef } from "react";
 import { AudioModule } from "@/_lib/_types/types";
+import getMode from "@/_utils/modes/getMode";
 
 export default function MainApp() {
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
@@ -28,13 +29,6 @@ export default function MainApp() {
         audioService.playHertz(keyName, hertz);
     };
 
-    function swapHertz(lastKey: string, currentKey: string, hertzTable: HertzTable) {
-        const lastHertz = hertzTable[lastKey];
-        const currentHertz = hertzTable[currentKey];
-        hertzTable[lastKey] = currentHertz;
-        hertzTable[currentKey] = lastHertz;
-    };
-
     const lastReleased = useRef<string | null>(null);
 
     function onKeyUp(keyName: string) {
@@ -43,7 +37,7 @@ export default function MainApp() {
         if (!lastReleased.current) {
             lastReleased.current = keyName;
         } else if (lastReleased.current !== keyName){
-            swapHertz(lastReleased.current, keyName, hertzTable.current);
+            getMode('SWAP', lastReleased.current, keyName, hertzTable.current);
             lastReleased.current = keyName;
         }
     }
