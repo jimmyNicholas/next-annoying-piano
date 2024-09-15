@@ -6,6 +6,10 @@ export default function getMode(mode: string, lastKey: string, currentKey: strin
         case 'SWAP':
             swapHertz(lastKey, currentKey, hertzTable);
             break;
+        case 'GRAVITY':
+            console.log('gravity function');
+            
+            break;
         default:
             break;
     }
