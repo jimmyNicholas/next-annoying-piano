@@ -20,8 +20,9 @@ export default function MainApp() {
             .then(() => setAudioService(audioModule));
     };
 
-    const [keys] = useState<Key[]>( getKeys('C', 2, 'B', 4) );
-    const hertzTable = useRef<HertzTable>(getHertzTable('C', 2, 'B', 4));
+    const startPitch = 'C', startOctave = 2, endPitch = 'B', endOctave = 4;
+    const [keys] = useState<Key[]>( getKeys(startPitch, startOctave, endPitch, endOctave) );
+    const hertzTable = useRef<HertzTable>(getHertzTable(startPitch, startOctave, endPitch, endOctave));
     const lastReleased = useRef<string | null>(null);
     
     
@@ -47,6 +48,10 @@ export default function MainApp() {
         mode.current = newMode;
     };
 
+    function onReset() {
+        hertzTable.current = getHertzTable(startPitch, startOctave, endPitch, endOctave);
+    };
+
     return (
         <div className="border-2 border-black">
             <button
@@ -56,6 +61,7 @@ export default function MainApp() {
                 Enable Audio
             </button>
             <OptionsPanel
+                onReset={onReset}
                 mode={mode.current}
                 updateMode={updateMode}
             />
