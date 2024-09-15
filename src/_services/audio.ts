@@ -1,4 +1,3 @@
-import { log } from "console";
 import * as Tone from "tone";
 
 export async function setupAudio() {
