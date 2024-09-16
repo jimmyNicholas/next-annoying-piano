@@ -33,7 +33,7 @@ export default function Keyboard({
       }, [onKeyUp]);
 
     return (
-        <div className='grid content-center h-full'>
+        <div className='grid content-center h-full bg-[url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/187/vwood.png)]'>
             <div 
                 className="
                     relative 
