@@ -1,5 +1,5 @@
 import { Key } from '@/_lib/_types/types';
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 
 export default function Keyboard({
     keys,
@@ -10,6 +10,27 @@ export default function Keyboard({
     onKeyDown: (keyName: string) => void;
     onKeyUp: (keyName: string) => void;
 }) {
+
+    const activeKeyRef = useRef<string | null>(null);
+    
+    const handleOnKeyDown = useCallback((keyName: string) => {
+        activeKeyRef.current = keyName;
+        onKeyDown(keyName);  
+    }, [onKeyDown]);
+
+    const handleOnKeyUp = useCallback((keyName: string) => {
+        if (activeKeyRef.current === keyName) {
+            onKeyUp(keyName); 
+        }
+        activeKeyRef.current = null;
+    }, [onKeyUp]);
+
+    const handlePointerLeave = useCallback(() => {
+        if (activeKeyRef.current) {
+          onKeyUp(activeKeyRef.current);
+          activeKeyRef.current = null;
+        }
+      }, [onKeyUp]);
 
     return (
         <div className='grid content-center h-full'>
@@ -38,8 +59,10 @@ export default function Keyboard({
                             {key.pitch[1] === '#' ? 
                                 //black key
                                 <button
-                                    onMouseDown={() => onKeyDown(key.name)}
-                                    onMouseUp={() => onKeyUp(key.name)}
+                                    onPointerDown={() => handleOnKeyDown(key.name)}
+                                    onPointerUp={() => handleOnKeyUp(key.name)}
+                                    onPointerLeave={handlePointerLeave}
+                                    onPointerCancel={() => handleOnKeyUp(key.name)}
                                     className=' 
                                         relative 
                                         float-left 
@@ -59,8 +82,10 @@ export default function Keyboard({
                                 : 
                                 //white key
                                 <button 
-                                    onMouseDown={() => onKeyDown(key.name)}
-                                    onMouseUp={() => onKeyUp(key.name)}
+                                    onPointerDown={() => handleOnKeyDown(key.name)}
+                                    onPointerUp={() => handleOnKeyUp(key.name)}
+                                    onPointerLeave={handlePointerLeave}
+                                    onPointerCancel={() => handleOnKeyUp(key.name)}
                                     className={`    
                                         relative 
                                         float-left 
