@@ -54,13 +54,9 @@ export default function MainApp() {
 
     return (
         <div className="border-2 border-black">
-            <button
-                className="bg-slate-300 border border-black" 
-                onClick={enableAudio}
-            >
-                Enable Audio
-            </button>
             <OptionsPanel
+                enableAudio={enableAudio}
+                audioIsLoaded={audioIsLoaded}
                 onReset={onReset}
                 mode={mode.current}
                 updateMode={updateMode}
