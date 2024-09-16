@@ -34,7 +34,7 @@ export default function Modes({
                 <button
                     key={mode.value}
                     className={`
-                        ${mode.isSelected ? 'bg-orange-400' : 'bg-slate-400'}
+                        ${mode.isSelected ? 'bg-orange-400' : 'bg-slate-300'}
                         m-2
                         `
                     }
