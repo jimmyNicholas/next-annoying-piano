@@ -46,6 +46,7 @@ export default function MainApp() {
     const mode = useRef<string>('SWAP');
     function updateMode(newMode: string) {
         mode.current = newMode;
+        onReset();
     };
 
     function onReset() {
