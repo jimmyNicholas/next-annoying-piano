@@ -20,9 +20,9 @@ export default function MainApp() {
             .then(() => setAudioService(audioModule));
     };
 
-    const startPitch = 'C', startOctave = 2, endPitch = 'B', endOctave = 4;
-    const [keys] = useState<Key[]>( getKeys(startPitch, startOctave, endPitch, endOctave) );
-    const hertzTable = useRef<HertzTable>(getHertzTable(startPitch, startOctave, endPitch, endOctave));
+    const keyboardRange =  {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
+    const [keys] = useState<Key[]>( getKeys( keyboardRange) );
+    const hertzTable = useRef<HertzTable>(getHertzTable( keyboardRange ));
     const lastReleased = useRef<string | null>(null);
     
     
@@ -50,7 +50,7 @@ export default function MainApp() {
     };
 
     function onReset() {
-        hertzTable.current = getHertzTable(startPitch, startOctave, endPitch, endOctave);
+        hertzTable.current = getHertzTable( keyboardRange );
     };
 
     const optionsPanelProps: OptionsPanelProps = {

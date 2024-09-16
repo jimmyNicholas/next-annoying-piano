@@ -29,6 +29,13 @@ export interface Key {
     octave: number;
 };
 
+export interface KeyboardRange {
+    startPitch: string; 
+    startOctave: number; 
+    endPitch: string; 
+    endOctave: number;
+};
+
 // Hertz State Types
 export interface HertzTable {
     [key: string]: number;
