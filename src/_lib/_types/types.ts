@@ -7,7 +7,7 @@ export interface OptionsPanelProps {
 export interface GlobalProps {
     enableAudio: () => void;
     audioIsLoaded: boolean;
-    onReset: () => void,
+    onReset: () => void;
 };
 
 export interface ModeProps {
@@ -15,14 +15,21 @@ export interface ModeProps {
     updateMode: (mode: string) => void;
 };
 
-// Key State Tyoes
+//Keyboard Types
+export interface KeyboardProps {
+    keys: Key[],
+    onKeyDown: (keyName: string) => void;
+    onKeyUp: (keyName: string) => void;
+}
+
 export interface Key {
-    midiNumber: number,
-    name: string,
-    pitch: string,
-    octave: number,
+    midiNumber: number;
+    name: string;
+    pitch: string;
+    octave: number;
 };
 
+// Hertz State Types
 export interface HertzTable {
     [key: string]: number;
 };

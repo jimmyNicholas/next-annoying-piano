@@ -3,7 +3,7 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
-import { Key, HertzTable } from '@/_lib/_types/types';
+import { Key, HertzTable, KeyboardProps } from '@/_lib/_types/types';
 import { getHertzTable } from "@/_utils/hertzHelpers";
 import { useState, useRef } from "react";
 import { AudioModule, OptionsPanelProps } from "@/_lib/_types/types";
@@ -58,14 +58,12 @@ export default function MainApp() {
         modeProps: { mode: mode.current, updateMode}
     };
 
+    const keyboardProps: KeyboardProps = { keys, onKeyDown, onKeyUp };
+
     return (
         <div className="border-2 border-black">
             <OptionsPanel {...optionsPanelProps} />
-            <Keyboard
-                keys={keys}
-                onKeyDown={onKeyDown}
-                onKeyUp={onKeyUp}
-            />
+            <Keyboard {...keyboardProps} />
         </div>
     );
 };
