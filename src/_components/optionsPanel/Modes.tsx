@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ModeProps } from '@/_lib/_types/types';
 
 export default function Modes({
     mode,

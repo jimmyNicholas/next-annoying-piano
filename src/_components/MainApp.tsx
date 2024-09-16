@@ -6,7 +6,7 @@ import { getKeys } from "@/_utils/keys/keyboardSetup";
 import { Key, HertzTable } from '@/_lib/_types/types';
 import { getHertzTable } from "@/_utils/hertzHelpers";
 import { useState, useRef } from "react";
-import { AudioModule } from "@/_lib/_types/types";
+import { AudioModule, OptionsPanelProps } from "@/_lib/_types/types";
 import getMode from "@/_utils/modes/getMode";
 
 export default function MainApp() {
@@ -53,15 +53,14 @@ export default function MainApp() {
         hertzTable.current = getHertzTable(startPitch, startOctave, endPitch, endOctave);
     };
 
+    const optionsPanelProps: OptionsPanelProps = {
+        globalProps: { enableAudio, audioIsLoaded, onReset},
+        modeProps: { mode: mode.current, updateMode}
+    };
+
     return (
         <div className="border-2 border-black">
-            <OptionsPanel
-                enableAudio={enableAudio}
-                audioIsLoaded={audioIsLoaded}
-                onReset={onReset}
-                mode={mode.current}
-                updateMode={updateMode}
-            />
+            <OptionsPanel {...optionsPanelProps} />
             <Keyboard
                 keys={keys}
                 onKeyDown={onKeyDown}

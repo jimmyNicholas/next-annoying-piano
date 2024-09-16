@@ -1,15 +1,11 @@
 import {ResetIcon} from '@/_assets/icons' 
+import { GlobalProps } from '@/_lib/_types/types';
 
-export default function Global({
+const Global: React.FC<GlobalProps> = ({
     enableAudio,
     audioIsLoaded,
-    onReset,
-    } : {
-    enableAudio: () => void;
-    audioIsLoaded: boolean;
-    onReset: () => void,
-}) {
-
+    onReset   
+}) => {
     return (
         <div className="border-2 border-black grid grid-cols-2">
             <button
@@ -29,3 +25,5 @@ export default function Global({
         </div>
     );
 }
+
+export default Global;
