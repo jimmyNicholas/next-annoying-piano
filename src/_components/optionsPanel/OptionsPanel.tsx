@@ -17,7 +17,7 @@ export default function OptionsPanel({
     updateMode: (mode: string) => void;
 }) {
     return (
-        <div className="grid grid-cols-[15%_20%_45%_20%]">
+        <div className="grid grid-cols-[15%_20%_45%_20%] bg-cyan-200">
             <Global
                 enableAudio={enableAudio}
                 audioIsLoaded={audioIsLoaded}
