@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ModeProps } from '@/_lib/_types/types';
 
-export const Modes: React.FC<ModeProps> = ({
+const Modes: React.FC<ModeProps> = ({
     mode,
     updateMode,
 }) => {
@@ -44,4 +44,6 @@ export const Modes: React.FC<ModeProps> = ({
             ))}
         </div>
     );
-}
+};
+
+export default Modes;
