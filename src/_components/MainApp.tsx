@@ -9,7 +9,7 @@ import { useState, useRef } from "react";
 import { AudioModule, OptionsPanelProps } from "@/_lib/_types/types";
 import getMode from "@/_utils/modes/getMode";
 
-export default function MainApp() {
+export const MainApp: React.FC = () => {
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
     const [audioService, setAudioService] = useState<AudioModule | null>(null);
 
