@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { ModeProps } from '@/_lib/_types/types';
 
-export default function Modes({
+export const Modes: React.FC<ModeProps> = ({
     mode,
     updateMode,
-    } : {    
-    mode: string;
-    updateMode: (mode: string) => void;
-}) {
+}) => {
     const [currentMode, setCurrentMode] = useState(mode);
 
     const modes = [
