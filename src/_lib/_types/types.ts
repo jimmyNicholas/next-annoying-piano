@@ -42,6 +42,11 @@ export interface HertzTable {
 };
 
 // Audio Output Types
+export interface Note {
+    keyName: string;
+    hertz: number;
+};
+
 export interface AudioModule {
     setupAudio: () => void;
     playHertz: (keyName: string, hertz:number) => void;
