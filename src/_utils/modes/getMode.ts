@@ -6,7 +6,6 @@ const getMode = ({
     hertzModifiers,
     hertzTable
 }: ModeSelect): void => {
-    const { lastKey, currentKey } = hertzModifiers;
 
     switch (mode) {
         case 'SWAP':
