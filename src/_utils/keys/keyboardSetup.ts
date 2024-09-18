@@ -1,6 +1,7 @@
 import { notePitches } from "@/_lib/_data/noteNames";
+import { Key, KeyboardRange } from "@/_lib/_types/types";
 
-export function getKeys(startPitch: string, startOctave: number, endPitch: string, endOctave: number) {
+export const getKeys = ({ startPitch, startOctave, endPitch, endOctave}: KeyboardRange): Key[] => {
     const startPitchIndex = notePitches.indexOf(startPitch);
     const endPitchIndex = notePitches.indexOf(endPitch);
     const midiNumberStart = 24 + startOctave * 12 + startPitchIndex;

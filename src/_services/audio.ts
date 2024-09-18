@@ -1,4 +1,5 @@
 import * as Tone from "tone";
+import { Note } from '@/_lib/_types/types'
 
 export async function setupAudio() {
     await Tone.start();
@@ -7,19 +8,14 @@ export async function setupAudio() {
 const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 const now = Tone.now();
 
-interface Note {
-    keyName: string;
-    hertz: number;
-};
-
 let playingNotes: Note[] = [];
 
-export function playHertz(keyName: string, hertz: number) {
+export function playHertz(keyName: string, hertz: number): void {
     synth.triggerAttack(hertz, now);
     playingNotes.push({keyName, hertz});
 };
 
-export function stopHertz(keyName: string) {
+export function stopHertz(keyName: string): void {
     const currentNote = playingNotes.find((playingNote) => {return playingNote.keyName === keyName });
     if (typeof currentNote === 'undefined') {return};
     synth.triggerRelease(currentNote.hertz, now);

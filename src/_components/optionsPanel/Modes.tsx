@@ -1,12 +1,10 @@
 import { useState } from "react";
+import { ModeProps } from '@/_lib/_types/types';
 
-export default function Modes({
+const Modes: React.FC<ModeProps> = ({
     mode,
     updateMode,
-    } : {    
-    mode: string;
-    updateMode: (mode: string) => void;
-}) {
+}) => {
     const [currentMode, setCurrentMode] = useState(mode);
 
     const modes = [
@@ -34,7 +32,7 @@ export default function Modes({
                 <button
                     key={mode.value}
                     className={`
-                        ${mode.isSelected ? 'bg-orange-400' : 'bg-slate-400'}
+                        ${mode.isSelected ? 'bg-orange-400' : 'bg-slate-300'}
                         m-2
                         `
                     }
@@ -46,4 +44,6 @@ export default function Modes({
             ))}
         </div>
     );
-}
+};
+
+export default Modes;

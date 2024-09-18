@@ -3,13 +3,14 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
-import { Key, HertzTable } from '@/_lib/_types/types';
+import { Key, HertzTable, KeyboardProps, QwertyInputProps } from '@/_lib/_types/types';
 import { getHertzTable } from "@/_utils/hertzHelpers";
 import { useState, useRef } from "react";
-import { AudioModule } from "@/_lib/_types/types";
+import { AudioModule, OptionsPanelProps } from "@/_lib/_types/types";
 import getMode from "@/_utils/modes/getMode";
+import { useQwertyInput } from "@/_hooks/qwertyInput";
 
-export default function MainApp() {
+const MainApp: React.FC = () => {
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
     const [audioService, setAudioService] = useState<AudioModule | null>(null);
 
@@ -20,9 +21,9 @@ export default function MainApp() {
             .then(() => setAudioService(audioModule));
     };
 
-    const startPitch = 'C', startOctave = 2, endPitch = 'B', endOctave = 4;
-    const [keys] = useState<Key[]>( getKeys(startPitch, startOctave, endPitch, endOctave) );
-    const hertzTable = useRef<HertzTable>(getHertzTable(startPitch, startOctave, endPitch, endOctave));
+    const keyboardRange =  {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
+    const [keys] = useState<Key[]>( getKeys( keyboardRange) );
+    const hertzTable = useRef<HertzTable>(getHertzTable( keyboardRange ));
     const lastReleased = useRef<string | null>(null);
     
     
@@ -38,7 +39,15 @@ export default function MainApp() {
         if (!lastReleased.current) {
             lastReleased.current = keyName;
         } else if (lastReleased.current !== keyName){
-            getMode(mode.current, lastReleased.current, keyName, hertzTable.current);
+            const modeSelect = {
+                mode: mode.current,
+                hertzModifiers: {
+                    lastKey: lastReleased.current,
+                    currentKey: keyName
+                },
+                hertzTable: hertzTable.current
+            }
+            getMode(modeSelect);
             lastReleased.current = keyName;
         }
     }
@@ -46,30 +55,36 @@ export default function MainApp() {
     const mode = useRef<string>('SWAP');
     function updateMode(newMode: string) {
         mode.current = newMode;
+        onReset();
     };
 
     function onReset() {
-        hertzTable.current = getHertzTable(startPitch, startOctave, endPitch, endOctave);
+        hertzTable.current = getHertzTable( keyboardRange );
     };
+
+    const optionsPanelProps: OptionsPanelProps = {
+        globalProps: { enableAudio, audioIsLoaded, onReset},
+        modeProps: { mode: mode.current, updateMode}
+    };
+
+    const keyboardProps: KeyboardProps = { 
+        keys, 
+        keyHandlers: {onKeyDown,onKeyUp}
+    };
+
+    const qwertyInputProps: QwertyInputProps = {
+        isQwertyEnabled: true,
+        currentOctave: 2,
+        keyHandlers: {onKeyDown,onKeyUp}
+    };
+    useQwertyInput(qwertyInputProps);
 
     return (
         <div className="border-2 border-black">
-            <button
-                className="bg-slate-300 border border-black" 
-                onClick={enableAudio}
-            >
-                Enable Audio
-            </button>
-            <OptionsPanel
-                onReset={onReset}
-                mode={mode.current}
-                updateMode={updateMode}
-            />
-            <Keyboard
-                keys={keys}
-                onKeyDown={onKeyDown}
-                onKeyUp={onKeyUp}
-            />
+            <OptionsPanel {...optionsPanelProps} />
+            <Keyboard {...keyboardProps} />
         </div>
     );
 };
+
+export default MainApp;
