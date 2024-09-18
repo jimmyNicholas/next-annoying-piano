@@ -66,7 +66,10 @@ const MainApp: React.FC = () => {
         modeProps: { mode: mode.current, updateMode}
     };
 
-    const keyboardProps: KeyboardProps = { keys, onKeyDown, onKeyUp };
+    const keyboardProps: KeyboardProps = { 
+        keys, 
+        keyHandlers: {onKeyDown,onKeyUp}
+    };
 
     return (
         <div className="border-2 border-black">

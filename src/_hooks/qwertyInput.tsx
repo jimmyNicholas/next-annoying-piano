@@ -16,7 +16,8 @@ const qwertyMap: QwertyMap = {
     },
 };
 
-export function useQwertyInput({isQwertyEnabled, currentOctave, onKeyDown, onKeyUp}: QwertyInputProps) {
+export function useQwertyInput({isQwertyEnabled, currentOctave, keyHandlers}: QwertyInputProps) {
+    const {onKeyDown, onKeyUp} = keyHandlers;
 
     const handleQwertyDown = useCallback((e: KeyboardEvent) => {
         if (!isQwertyEnabled) { return };

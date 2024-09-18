@@ -3,10 +3,9 @@ import React, { useCallback, useRef } from 'react';
 
 const Keyboard: React.FC<KeyboardProps> = ({
     keys,
-    onKeyDown,
-    onKeyUp
+    keyHandlers
 }) => {
-
+    const {onKeyDown, onKeyUp} = keyHandlers;
     const activeKeyRef = useRef<string | null>(null);
     
     const handleOnKeyDown = useCallback((keyName: string) => {
