@@ -3,11 +3,12 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
-import { Key, HertzTable, KeyboardProps } from '@/_lib/_types/types';
+import { Key, HertzTable, KeyboardProps, QwertyInputProps } from '@/_lib/_types/types';
 import { getHertzTable } from "@/_utils/hertzHelpers";
 import { useState, useRef } from "react";
 import { AudioModule, OptionsPanelProps } from "@/_lib/_types/types";
 import getMode from "@/_utils/modes/getMode";
+import { useQwertyInput } from "@/_hooks/qwertyInput";
 
 const MainApp: React.FC = () => {
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
@@ -70,6 +71,13 @@ const MainApp: React.FC = () => {
         keys, 
         keyHandlers: {onKeyDown,onKeyUp}
     };
+
+    const qwertyInputProps: QwertyInputProps = {
+        isQwertyEnabled: true,
+        currentOctave: 2,
+        keyHandlers: {onKeyDown,onKeyUp}
+    };
+    useQwertyInput(qwertyInputProps);
 
     return (
         <div className="border-2 border-black">
