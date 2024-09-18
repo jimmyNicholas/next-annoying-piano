@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { QwertyInputProps, QwertyMap, BaseKeyName } from "@/_lib/_types/types";
+import { QwertyInputProps, QwertyMap } from "@/_lib/_types/types";
 
 const qwertyMap: QwertyMap = {
 	'a' : {
