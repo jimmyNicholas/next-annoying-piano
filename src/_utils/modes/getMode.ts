@@ -1,10 +1,15 @@
 import swapHertz from "./swap";
-import { HertzTable } from "@/_lib/_types/types";
+import { ModeSelect } from "@/_lib/_types/types";
 
-export default function getMode(mode: string, lastKey: string, currentKey: string, hertzTable: HertzTable) {
+const getMode = ({
+    mode, 
+    hertzModifiers,
+    hertzTable
+}: ModeSelect): void => {
+
     switch (mode) {
         case 'SWAP':
-            swapHertz(lastKey, currentKey, hertzTable);
+            swapHertz(hertzModifiers, hertzTable);
             break;
         case 'GRAVITY':
             console.log('gravity function');
@@ -13,4 +18,6 @@ export default function getMode(mode: string, lastKey: string, currentKey: strin
         default:
             break;
     }
-}
+};
+
+export default getMode;

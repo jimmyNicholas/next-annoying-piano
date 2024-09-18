@@ -1,16 +1,11 @@
-import { Key } from '@/_lib/_types/types';
+import { KeyboardProps } from '@/_lib/_types/types';
 import React, { useCallback, useRef } from 'react';
 
-export default function Keyboard({
+const Keyboard: React.FC<KeyboardProps> = ({
     keys,
-    onKeyDown,
-    onKeyUp
-}: {
-    keys: Key[];
-    onKeyDown: (keyName: string) => void;
-    onKeyUp: (keyName: string) => void;
-}) {
-
+    keyHandlers
+}) => {
+    const {onKeyDown, onKeyUp} = keyHandlers;
     const activeKeyRef = useRef<string | null>(null);
     
     const handleOnKeyDown = useCallback((keyName: string) => {
@@ -33,7 +28,7 @@ export default function Keyboard({
       }, [onKeyUp]);
 
     return (
-        <div className='grid content-center h-full'>
+        <div className='grid content-center h-full bg-[url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/187/vwood.png)]'>
             <div 
                 className="
                     relative 
@@ -113,3 +108,5 @@ export default function Keyboard({
         </div>
     );
 };
+
+export default Keyboard;
