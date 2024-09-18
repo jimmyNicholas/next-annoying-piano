@@ -1,13 +1,5 @@
 import { useCallback, useEffect } from "react";
-
-interface QwertyMap {
-    [key: string]: baseKeyName;
-};
-
-interface baseKeyName {
-    pitch: string;
-    baseOctave: number;
-};
+import { QwertyInputProps, QwertyMap, BaseKeyName } from "@/_lib/_types/types";
 
 const qwertyMap: QwertyMap = {
 	'a' : {
@@ -22,13 +14,6 @@ const qwertyMap: QwertyMap = {
 	    pitch: 'D',
 		baseOctave: 1
     },
-};
-
-interface QwertyInputProps {
-    isQwertyEnabled: boolean, 
-    currentOctave: number, 
-    onKeyDown: (keyName: string) => void;
-    onKeyUp: (keyName: string) => void;
 };
 
 export function useQwertyInput({isQwertyEnabled, currentOctave, onKeyDown, onKeyUp}: QwertyInputProps) {

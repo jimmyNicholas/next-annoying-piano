@@ -18,6 +18,8 @@ export interface ModeProps {
 //Keyboard Types
 export interface KeyboardProps {
     keys: Key[],
+    isQwertyEnabled: boolean, 
+    currentOctave: number, 
     onKeyDown: (keyName: string) => void;
     onKeyUp: (keyName: string) => void;
 }
@@ -50,6 +52,23 @@ export interface HertzModifiers {
 
 export interface HertzTable {
     [key: string]: number;
+};
+
+// User Input Types
+export interface QwertyInputProps {
+    isQwertyEnabled: boolean, 
+    currentOctave: number, 
+    onKeyDown: (keyName: string) => void;
+    onKeyUp: (keyName: string) => void;
+};
+
+export interface QwertyMap {
+    [key: string]: BaseKeyName;
+};
+
+export interface BaseKeyName {
+    pitch: string;
+    baseOctave: number;
 };
 
 // Audio Output Types
