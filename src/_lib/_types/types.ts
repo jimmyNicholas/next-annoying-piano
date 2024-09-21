@@ -11,9 +11,26 @@ export interface GlobalProps {
 };
 
 export interface ModeProps {
-    mode: string;
-    updateMode: (mode: string) => void;
+    mode: Mode;
+    updateMode: (mode: number) => void;
+    onModChange: (value: number, index: number) => void;
+    maxModes: number;
 };
+
+// Mode Types
+export interface Mode {
+    index: number;
+    text: string;
+    value: string;
+    modifiers?: Modifiers[];
+}
+
+interface Modifiers {
+    label: string;
+    min: number;
+    value: number;
+    max: number;
+}
 
 //Keyboard Types
 export interface KeyboardProps {
