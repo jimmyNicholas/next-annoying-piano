@@ -12,11 +12,20 @@ const Modes: React.FC<ModeProps> = ({
             text: 'Swap',
             value: 'SWAP',
             isSelected: 'SWAP' === currentMode,
+            modifyers: [],
         },
         {
             text: 'Gravity',
             value: 'GRAVITY',
             isSelected: 'GRAVITY' === currentMode,
+            modifyers: [
+                {
+                    min: 0,
+                    default: 20,
+                    max: 50,
+                    step: 5
+                }
+            ],
         },
     ];
 
@@ -26,6 +35,8 @@ const Modes: React.FC<ModeProps> = ({
         setCurrentMode(clickedMode);
     };
 
+    const [knobValue, setKnobValue] = useState<number>(50);
+    
     return (
         <div className="border-2 border-black grid grid-cols-4">
             {modes.map((mode) => (
@@ -39,9 +50,18 @@ const Modes: React.FC<ModeProps> = ({
                     onClick={((e) => onClick(e))}
                     value={mode.value}
                 >
-                    {mode.text}
+                    {mode.text}  
+                    <input 
+                        type="range"
+                        className="w-10"
+                        min={0}
+                        max={100}
+                        step={10}
+                        onChange={(e) => setKnobValue(Number(e.target.value))}
+                    />
                 </button>
             ))}
+            
         </div>
     );
 };
