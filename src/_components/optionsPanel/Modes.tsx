@@ -11,15 +11,14 @@ const Modes: React.FC<ModeProps> = ({
         {
             text: 'Swap',
             value: 'SWAP',
-            isSelected: 'SWAP' === currentMode,
             modifyers: [],
         },
         {
             text: 'Gravity',
             value: 'GRAVITY',
-            isSelected: 'GRAVITY' === currentMode,
             modifyers: [
                 {
+                    label: 'Strength',
                     min: 0,
                     default: 20,
                     max: 50,
@@ -28,18 +27,62 @@ const Modes: React.FC<ModeProps> = ({
             ],
         },
     ];
+    const [modeIndex, setModeIndex] = useState<number>(0);
+    const [modValues, setModValues] = useState<number[]>([]);
 
-    function onClick(e: React.MouseEvent<HTMLButtonElement>) {
-        const clickedMode = e.currentTarget.value;
-        updateMode(clickedMode);
-        setCurrentMode(clickedMode);
+    function onChange(indexValue: number) {
+        const mode = modes[indexValue].value;
+        updateMode(mode);
+        setCurrentMode(mode);
+        setModeIndex(indexValue);        
+    };
+    
+    function onModChange(value: number, index: number) {
+        setModValues([
+            ...modValues.slice(0, index),
+            value,
+            ...modValues.slice(index + 1)
+        ])
     };
 
-    const [knobValue, setKnobValue] = useState<number>(50);
-    
     return (
-        <div className="border-2 border-black grid grid-cols-4">
-            {modes.map((mode) => (
+        <div className="border-2 border-black grid grid-rows-2">
+            <div className="grid grid-cols-[15%_70%_15%]">         
+                Mode:
+                <input 
+                    type="range"
+                    className="w-full"
+                    value={modeIndex}
+                    min={0}
+                    max={modes.length - 1}
+                    onChange={(e) => onChange(Number(e.target.value))}
+                />
+                {modes[modeIndex].text}
+            </div>
+            {modes[modeIndex].modifyers.map((mod, index) => {
+                return (
+                    <div key={mod.label} className="grid grid-cols-[15%_70%_15%]">
+                        {mod.label}
+                        <input 
+                            type="range"
+                            className="w-full"
+                            value={modValues[index] ? modValues[index] : mod.default}
+                            min={mod.min}
+                            max={mod.max}
+                            onChange={(e) => onModChange(Number(e.target.value), index)}
+                        />
+                        {modValues[index] ? modValues[index] : mod.default}
+                    </div>
+            )})}
+        </div>
+    );
+};
+
+export default Modes;
+
+
+/*
+{modes.map((mode) => (
                 <button
                     key={mode.value}
                     className={`
@@ -61,9 +104,4 @@ const Modes: React.FC<ModeProps> = ({
                     />
                 </button>
             ))}
-            
-        </div>
-    );
-};
-
-export default Modes;
+*/
