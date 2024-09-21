@@ -55,14 +55,14 @@ export interface KeyboardRange {
 // Hertz State Types
 export interface ModeSelect {
     mode: string;
-    hertzModifyers: HertzModifyers;
+    hertzModifiers: HertzModifiers;
     hertzTable: HertzTable;
 };
 
-export interface HertzModifyers {
+export interface HertzModifiers {
     lastKey: string;
     currentKey: string;
-    modifyerOne: number; 
+    modifiers: number[] | undefined; 
 }
 
 export interface HertzTable {

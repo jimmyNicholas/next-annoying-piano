@@ -42,10 +42,10 @@ const MainApp: React.FC = () => {
         } else if (lastReleased.current !== keyName){
             const modeSelect = {
                 mode: mode.value,
-                hertzModifyers: {
+                hertzModifiers: {
                     lastKey: lastReleased.current,
                     currentKey: keyName,
-                    modifyerOne: 20,
+                    modifiers: mode.modifiers?.map((m) => m.value)
                 },
                 hertzTable: hertzTable.current
             };
