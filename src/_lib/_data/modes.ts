@@ -12,7 +12,7 @@ export const modes = [
         modifiers: [
             {
                 label: 'Strength',
-                min: 0,
+                min: 1,
                 value: 20,
                 max: 50
             }
