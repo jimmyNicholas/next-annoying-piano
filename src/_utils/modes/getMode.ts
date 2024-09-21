@@ -4,16 +4,16 @@ import { ModeSelect } from "@/_lib/_types/types";
 
 const getMode = ({
     mode, 
-    hertzModifiers,
+    hertzModifyers,
     hertzTable
 }: ModeSelect): void => {
 
     switch (mode) {
         case 'SWAP':
-            swapHertz(hertzModifiers, hertzTable);
+            swapHertz(hertzModifyers, hertzTable);
             break;
         case 'GRAVITY':
-            gravity(hertzModifiers, hertzTable);
+            gravity(hertzModifyers, hertzTable);
             break;
         default:
             break;

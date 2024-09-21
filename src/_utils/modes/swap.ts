@@ -1,6 +1,6 @@
-import { HertzModifiers, HertzTable } from "@/_lib/_types/types";
+import { HertzModifyers, HertzTable } from "@/_lib/_types/types";
 
-const swapHertz = (hertzModifiers: HertzModifiers, hertzTable: HertzTable): void => {
+const swapHertz = (hertzModifiers: HertzModifyers, hertzTable: HertzTable): void => {
     const { lastKey, currentKey } = hertzModifiers;
 
     const lastHertz = hertzTable[lastKey];

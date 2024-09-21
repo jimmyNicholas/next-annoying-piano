@@ -41,12 +41,13 @@ const MainApp: React.FC = () => {
         } else if (lastReleased.current !== keyName){
             const modeSelect = {
                 mode: mode.current,
-                hertzModifiers: {
+                hertzModifyers: {
                     lastKey: lastReleased.current,
-                    currentKey: keyName
+                    currentKey: keyName,
+                    modifyerOne: 20,
                 },
                 hertzTable: hertzTable.current
-            }
+            };
             getMode(modeSelect);
             lastReleased.current = keyName;
         }
