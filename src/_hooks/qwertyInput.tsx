@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { QwertyInputProps, QwertyMap } from "@/_lib/_types/types";
 
 const qwertyMap: QwertyMap = {
@@ -72,17 +72,28 @@ const qwertyMap: QwertyMap = {
     },
 };
 
-export function useQwertyInput({isQwertyEnabled, currentOctave, keyHandlers}: QwertyInputProps) {
+export function useQwertyInput({isQwertyEnabled, octaveRange, keyHandlers}: QwertyInputProps) {
     const {onKeyDown, onKeyUp} = keyHandlers;
+    const {octaveMin, octaveMax} = octaveRange;
+    const currentOctave = useRef<number>(octaveRange.currentOctave);
     const [pressedQwerty, setPressedQwerty] = useState<string[]>([]);
 
     const handleQwertyDown = useCallback((e: KeyboardEvent) => {
         if (!isQwertyEnabled) { return };
+        
+        const qwertyKey = e.key.toLowerCase();
+        if (qwertyKey === 'z' && currentOctave.current > octaveMin) {
+            currentOctave.current--;
+            return; 
+        };
+        if (qwertyKey === 'x' && currentOctave.current < octaveMax) {
+            currentOctave.current++;
+            return;
+        };
 
-        const qwertyKey = e.key;
         if (qwertyMap[qwertyKey] && !pressedQwerty.includes(qwertyKey)) {
             const {pitch, baseOctave} = qwertyMap[qwertyKey];
-            const keyName = pitch + (currentOctave + baseOctave);
+            const keyName = pitch + (currentOctave.current + baseOctave);
             onKeyDown(keyName);
             setPressedQwerty(prev => [...prev, qwertyKey]);
         };      
@@ -92,10 +103,10 @@ export function useQwertyInput({isQwertyEnabled, currentOctave, keyHandlers}: Qw
     const handleQwertyUp = useCallback((e: KeyboardEvent) => {
         if (!isQwertyEnabled) { return };
         
-        const qwertyKey = e.key;
+        const qwertyKey = e.key.toLowerCase();
         if (qwertyMap[qwertyKey]) {
             const {pitch, baseOctave} = qwertyMap[qwertyKey];
-            const keyName = pitch + (currentOctave + baseOctave);
+            const keyName = pitch + (currentOctave.current + baseOctave);
             onKeyUp(keyName);
             setPressedQwerty(prev => prev.filter(k => k !== e.key));
         };   

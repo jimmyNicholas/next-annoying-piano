@@ -21,7 +21,7 @@ const MainApp: React.FC = () => {
             .then(() => setAudioService(audioModule));
     };
 
-    const keyboardRange =  {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
+    const keyboardRange = {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
     const [keys] = useState<Key[]>( getKeys( keyboardRange) );
     const hertzTable = useRef<HertzTable>(getHertzTable( keyboardRange ));
     const lastReleased = useRef<string | null>(null);
@@ -74,7 +74,11 @@ const MainApp: React.FC = () => {
 
     const qwertyInputProps: QwertyInputProps = {
         isQwertyEnabled: true,
-        currentOctave: 2,
+        octaveRange: {
+            octaveMin: keyboardRange.startOctave,
+            currentOctave: 2,
+            octaveMax: keyboardRange.endOctave
+        },
         keyHandlers: {onKeyDown,onKeyUp}
     };
     useQwertyInput(qwertyInputProps);

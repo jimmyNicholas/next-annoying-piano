@@ -59,9 +59,15 @@ export interface KeyHandlers {
 
 // User Input Types
 export interface QwertyInputProps {
-    isQwertyEnabled: boolean, 
-    currentOctave: number, 
+    isQwertyEnabled: boolean; 
+    octaveRange: OctaveRange;
     keyHandlers: KeyHandlers;
+};
+
+interface OctaveRange {
+    octaveMin: number;
+    currentOctave: number;
+    octaveMax: number; 
 };
 
 export interface QwertyMap {
