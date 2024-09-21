@@ -81,7 +81,7 @@ export function useQwertyInput({isQwertyEnabled, octaveRange, keyHandlers}: Qwer
     const handleQwertyDown = useCallback((e: KeyboardEvent) => {
         if (!isQwertyEnabled) { return };
         
-        const qwertyKey = e.key;
+        const qwertyKey = e.key.toLowerCase();
         if (qwertyKey === 'z' && currentOctave.current > octaveMin) {
             currentOctave.current--;
             return; 
@@ -103,7 +103,7 @@ export function useQwertyInput({isQwertyEnabled, octaveRange, keyHandlers}: Qwer
     const handleQwertyUp = useCallback((e: KeyboardEvent) => {
         if (!isQwertyEnabled) { return };
         
-        const qwertyKey = e.key;
+        const qwertyKey = e.key.toLowerCase();
         if (qwertyMap[qwertyKey]) {
             const {pitch, baseOctave} = qwertyMap[qwertyKey];
             const keyName = pitch + (currentOctave.current + baseOctave);
