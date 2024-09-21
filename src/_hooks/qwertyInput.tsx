@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { QwertyInputProps, QwertyMap } from "@/_lib/_types/types";
 
 const qwertyMap: QwertyMap = {
@@ -74,16 +74,26 @@ const qwertyMap: QwertyMap = {
 
 export function useQwertyInput({isQwertyEnabled, octaveRange, keyHandlers}: QwertyInputProps) {
     const {onKeyDown, onKeyUp} = keyHandlers;
-    const {octaveMin, currentOctave, octaveMax} = octaveRange;
+    const {octaveMin, octaveMax} = octaveRange;
+    const currentOctave = useRef<number>(octaveRange.currentOctave);
     const [pressedQwerty, setPressedQwerty] = useState<string[]>([]);
 
     const handleQwertyDown = useCallback((e: KeyboardEvent) => {
         if (!isQwertyEnabled) { return };
-
+        
         const qwertyKey = e.key;
+        if (qwertyKey === 'z' && currentOctave.current > octaveMin) {
+            currentOctave.current--;
+            return; 
+        };
+        if (qwertyKey === 'x' && currentOctave.current < octaveMax) {
+            currentOctave.current++;
+            return;
+        };
+
         if (qwertyMap[qwertyKey] && !pressedQwerty.includes(qwertyKey)) {
             const {pitch, baseOctave} = qwertyMap[qwertyKey];
-            const keyName = pitch + (currentOctave + baseOctave);
+            const keyName = pitch + (currentOctave.current + baseOctave);
             onKeyDown(keyName);
             setPressedQwerty(prev => [...prev, qwertyKey]);
         };      
@@ -96,7 +106,7 @@ export function useQwertyInput({isQwertyEnabled, octaveRange, keyHandlers}: Qwer
         const qwertyKey = e.key;
         if (qwertyMap[qwertyKey]) {
             const {pitch, baseOctave} = qwertyMap[qwertyKey];
-            const keyName = pitch + (currentOctave + baseOctave);
+            const keyName = pitch + (currentOctave.current + baseOctave);
             onKeyUp(keyName);
             setPressedQwerty(prev => prev.filter(k => k !== e.key));
         };   
