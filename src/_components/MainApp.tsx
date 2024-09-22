@@ -14,7 +14,7 @@ import useAudio from "@/_hooks/useAudio";
 
 const MainApp: React.FC = () => {
    
-    const { audioIsLoaded, audioService } = useAudio();
+    const { loadAudio, audioIsLoaded, audioService } = useAudio();
 
     const keyboardRange = {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
     const [keys] = useState<Key[]>( getKeys( keyboardRange) );
@@ -91,7 +91,7 @@ const MainApp: React.FC = () => {
     useQwertyInput(qwertyInputProps);
 
     const optionsPanelProps: OptionsPanelProps = {
-        globalProps: { enableAudio, audioIsLoaded, onReset},
+        globalProps: { loadAudio, audioIsLoaded, onReset},
         inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled},
         modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
     };
