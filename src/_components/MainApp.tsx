@@ -8,6 +8,7 @@ import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
+import useMode from "@/_hooks/useMode";
 
 const MainApp: React.FC = () => {
    
@@ -15,25 +16,27 @@ const MainApp: React.FC = () => {
 
     const keyboardRange = {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
 
-    const modeIndex = useRef<number>(0);
-    const [mode, setMode] = useState<Mode>(modes[modeIndex.current]);
+    //const modeIndex = useRef<number>(0);
+    //const [mode, setMode] = useState<Mode>(modes[modeIndex.current]);
 
-    function updateMode(newModeIndex: number) {
-        modeIndex.current = newModeIndex;
-        setMode(modes[modeIndex.current]);
-        onReset();
-    };
+    // function updateMode(newModeIndex: number) {
+    //     modeIndex.current = newModeIndex;
+    //     setMode(modes[modeIndex.current]);
+    //     onReset();
+    // };
 
-    function onModChange(value: number, index: number) {
-        setMode(prevMode => ({
-            ...prevMode,
-            modifiers: prevMode.modifiers?.map((modifier, i) => 
-                i === index
-                    ? {...modifier, value: value}
-                    : modifier
-            )
-        }));
-    };
+    // function onModChange(value: number, index: number) {
+    //     setMode(prevMode => ({
+    //         ...prevMode,
+    //         modifiers: prevMode.modifiers?.map((modifier, i) => 
+    //             i === index
+    //                 ? {...modifier, value: value}
+    //                 : modifier
+    //         )
+    //     }));
+    // };
+
+    const { mode, updateMode, onModChange } = useMode(onReset);
 
     const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, audioIsLoaded, audioService, mode);
 
