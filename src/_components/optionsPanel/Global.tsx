@@ -2,7 +2,7 @@ import {ResetIcon} from '@/_assets/icons'
 import { GlobalProps } from '@/_lib/_types/types';
 
 const Global: React.FC<GlobalProps> = ({
-    enableAudio,
+    loadAudio,
     audioIsLoaded,
     onReset   
 }) => {
@@ -11,7 +11,7 @@ const Global: React.FC<GlobalProps> = ({
             <button
                 key={'enableAudio'}
                 className={`${audioIsLoaded ? "bg-yellow-300" : "bg-slate-300"} m-2`}
-                onClick={enableAudio}
+                onClick={loadAudio}
             >
                 Audio Enabled
             </button>
