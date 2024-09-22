@@ -78,18 +78,15 @@ const MainApp: React.FC = () => {
         hertzTable.current = getHertzTable( keyboardRange );
     };
 
-    const optionsPanelProps: OptionsPanelProps = {
-        globalProps: { enableAudio, audioIsLoaded, onReset},
-        modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
+    const isQwertyEnabled = useRef(false);
+    const toggleIsQwertyEnabled = () => { 
+        isQwertyEnabled.current = !isQwertyEnabled.current 
     };
-
-    const keyboardProps: KeyboardProps = { 
-        keys, 
-        keyHandlers: {onKeyDown,onKeyUp}
-    };
+    const checkIsQwertyEnabled = (): boolean => { 
+        return isQwertyEnabled.current };
 
     const qwertyInputProps: QwertyInputProps = {
-        isQwertyEnabled: true,
+        checkIsQwertyEnabled,
         octaveRange: {
             octaveMin: keyboardRange.startOctave,
             currentOctave: 2,
@@ -98,6 +95,17 @@ const MainApp: React.FC = () => {
         keyHandlers: {onKeyDown,onKeyUp}
     };
     useQwertyInput(qwertyInputProps);
+
+    const optionsPanelProps: OptionsPanelProps = {
+        globalProps: { enableAudio, audioIsLoaded, onReset},
+        inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled},
+        modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
+    };
+
+    const keyboardProps: KeyboardProps = { 
+        keys, 
+        keyHandlers: {onKeyDown,onKeyUp}
+    };
 
     return (
         <div className="border-2 border-black">
