@@ -38,41 +38,42 @@ const MainApp: React.FC = () => {
         }));
     };
 
-    const { keys, resetHertzTable} = useKeyboard(keyboardRange, audioIsLoaded, audioService, mode);
+    const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, audioIsLoaded, audioService, mode);
 
     //const [keys] = useState<Key[]>( getKeys( keyboardRange) );
-    const hertzTable = useRef<HertzTable>(getHertzTable( keyboardRange ));
-    const lastReleased = useRef<string | null>(null);
+    //const hertzTable = useRef<HertzTable>(getHertzTable( keyboardRange ));
+    //const lastReleased = useRef<string | null>(null);
     
     
-    function onKeyDown(keyName: string){
-        if (!audioIsLoaded || !audioService) { return };
-        const hertz = hertzTable.current[keyName];
-        audioService.playHertz(keyName, hertz);
-    };
+    // function onKeyDown(keyName: string){
+    //     if (!audioIsLoaded || !audioService) { return };
+    //     const hertz = hertzTable.current[keyName];
+    //     audioService.playHertz(keyName, hertz);
+    // };
 
-    function onKeyUp(keyName: string) {
-        if (!audioIsLoaded || !audioService) { return };
-        audioService.stopHertz(keyName);
-        if (!lastReleased.current) {
-            lastReleased.current = keyName;
-        } else if (lastReleased.current !== keyName){
-            const modeSelect = {
-                mode: mode.value,
-                hertzModifiers: {
-                    lastKey: lastReleased.current,
-                    currentKey: keyName,
-                    modifiers: mode.modifiers
-                },
-                hertzTable: hertzTable.current
-            };
-            getMode(modeSelect);
-            lastReleased.current = keyName;
-        }
-    }
+    // function onKeyUp(keyName: string) {
+    //     if (!audioIsLoaded || !audioService) { return };
+    //     audioService.stopHertz(keyName);
+    //     if (!lastReleased.current) {
+    //         lastReleased.current = keyName;
+    //     } else if (lastReleased.current !== keyName){
+    //         const modeSelect = {
+    //             mode: mode.value,
+    //             hertzModifiers: {
+    //                 lastKey: lastReleased.current,
+    //                 currentKey: keyName,
+    //                 modifiers: mode.modifiers
+    //             },
+    //             hertzTable: hertzTable.current
+    //         };
+    //         getMode(modeSelect);
+    //         lastReleased.current = keyName;
+    //     }
+    // }
 
     function onReset() {
-        hertzTable.current = getHertzTable( keyboardRange );
+        //hertzTable.current = getHertzTable( keyboardRange );
+        resetHertzTable();
     };
 
     const isQwertyEnabled = useRef(false);
@@ -89,7 +90,7 @@ const MainApp: React.FC = () => {
             currentOctave: 2,
             octaveMax: keyboardRange.endOctave
         },
-        keyHandlers: {onKeyDown,onKeyUp}
+        keyHandlers,
     };
     useQwertyInput(qwertyInputProps);
 
@@ -101,7 +102,7 @@ const MainApp: React.FC = () => {
 
     const keyboardProps: KeyboardProps = { 
         keys, 
-        keyHandlers: {onKeyDown,onKeyUp}
+        keyHandlers,
     };
 
     return (
