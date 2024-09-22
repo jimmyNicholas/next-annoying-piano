@@ -1,3 +1,5 @@
+import { MutableRefObject } from 'react';
+
 // Options Panel Types
 export interface OptionsPanelProps {
     globalProps: GlobalProps;
@@ -12,8 +14,7 @@ export interface GlobalProps {
 };
 
 export interface InputProps {
-    isQwertyEnabled: boolean;
-    toggleIsQwertyEnabled: () => void;
+    isQwertyEnabled: MutableRefObject<boolean>;
 }
 
 export interface ModeProps {
