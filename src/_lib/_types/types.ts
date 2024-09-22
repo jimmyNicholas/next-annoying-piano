@@ -1,5 +1,3 @@
-import { MutableRefObject } from 'react';
-
 // Options Panel Types
 export interface OptionsPanelProps {
     globalProps: GlobalProps;
