@@ -12,7 +12,7 @@ const Inputs: React.FC<InputProps> = ({
     };
 
     return (
-        <div className="border-2 border-black">
+        <div className="border-2 border-black grid">
             <button
                 key={'enableAudio'}
                 className={`${isEnabled ? "bg-yellow-300" : "bg-slate-300"} m-2`}
