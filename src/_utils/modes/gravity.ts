@@ -6,8 +6,9 @@ const gravity = (hertzModifiers: HertzModifiers, hertzTable: HertzTable): void =
 
     const lastHertz = hertzTable[lastKey];
     const currentHertz = hertzTable[currentKey];
-    const strength = modifiers[0];
-    const newHertz = Math.round(lastHertz - ((lastHertz - currentHertz) / strength));
+    const strength = modifiers.find((mod) => {return mod.modName === 'STRENGTH'});
+    if (!strength) return;
+    const newHertz = Math.round(lastHertz - ((lastHertz - currentHertz) / strength.value));
     hertzTable[lastKey] = newHertz;
 };
 
