@@ -85,7 +85,7 @@ export interface KeyHandlers {
 
 // User Input Types
 export interface QwertyInputProps {
-    isQwertyEnabled: boolean; 
+    checkIsQwertyEnabled: () => boolean; 
     octaveRange: OctaveRange;
     keyHandlers: KeyHandlers;
 };

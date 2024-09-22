@@ -79,9 +79,9 @@ const MainApp: React.FC = () => {
     };
 
     const isQwertyEnabled = useRef(false);
-    
+    const checkIsQwertyEnabled = (): boolean => { return isQwertyEnabled.current };
     const qwertyInputProps: QwertyInputProps = {
-        isQwertyEnabled: isQwertyEnabled.current,
+        checkIsQwertyEnabled,
         octaveRange: {
             octaveMin: keyboardRange.startOctave,
             currentOctave: 2,
