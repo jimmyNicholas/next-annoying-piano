@@ -9,6 +9,9 @@ function useKeyboard() {
     const hertzTable = useRef<HertzTable>(getHertzTable( keyboardRange ));
     const lastReleased = useRef<string | null>(null);
 
+    function resetHertzTable() { hertzTable.current = getHertzTable(keyboardRange)};
+
+    return { keys, resetHertzTable, };
 };
 
 export default useKeyboard;
