@@ -90,7 +90,7 @@ const MainApp: React.FC = () => {
 
     const isQwertyEnabled = useRef<boolean>(false);
     const qwertyInputProps: QwertyInputProps = {
-        isQwertyEnabled: true,
+        isQwertyEnabled: isQwertyEnabled.current,
         octaveRange: {
             octaveMin: keyboardRange.startOctave,
             currentOctave: 2,
