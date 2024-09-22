@@ -98,7 +98,7 @@ export function useQwertyInput({isQwertyEnabled, octaveRange, keyHandlers}: Qwer
             setPressedQwerty(prev => [...prev, qwertyKey]);
         };      
         
-    }, [isQwertyEnabled, currentOctave, pressedQwerty, onKeyDown]);
+    }, [isQwertyEnabled, currentOctave, octaveMin, octaveMax, pressedQwerty, onKeyDown]);
 
     const handleQwertyUp = useCallback((e: KeyboardEvent) => {
         if (!isQwertyEnabled) { return };

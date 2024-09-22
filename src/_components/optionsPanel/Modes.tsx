@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ModeProps } from '@/_lib/_types/types';
 
 const Modes: React.FC<ModeProps> = ({
