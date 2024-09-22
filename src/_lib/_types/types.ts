@@ -22,10 +22,10 @@ export interface Mode {
     index: number;
     text: string;
     value: string;
-    modifiers?: Modifiers[];
+    modifiers?: ModeModifiers[];
 }
 
-interface Modifiers {
+interface ModeModifiers {
     label: string;
     min: number;
     value: number;
@@ -62,7 +62,7 @@ export interface ModeSelect {
 export interface HertzModifiers {
     lastKey: string;
     currentKey: string;
-    modifiers: number[] | undefined; 
+    modifiers: ModeModifiers[] | undefined; 
 }
 
 export interface HertzTable {

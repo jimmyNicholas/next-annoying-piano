@@ -45,7 +45,7 @@ const MainApp: React.FC = () => {
                 hertzModifiers: {
                     lastKey: lastReleased.current,
                     currentKey: keyName,
-                    modifiers: mode.modifiers?.map((m) => m.value)
+                    modifiers: mode.modifiers
                 },
                 hertzTable: hertzTable.current
             };
