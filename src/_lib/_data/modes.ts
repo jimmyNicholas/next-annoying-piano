@@ -11,6 +11,7 @@ export const modes = [
         value: 'GRAVITY',
         modifiers: [
             {
+                modName: 'STRENGTH',
                 label: 'Strength',
                 min: 1,
                 value: 20,

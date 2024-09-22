@@ -26,6 +26,7 @@ export interface Mode {
 }
 
 interface ModeModifiers {
+    modName: string,
     label: string;
     min: number;
     value: number;
