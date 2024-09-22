@@ -2,8 +2,8 @@
 
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
-import { KeyboardProps, Mode, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
-import { useState, useRef } from "react";
+import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
+import { useRef } from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
@@ -13,31 +13,8 @@ import useMode from "@/_hooks/useMode";
 const MainApp: React.FC = () => {
    
     const { loadAudio, audioIsLoaded, audioService } = useAudio();
-
-    const keyboardRange = {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
-
-    //const modeIndex = useRef<number>(0);
-    //const [mode, setMode] = useState<Mode>(modes[modeIndex.current]);
-
-    // function updateMode(newModeIndex: number) {
-    //     modeIndex.current = newModeIndex;
-    //     setMode(modes[modeIndex.current]);
-    //     onReset();
-    // };
-
-    // function onModChange(value: number, index: number) {
-    //     setMode(prevMode => ({
-    //         ...prevMode,
-    //         modifiers: prevMode.modifiers?.map((modifier, i) => 
-    //             i === index
-    //                 ? {...modifier, value: value}
-    //                 : modifier
-    //         )
-    //     }));
-    // };
-
     const { mode, updateMode, onModChange } = useMode(onReset);
-
+    const keyboardRange = {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
     const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, audioIsLoaded, audioService, mode);
 
     function onReset() {
