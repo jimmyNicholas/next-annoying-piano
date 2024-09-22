@@ -14,7 +14,8 @@ export interface GlobalProps {
 };
 
 export interface InputProps {
-    isQwertyEnabled: MutableRefObject<boolean>;
+    checkIsQwertyEnabled: () => boolean;
+    toggleIsQwertyEnabled: () => void;
 }
 
 export interface ModeProps {

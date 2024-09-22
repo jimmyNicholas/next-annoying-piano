@@ -1,18 +1,22 @@
 import { InputProps } from "@/_lib/_types/types";
+import { useState } from "react";
 
 const Inputs: React.FC<InputProps> = ({
-    isQwertyEnabled,
+    checkIsQwertyEnabled,
+    toggleIsQwertyEnabled,
 }) => {
-    const toggleIsQwertyEnabled = () => {
-        isQwertyEnabled.current = !isQwertyEnabled.current;
-    }
+    const [isEnabled, setIsEnabled] = useState(checkIsQwertyEnabled());
+    function onClick() {
+        toggleIsQwertyEnabled();
+        setIsEnabled(checkIsQwertyEnabled());
+    };
 
     return (
         <div className="border-2 border-black">
             <button
                 key={'enableAudio'}
-                className={`${isQwertyEnabled ? "bg-yellow-300" : "bg-slate-300"} m-2`}
-                onClick={toggleIsQwertyEnabled}
+                className={`${isEnabled ? "bg-yellow-300" : "bg-slate-300"} m-2`}
+                onClick={onClick}
             >
                 QWERTY Enabled
             </button>

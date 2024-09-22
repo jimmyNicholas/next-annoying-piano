@@ -5,7 +5,7 @@ import Keyboard from "./Keyboard";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
 import { Key, HertzTable, KeyboardProps, Mode, QwertyInputProps } from '@/_lib/_types/types';
 import { getHertzTable } from "@/_utils/hertzHelpers";
-import { useState, useRef, MutableRefObject } from "react";
+import { useState, useRef, MutableRefObject, useEffect } from "react";
 import { AudioModule, OptionsPanelProps } from "@/_lib/_types/types";
 import getMode from "@/_utils/modes/getMode";
 import { useQwertyInput } from "@/_hooks/qwertyInput";
@@ -79,7 +79,12 @@ const MainApp: React.FC = () => {
     };
 
     const isQwertyEnabled = useRef(false);
-    const checkIsQwertyEnabled = (): boolean => { return isQwertyEnabled.current };
+    const toggleIsQwertyEnabled = () => { 
+        isQwertyEnabled.current = !isQwertyEnabled.current 
+    };
+    const checkIsQwertyEnabled = (): boolean => { 
+        return isQwertyEnabled.current };
+
     const qwertyInputProps: QwertyInputProps = {
         checkIsQwertyEnabled,
         octaveRange: {
@@ -93,7 +98,7 @@ const MainApp: React.FC = () => {
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { enableAudio, audioIsLoaded, onReset},
-        inputProps: { isQwertyEnabled},
+        inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled},
         modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
     };
 
