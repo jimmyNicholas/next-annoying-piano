@@ -88,6 +88,7 @@ const MainApp: React.FC = () => {
         keyHandlers: {onKeyDown,onKeyUp}
     };
 
+    const isQwertyEnabled = useRef<boolean>(false);
     const qwertyInputProps: QwertyInputProps = {
         isQwertyEnabled: true,
         octaveRange: {
