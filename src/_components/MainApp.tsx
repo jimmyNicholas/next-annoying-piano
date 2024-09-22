@@ -10,13 +10,37 @@ import getMode from "@/_utils/modes/getMode";
 import { useQwertyInput } from "@/_hooks/qwertyInput";
 import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
+import useKeyboard from "@/_hooks/useKeyboard";
 
 const MainApp: React.FC = () => {
    
     const { loadAudio, audioIsLoaded, audioService } = useAudio();
 
     const keyboardRange = {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
-    const [keys] = useState<Key[]>( getKeys( keyboardRange) );
+
+    const modeIndex = useRef<number>(0);
+    const [mode, setMode] = useState<Mode>(modes[modeIndex.current]);
+
+    function updateMode(newModeIndex: number) {
+        modeIndex.current = newModeIndex;
+        setMode(modes[modeIndex.current]);
+        onReset();
+    };
+
+    function onModChange(value: number, index: number) {
+        setMode(prevMode => ({
+            ...prevMode,
+            modifiers: prevMode.modifiers?.map((modifier, i) => 
+                i === index
+                    ? {...modifier, value: value}
+                    : modifier
+            )
+        }));
+    };
+
+    const { keys, resetHertzTable} = useKeyboard(keyboardRange, audioIsLoaded, audioService, mode);
+
+    //const [keys] = useState<Key[]>( getKeys( keyboardRange) );
     const hertzTable = useRef<HertzTable>(getHertzTable( keyboardRange ));
     const lastReleased = useRef<string | null>(null);
     
@@ -46,26 +70,6 @@ const MainApp: React.FC = () => {
             lastReleased.current = keyName;
         }
     }
-
-    const modeIndex = useRef<number>(0);
-    const [mode, setMode] = useState<Mode>(modes[modeIndex.current]);
-
-    function updateMode(newModeIndex: number) {
-        modeIndex.current = newModeIndex;
-        setMode(modes[modeIndex.current]);
-        onReset();
-    };
-
-    function onModChange(value: number, index: number) {
-        setMode(prevMode => ({
-            ...prevMode,
-            modifiers: prevMode.modifiers?.map((modifier, i) => 
-                i === index
-                    ? {...modifier, value: value}
-                    : modifier
-            )
-        }));
-    };
 
     function onReset() {
         hertzTable.current = getHertzTable( keyboardRange );
