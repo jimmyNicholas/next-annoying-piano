@@ -95,7 +95,7 @@ const MainApp: React.FC = () => {
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { enableAudio, audioIsLoaded, onReset},
-        inputProps: { isQwertyEnabled, toggleIsQwertyEnabled},
+        inputProps: { isQwertyEnabled: isQwertyEnabled.current, toggleIsQwertyEnabled},
         modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
     };
 

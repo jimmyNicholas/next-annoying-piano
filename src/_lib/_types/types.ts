@@ -1,6 +1,7 @@
 // Options Panel Types
 export interface OptionsPanelProps {
     globalProps: GlobalProps;
+    inputProps: InputProps;
     modeProps: ModeProps;
 };
 
@@ -9,6 +10,11 @@ export interface GlobalProps {
     audioIsLoaded: boolean;
     onReset: () => void;
 };
+
+export interface InputProps {
+    isQwertyEnabled: boolean;
+    toggleIsQwertyEnabled: () => void;
+}
 
 export interface ModeProps {
     mode: Mode;
