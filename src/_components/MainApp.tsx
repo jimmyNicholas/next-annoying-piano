@@ -3,12 +3,13 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
-import { Key, HertzTable, KeyboardProps, QwertyInputProps } from '@/_lib/_types/types';
+import { Key, HertzTable, KeyboardProps, Mode, QwertyInputProps } from '@/_lib/_types/types';
 import { getHertzTable } from "@/_utils/hertzHelpers";
 import { useState, useRef } from "react";
 import { AudioModule, OptionsPanelProps } from "@/_lib/_types/types";
 import getMode from "@/_utils/modes/getMode";
 import { useQwertyInput } from "@/_hooks/qwertyInput";
+import { modes } from "@/_lib/_data/modes";
 
 const MainApp: React.FC = () => {
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
@@ -40,22 +41,37 @@ const MainApp: React.FC = () => {
             lastReleased.current = keyName;
         } else if (lastReleased.current !== keyName){
             const modeSelect = {
-                mode: mode.current,
+                mode: mode.value,
                 hertzModifiers: {
                     lastKey: lastReleased.current,
-                    currentKey: keyName
+                    currentKey: keyName,
+                    modifiers: mode.modifiers
                 },
                 hertzTable: hertzTable.current
-            }
+            };
             getMode(modeSelect);
             lastReleased.current = keyName;
         }
     }
 
-    const mode = useRef<string>('SWAP');
-    function updateMode(newMode: string) {
-        mode.current = newMode;
+    const modeIndex = useRef<number>(0);
+    const [mode, setMode] = useState<Mode>(modes[modeIndex.current]);
+
+    function updateMode(newModeIndex: number) {
+        modeIndex.current = newModeIndex;
+        setMode(modes[modeIndex.current]);
         onReset();
+    };
+
+    function onModChange(value: number, index: number) {
+        setMode(prevMode => ({
+            ...prevMode,
+            modifiers: prevMode.modifiers?.map((modifier, i) => 
+                i === index
+                    ? {...modifier, value: value}
+                    : modifier
+            )
+        }));
     };
 
     function onReset() {
@@ -64,7 +80,7 @@ const MainApp: React.FC = () => {
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { enableAudio, audioIsLoaded, onReset},
-        modeProps: { mode: mode.current, updateMode}
+        modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
     };
 
     const keyboardProps: KeyboardProps = { 

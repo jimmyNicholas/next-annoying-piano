@@ -1,3 +1,4 @@
+import gravity from "./gravity";
 import swapHertz from "./swap";
 import { ModeSelect } from "@/_lib/_types/types";
 
@@ -12,8 +13,7 @@ const getMode = ({
             swapHertz(hertzModifiers, hertzTable);
             break;
         case 'GRAVITY':
-            console.log('gravity function');
-            
+            gravity(hertzModifiers, hertzTable);
             break;
         default:
             break;

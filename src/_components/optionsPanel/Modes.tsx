@@ -1,34 +1,50 @@
-import { useState } from "react";
 import { ModeProps } from '@/_lib/_types/types';
 
 const Modes: React.FC<ModeProps> = ({
     mode,
     updateMode,
+    onModChange,
+    maxModes,
 }) => {
-    const [currentMode, setCurrentMode] = useState(mode);
-
-    const modes = [
-        {
-            text: 'Swap',
-            value: 'SWAP',
-            isSelected: 'SWAP' === currentMode,
-        },
-        {
-            text: 'Gravity',
-            value: 'GRAVITY',
-            isSelected: 'GRAVITY' === currentMode,
-        },
-    ];
-
-    function onClick(e: React.MouseEvent<HTMLButtonElement>) {
-        const clickedMode = e.currentTarget.value;
-        updateMode(clickedMode);
-        setCurrentMode(clickedMode);
-    };
-
+    
     return (
-        <div className="border-2 border-black grid grid-cols-4">
-            {modes.map((mode) => (
+        <div className="border-2 border-black grid grid-rows-2">
+            <div className="grid grid-cols-[15%_70%_15%]">         
+                Mode:
+                <input 
+                    type="range"
+                    className="w-full"
+                    value={mode.index}
+                    min={0}
+                    max={maxModes}
+                    onChange={(e) => updateMode(Number(e.target.value))}
+                />
+                {mode.text}
+            </div>
+            {mode.modifiers?.map((mod, index) => {
+                return (
+                    <div key={mod.label} className="grid grid-cols-[15%_70%_15%]">
+                        {mod.label}
+                        <input 
+                            type="range"
+                            className="w-full"
+                            value={mod.value}
+                            min={mod.min}
+                            max={mod.max}
+                            onChange={(e) => onModChange(Number(e.target.value), index)}
+                        />
+                        {mod.value}
+                    </div>
+            )})}
+        </div>
+    );
+};
+
+export default Modes;
+
+
+/*
+{modes.map((mode) => (
                 <button
                     key={mode.value}
                     className={`
@@ -39,11 +55,15 @@ const Modes: React.FC<ModeProps> = ({
                     onClick={((e) => onClick(e))}
                     value={mode.value}
                 >
-                    {mode.text}
+                    {mode.text}  
+                    <input 
+                        type="range"
+                        className="w-10"
+                        min={0}
+                        max={100}
+                        step={10}
+                        onChange={(e) => setKnobValue(Number(e.target.value))}
+                    />
                 </button>
             ))}
-        </div>
-    );
-};
-
-export default Modes;
+*/
