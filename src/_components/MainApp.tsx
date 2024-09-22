@@ -10,17 +10,11 @@ import { AudioModule, OptionsPanelProps } from "@/_lib/_types/types";
 import getMode from "@/_utils/modes/getMode";
 import { useQwertyInput } from "@/_hooks/qwertyInput";
 import { modes } from "@/_lib/_data/modes";
+import useAudio from "@/_hooks/useAudio";
 
 const MainApp: React.FC = () => {
-    const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
-    const [audioService, setAudioService] = useState<AudioModule | null>(null);
-
-    async function enableAudio() {
-        const {audioModule} = await import('../_services/audio');
-        await audioModule.setupAudio()
-            .then(() => setAudioIsLoaded(true))
-            .then(() => setAudioService(audioModule));
-    };
+   
+    const { audioIsLoaded, audioService } = useAudio();
 
     const keyboardRange = {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
     const [keys] = useState<Key[]>( getKeys( keyboardRange) );
