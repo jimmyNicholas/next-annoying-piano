@@ -1,85 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { QwertyInputProps, QwertyMap } from "@/_lib/_types/types";
+import { QwertyInputProps } from "@/_lib/_types/types";
+import { qwertyMap } from "@/_lib/_data/qwertyMap";
 
-const qwertyMap: QwertyMap = {
-	'a' : {
-		pitch: 'C',
-		baseOctave: 0
-    },
-	'w': {
-	    pitch: 'C#',
-		baseOctave: 0
-    },
-    's': {
-	    pitch: 'D',
-		baseOctave: 0
-    },
-    'e' : {
-		pitch: 'D#',
-		baseOctave: 0
-    },
-	'd': {
-	    pitch: 'E',
-		baseOctave: 0
-    },
-    'f': {
-	    pitch: 'F',
-		baseOctave: 0
-    },
-    't' : {
-		pitch: 'F#',
-		baseOctave: 0
-    },
-	'g': {
-	    pitch: 'G',
-		baseOctave: 0
-    },
-    'y': {
-	    pitch: 'G#',
-		baseOctave: 0
-    },
-    'h' : {
-		pitch: 'A',
-		baseOctave: 0
-    },
-	'u': {
-	    pitch: 'A#',
-		baseOctave: 0
-    },
-    'j': {
-	    pitch: 'B',
-		baseOctave: 0
-    },
-    'k' : {
-		pitch: 'C',
-		baseOctave: 1
-    },
-	'o': {
-	    pitch: 'C#',
-		baseOctave: 1
-    },
-    'l': {
-	    pitch: 'D',
-		baseOctave: 1
-    },
-    'p' : {
-		pitch: 'D#',
-		baseOctave: 1
-    },
-	';': {
-	    pitch: 'E',
-		baseOctave: 1
-    },
-};
-
-export function useQwertyInput({isQwertyEnabled, octaveRange, keyHandlers}: QwertyInputProps) {
+export function useQwertyInput({checkIsQwertyEnabled, octaveRange, keyHandlers}: QwertyInputProps) {
     const {onKeyDown, onKeyUp} = keyHandlers;
     const {octaveMin, octaveMax} = octaveRange;
     const currentOctave = useRef<number>(octaveRange.currentOctave);
     const [pressedQwerty, setPressedQwerty] = useState<string[]>([]);
 
     const handleQwertyDown = useCallback((e: KeyboardEvent) => {
-        if (!isQwertyEnabled) { return };
+        if (!checkIsQwertyEnabled()) { return };
         
         const qwertyKey = e.key.toLowerCase();
         if (qwertyKey === 'z' && currentOctave.current > octaveMin) {
@@ -98,10 +28,10 @@ export function useQwertyInput({isQwertyEnabled, octaveRange, keyHandlers}: Qwer
             setPressedQwerty(prev => [...prev, qwertyKey]);
         };      
         
-    }, [isQwertyEnabled, currentOctave, octaveMin, octaveMax, pressedQwerty, onKeyDown]);
+    }, [checkIsQwertyEnabled, currentOctave, octaveMin, octaveMax, pressedQwerty, onKeyDown]);
 
     const handleQwertyUp = useCallback((e: KeyboardEvent) => {
-        if (!isQwertyEnabled) { return };
+        if (!checkIsQwertyEnabled()) { return };
         
         const qwertyKey = e.key.toLowerCase();
         if (qwertyMap[qwertyKey]) {
@@ -110,7 +40,7 @@ export function useQwertyInput({isQwertyEnabled, octaveRange, keyHandlers}: Qwer
             onKeyUp(keyName);
             setPressedQwerty(prev => prev.filter(k => k !== e.key));
         };   
-    }, [isQwertyEnabled, currentOctave, onKeyUp]);
+    }, [checkIsQwertyEnabled, currentOctave, onKeyUp]);
 
     useEffect(() => {
         window.addEventListener('keydown', handleQwertyDown);

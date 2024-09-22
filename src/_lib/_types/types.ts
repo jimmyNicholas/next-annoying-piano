@@ -1,14 +1,20 @@
 // Options Panel Types
 export interface OptionsPanelProps {
     globalProps: GlobalProps;
+    inputProps: InputProps;
     modeProps: ModeProps;
 };
 
 export interface GlobalProps {
-    enableAudio: () => void;
+    loadAudio: () => void;
     audioIsLoaded: boolean;
     onReset: () => void;
 };
+
+export interface InputProps {
+    checkIsQwertyEnabled: () => boolean;
+    toggleIsQwertyEnabled: () => void;
+}
 
 export interface ModeProps {
     mode: Mode;
@@ -78,7 +84,7 @@ export interface KeyHandlers {
 
 // User Input Types
 export interface QwertyInputProps {
-    isQwertyEnabled: boolean; 
+    checkIsQwertyEnabled: () => boolean; 
     octaveRange: OctaveRange;
     keyHandlers: KeyHandlers;
 };
