@@ -40,7 +40,8 @@ const MainApp: React.FC = () => {
     };
     useQwertyInput(qwertyInputProps);
 
-    useMidiController();
+    const isMidiLoaded = useRef<boolean>(false);
+    useMidiController(isMidiLoaded, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { loadAudio, audioIsLoaded, onReset},
