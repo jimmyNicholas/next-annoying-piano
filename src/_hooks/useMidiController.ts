@@ -1,4 +1,4 @@
-import setupMidiController from "@/_services/midiController";
+import {setupMidiController} from "@/_services/midiController";
 import { KeyHandlers } from "@/_lib/_types/types";
 
 const useMidiController = (
@@ -6,6 +6,8 @@ const useMidiController = (
     checkIsMidiControllerLoaded: () => boolean,
     keyHandlers: KeyHandlers 
 ) => {
+    const {isLoaded, midiControllerInputs} = setupMidiController(); 
+    console.log(isLoaded, midiControllerInputs );
     
 
     return {};
