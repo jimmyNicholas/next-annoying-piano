@@ -1,8 +1,8 @@
 import { WebMidi, Input } from "webmidi";
 import {useEffect, useState} from 'react';
 
-export async function setupMidiController(isMidiLoaded = false) { 
-    const [midiInputs, setMidiInputs] = useState<Input[]>([]);
+const setupMidiController = async (isMidiLoaded = false) => { 
+    const [midiControllerInputs, setMidiControllerInputs] = useState<Input[]>([]);
 
     useEffect(() => {
         const enableMidi = async () => {
@@ -10,7 +10,7 @@ export async function setupMidiController(isMidiLoaded = false) {
                 WebMidi.enable();
                 console.log("WebMidi enabled!");
                 const inputs: Input[] = WebMidi.inputs;    
-                setMidiInputs(inputs);
+                setMidiControllerInputs(inputs);
             } catch (err) {
                 alert(err);
             }
@@ -19,4 +19,8 @@ export async function setupMidiController(isMidiLoaded = false) {
             enableMidi();
         }
     }, [isMidiLoaded]);
+
+    return { midiControllerInputs};
 };
+
+export default setupMidiController;
