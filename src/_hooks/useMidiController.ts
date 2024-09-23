@@ -8,21 +8,18 @@ const useMidiController = async (
     checkIsMidiControllerLoaded: () => boolean,
     keyHandlers: KeyHandlers 
 ) => {
-
     const [midiControllerInputs, setMidiControllerInputs] = useState<Input[]>();
 
-    const isLoaded = setupMidiController(); 
     if (!checkIsMidiControllerLoaded()) {
         await setupMidiController()
             .then(() => {
                 const midiInputs = getMidiControllerInputs();
                 setMidiControllerInputs(midiInputs);
+                toggleIsMidiControllerLoaded();
             });   
-    }
-    //const midiControllerInputs = isLoaded ? getMidiControllerInputs() : [];
-    //console.log(isLoaded, midiControllerInputs);
-
-    return {};
+    };
+    
+    return { midiControllerInputs, getMidiControllerInputs };
 };
 
 export default useMidiController;
