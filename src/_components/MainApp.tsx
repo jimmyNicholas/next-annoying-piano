@@ -41,6 +41,12 @@ const MainApp: React.FC = () => {
     useQwertyInput(qwertyInputProps);
 
     const isMidiControllerLoaded = useRef<boolean>(false);
+    const toggleIsMidiControllerLoaded = () => { 
+        isMidiControllerLoaded.current = !isMidiControllerLoaded.current 
+    };
+    const checkIsMidiControllerLoaded = (): boolean => { 
+        return isMidiControllerLoaded.current 
+    }; 
     useMidiController(isMidiControllerLoaded, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
