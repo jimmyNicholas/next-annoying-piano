@@ -5,9 +5,9 @@ const getMidiControllerInputs = () => {
     return inputs;
 };
 
-const setupMidiController = () => { 
+const setupMidiController = async (): Promise<void> => { 
     try {
-        WebMidi.enable();
+        await WebMidi.enable();
     } catch (err) {
         throw err;
     }
