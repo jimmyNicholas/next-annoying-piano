@@ -8,7 +8,6 @@ const setupMidiController = async (isMidiLoaded = false) => {
         const enableMidi = async () => {
             try {
                 WebMidi.enable();
-                console.log("WebMidi enabled!");
                 const inputs: Input[] = WebMidi.inputs;    
                 setMidiControllerInputs(inputs);
             } catch (err) {
