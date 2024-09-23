@@ -47,7 +47,10 @@ const MainApp: React.FC = () => {
     const checkIsMidiControllerLoaded = (): boolean => { 
         return isMidiControllerLoaded.current 
     }; 
-    useMidiController(isMidiControllerLoaded, keyHandlers);
+    useMidiController(
+        toggleIsMidiControllerLoaded,
+        checkIsMidiControllerLoaded,
+        keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { loadAudio, audioIsLoaded, onReset},
