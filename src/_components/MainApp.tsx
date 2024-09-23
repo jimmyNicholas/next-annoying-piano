@@ -9,6 +9,7 @@ import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMode from "@/_hooks/useMode";
+import useMidiController from "@/_hooks/useMidiController";
 
 const MainApp: React.FC = () => {
    
@@ -38,6 +39,8 @@ const MainApp: React.FC = () => {
         keyHandlers,
     };
     useQwertyInput(qwertyInputProps);
+
+    useMidiController();
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { loadAudio, audioIsLoaded, onReset},
