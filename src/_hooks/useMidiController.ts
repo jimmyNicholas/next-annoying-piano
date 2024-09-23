@@ -8,7 +8,7 @@ const useMidiController = async (
     checkIsMidiControllerLoaded: () => boolean,
     keyHandlers: KeyHandlers 
 ) => {
-    const [midiControllerInputs, setMidiControllerInputs] = useState<Input[]>();
+    const [midiControllerInputs, setMidiControllerInputs] = useState<Input[]>([]);
 
     if (!checkIsMidiControllerLoaded()) {
         await setupMidiController()
