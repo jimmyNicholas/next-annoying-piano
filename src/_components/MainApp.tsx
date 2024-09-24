@@ -66,7 +66,7 @@ const MainApp: React.FC = () => {
             if (!key) { return };
             keyHandlers.onKeyUp(key);
         }
-    }, [midiNote]);
+    }, [midiNote, keys, keyHandlers]);
     // MIDI controller hook
 
 

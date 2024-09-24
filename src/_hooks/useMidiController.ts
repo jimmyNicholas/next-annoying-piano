@@ -1,8 +1,8 @@
 
-import { KeyHandlers } from "@/_lib/_types/types";
+//import { KeyHandlers } from "@/_lib/_types/types";
 
 const useMidiController = (
-    keyHandlers: KeyHandlers 
+    //keyHandlers: KeyHandlers 
 ) => {
 
 };
