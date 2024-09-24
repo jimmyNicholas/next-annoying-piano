@@ -3,13 +3,13 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMode from "@/_hooks/useMode";
-import useMidiController from "@/_hooks/useMidiController";
+import { useMIDINote } from "@react-midi/hooks";
 
 const MainApp: React.FC = () => {
    
@@ -39,18 +39,36 @@ const MainApp: React.FC = () => {
         keyHandlers,
     };
     useQwertyInput(qwertyInputProps);
+    
+    // MIDI controller hook
+    const midiNote = useMIDINote();
+    const prevNotesRef = useRef<number[]>([]);
 
-    const isMidiControllerLoaded = useRef<boolean>(false);
-    const toggleIsMidiControllerLoaded = () => { 
-        isMidiControllerLoaded.current = !isMidiControllerLoaded.current 
-    };
-    const checkIsMidiControllerLoaded = (): boolean => { 
-        return isMidiControllerLoaded.current 
-    }; 
-    useMidiController(
-        toggleIsMidiControllerLoaded,
-        checkIsMidiControllerLoaded,
-        keyHandlers);
+    useEffect(() => {
+        if (!midiNote) { return };
+        const midiNumber = midiNote.note;
+        function findMidiNumber(midiNumber: number) {
+            return prevNotesRef.current.find((num: number) => num === midiNumber);
+        };
+        function findMidiNote(midiNumber: number) {
+            const key = keys.find((key) => key.midiNumber === midiNumber);
+            return key?.name;
+        }
+
+        if (!findMidiNumber(midiNumber)) {
+            prevNotesRef.current.push(midiNumber);
+            const key = findMidiNote(midiNumber)
+            if (!key) { return };
+            keyHandlers.onKeyDown(key);
+        } else if (findMidiNumber(midiNumber)) {
+            prevNotesRef.current = prevNotesRef.current.filter((i) => i !== midiNumber);
+            const key = findMidiNote(midiNumber)
+            if (!key) { return };
+            keyHandlers.onKeyUp(key);
+        }
+    }, [midiNote]);
+    // MIDI controller hook
+
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { loadAudio, audioIsLoaded, onReset},
