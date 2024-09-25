@@ -3,14 +3,13 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMode from "@/_hooks/useMode";
 import useMidiController from "@/_hooks/useMidiController";
-import { useMIDINote } from "@react-midi/hooks";
 
 const MainApp: React.FC = () => {
    

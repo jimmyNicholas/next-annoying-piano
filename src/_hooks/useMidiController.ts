@@ -7,21 +7,23 @@ const useMidiController = (
     keys: Key[],
     keyHandlers: KeyHandlers
 ) => {
-    const { onKeyDown, onKeyUp } = keyHandlers;
     const midiNote = useMIDINote();
     const prevNotesRef = useRef<number[]>([]);
 
     function findMidiNumber(midiNumber: number) {
         return prevNotesRef.current.find((num: number) => num === midiNumber);
     };
-    function findMidiNote(midiNumber: number) {
-        const key = keys.find((key) => key.midiNumber === midiNumber);
-        return key?.name;
-    }
+    
 
     useEffect(() => {
         if (!midiNote) { return };
+        const { onKeyDown, onKeyUp } = keyHandlers;
         const midiNumber = midiNote.note;
+
+        function findMidiNote(midiNumber: number) {
+            const key = keys.find((key) => key.midiNumber === midiNumber);
+            return key?.name;
+        }
 
         if (!findMidiNumber(midiNumber)) {
             prevNotesRef.current.push(midiNumber);
