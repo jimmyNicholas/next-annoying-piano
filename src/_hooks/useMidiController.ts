@@ -14,7 +14,6 @@ const useMidiController = (
         return prevNotesRef.current.find((num: number) => num === midiNumber);
     };
     
-
     useEffect(() => {
         if (!midiNote) { return };
         const { onKeyDown, onKeyUp } = keyHandlers;
@@ -23,7 +22,7 @@ const useMidiController = (
         function findMidiNote(midiNumber: number) {
             const key = keys.find((key) => key.midiNumber === midiNumber);
             return key?.name;
-        }
+        };
 
         if (!findMidiNumber(midiNumber)) {
             prevNotesRef.current.push(midiNumber);
