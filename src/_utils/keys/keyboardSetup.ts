@@ -15,7 +15,7 @@ export const getKeys = ({ startPitch, startOctave, endPitch, endOctave}: Keyboar
     let octave = startOctave;
     const numberOfKeys = midiNumberEnd - midiNumberStart;
     for(let i = 0; i <= numberOfKeys; i++) {
-        const pitch = notePitches[i % 12 + startPitchIndex];
+        const pitch = notePitches[(startPitchIndex+ i) % 12];
         if (i !== 0 && pitch === 'C') {
             octave++;
         }
