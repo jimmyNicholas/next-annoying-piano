@@ -35,7 +35,7 @@ export const getHertzTable = ({ startPitch, startOctave, endPitch, endOctave}: K
     const hertzTable: {[key: string]: number} = {};
     let octave = startOctave;
     for (let i = 0; i <= numberOfKeys; i++) {
-        const pitch = notePitches[i % 12 + startPitchIndex];
+        const pitch = notePitches[(startPitchIndex+ i) % 12];
         if (i !== 0 && pitch === 'C') {
             octave++;
         }

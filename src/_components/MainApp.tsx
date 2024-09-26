@@ -15,7 +15,7 @@ const MainApp: React.FC = () => {
    
     const { loadAudio, audioIsLoaded, audioService } = useAudio();
     const { mode, updateMode, onModChange } = useMode(onReset);
-    const keyboardRange = {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
+    const keyboardRange = {startPitch: 'A', startOctave: 0, endPitch: 'C', endOctave: 8};
     const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, audioIsLoaded, audioService, mode);
 
     function onReset() {
