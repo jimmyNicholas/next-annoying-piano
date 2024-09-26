@@ -9,12 +9,13 @@ import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMode from "@/_hooks/useMode";
+import useMidiController from "@/_hooks/useMidiController";
 
 const MainApp: React.FC = () => {
    
     const { loadAudio, audioIsLoaded, audioService } = useAudio();
     const { mode, updateMode, onModChange } = useMode(onReset);
-    const keyboardRange = {startPitch: 'C', startOctave: 2, endPitch: 'B', endOctave: 4};
+    const keyboardRange = {startPitch: 'A', startOctave: 0, endPitch: 'C', endOctave: 8};
     const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, audioIsLoaded, audioService, mode);
 
     function onReset() {
@@ -38,6 +39,7 @@ const MainApp: React.FC = () => {
         keyHandlers,
     };
     useQwertyInput(qwertyInputProps);
+    useMidiController(keys, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { loadAudio, audioIsLoaded, onReset},
