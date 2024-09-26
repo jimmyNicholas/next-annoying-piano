@@ -1,5 +1,6 @@
 import { InputProps } from "@/_lib/_types/types";
 import { useState } from "react";
+import { useMIDIInputs } from '@react-midi/hooks'
 
 const Inputs: React.FC<InputProps> = ({
     checkIsQwertyEnabled,
@@ -11,6 +12,8 @@ const Inputs: React.FC<InputProps> = ({
         setIsEnabled(checkIsQwertyEnabled());
     };
 
+    const { inputs, selectInput, selectedInputId } = useMIDIInputs();
+
     return (
         <div className="border-2 border-black grid">
             <button
@@ -20,6 +23,17 @@ const Inputs: React.FC<InputProps> = ({
             >
                 QWERTY Enabled
             </button>
+            <select 
+                value={selectedInputId || ''} 
+                onChange={(e) => selectInput(e.target.value)}
+            >
+                <option value="">Select MIDI Input</option>
+                {inputs.map((input) => (
+                <option key={input.id} value={input.id}>
+                    {input.name}
+                </option>
+                ))}
+            </select>
         </div>
     );
 };
