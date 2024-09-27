@@ -12,6 +12,7 @@ import useMode from "@/_hooks/useMode";
 import useMidiController from "@/_hooks/useMidiController";
 
 import { Midi } from "@tonejs/midi";
+import { Note } from "@tonejs/midi/dist/Note";
 
 const MainApp: React.FC = () => {
    
@@ -44,7 +45,7 @@ const MainApp: React.FC = () => {
     useMidiController(keys, keyHandlers);
 
     // Midi Player
-    const [playMidiTrack, setPlayMidiTrack] = useState(false);
+    const [playMidiTrack, setPlayMidiTrack] = useState<boolean>(false);
     function startSongOn() {
         setPlayMidiTrack(true);
     };
@@ -52,7 +53,6 @@ const MainApp: React.FC = () => {
     let songEvents: any = [];
     function handleMidiData(parsedMidi: any) {
         songEvents = parsedMidi;
-        //console.log('Parsed Midi', parsedMidi);
     }
 
     const [midiData, setMidiData] = useState<Midi | null>(null);
@@ -71,30 +71,38 @@ const MainApp: React.FC = () => {
         reader.readAsArrayBuffer(file);
     }
     
-    function getSongEvents(song: any) {
-        if (!song) { return };
-        let songEvents: any = [];
-        song.forEach((note: any) => {
+    interface SongEvent {
+        type: string;
+        time: number;
+        note: Note;
+    };
+
+    function getSongEvents(song: Note[]): SongEvent[] {
+        if (!song) { return [] };
+        let songEvents: SongEvent[] = [];
+        song.forEach((note) => {
             songEvents.push({ type: 'start', time: note.time, note });
             songEvents.push({ type: 'end', time: note.duration + note.time, note });
         });
         return songEvents;
-    }
+    };
 
     useEffect(() => {
         if(!midiData) { return };
-        let songEvents: any = [];
+        let songEvents: SongEvent[] = [];
+        
         const tracks = [midiData.tracks[0]];
         tracks.forEach((track) => {
             const events = getSongEvents(track.notes);
             songEvents = [...songEvents, ...events]
         });
-        songEvents.sort((a: any, b: any) => a.time - b.time);
+        if (songEvents.length === 0 ) { return };
+        songEvents.sort((a: SongEvent, b: SongEvent) => a.time - b.time);
         handleMidiData(songEvents)
     }, [midiData, handleMidiData]);
 
-    const [songIndex, setSongIndex] = useState(0);
-    const [startTime, setStartTime] = useState(Date.now());
+    const [songIndex, setSongIndex] = useState<number>(0);
+    const [startTime, setStartTime] = useState<number>(Date.now());
 
     async function delay(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -111,7 +119,7 @@ const MainApp: React.FC = () => {
                 if (waitTime > 0) {
                     await delay(waitTime);
                 }
-                console.log(currentEvent.note.name);
+               
                 const key = currentEvent.note.name;
                 if (currentEvent.type === 'start') {
                     keyHandlers.onKeyDown(key);
