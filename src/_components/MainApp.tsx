@@ -13,6 +13,7 @@ import useMidiController from "@/_hooks/useMidiController";
 
 import { Midi } from "@tonejs/midi";
 import { Note } from "@tonejs/midi/dist/Note";
+import parseMidiFile from "@/_services/parseMidiFile";
 
 const MainApp: React.FC = () => {
    
@@ -45,32 +46,28 @@ const MainApp: React.FC = () => {
     useMidiController(keys, keyHandlers);
 
     // Midi Player
+
+
+    // parse midi file
+    const midiData = useRef<Midi | null>(null);
+    function handleMidiUpload(e: React.ChangeEvent<HTMLInputElement>) {
+        if (!e.target.files) {return};
+        midiData.current = parseMidiFile(e.target.files[0]);
+    }
+    // parse midi file
+
+
     const [playMidiTrack, setPlayMidiTrack] = useState<boolean>(false);
     function startSongOn() {
         setPlayMidiTrack(true);
     };
 
-    let songEvents: any = [];
-    function handleMidiData(parsedMidi: any) {
+    let songEvents: SongEvent[] = [];
+    function handleMidiData(parsedMidi: SongEvent[]) {
         songEvents = parsedMidi;
     }
 
-    const [midiData, setMidiData] = useState<Midi | null>(null);
-    
-    function handleMidiUpload(e: React.ChangeEvent<HTMLInputElement>) {
-        if (!e.target.files) {return};
-        const file = e.target.files[0];
-        if (!file) {return};
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-            if (!(e.target && e.target.result instanceof ArrayBuffer)) return;
-            const arrayBuffer = e.target.result;
-            const midi = new Midi(arrayBuffer);
-            setMidiData(midi);
-        }
-        reader.readAsArrayBuffer(file);
-    }
-    
+
     interface SongEvent {
         type: string;
         time: number;
