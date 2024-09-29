@@ -3,7 +3,7 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
@@ -12,8 +12,8 @@ import useMode from "@/_hooks/useMode";
 import useMidiController from "@/_hooks/useMidiController";
 
 import { Midi } from "@tonejs/midi";
-import { Note } from "@tonejs/midi/dist/Note";
 import parseMidiFile from "@/_services/parseMidiFile";
+import { useMidiPlayback } from "@/_hooks/useMidiPlayer";
 
 const MainApp: React.FC = () => {
    
@@ -45,103 +45,22 @@ const MainApp: React.FC = () => {
     useQwertyInput(qwertyInputProps);
     useMidiController(keys, keyHandlers);
 
-    // Midi Player
-
-
-    // parse midi file
-    const midiData = useRef<Midi | null>(null);
+    // Midi Player //
+    const [parsedMidiData, setParsedMidiData] = useState<Midi | null>(null);
     function handleMidiUpload(e: React.ChangeEvent<HTMLInputElement>) {
-        if (!e.target.files) {return};
-        midiData.current = parseMidiFile(e.target.files[0]);
-    }
-    // parse midi file
-
-
-    const [playMidiTrack, setPlayMidiTrack] = useState<boolean>(false);
-    function startSongOn() {
-        setPlayMidiTrack(true);
+        if (!e.target.files) { return };
+        parseMidiFile(e.target.files[0])
+            .then((parsedMidi) => {
+                setParsedMidiData(parsedMidi); 
+            });
     };
-
-    let songEvents: SongEvent[] = [];
-    function handleMidiData(parsedMidi: SongEvent[]) {
-        songEvents = parsedMidi;
-    }
-
-
-    interface SongEvent {
-        type: string;
-        time: number;
-        note: Note;
-    };
-
-    function getSongEvents(song: Note[]): SongEvent[] {
-        if (!song) { return [] };
-        let songEvents: SongEvent[] = [];
-        song.forEach((note) => {
-            songEvents.push({ type: 'start', time: note.time, note });
-            songEvents.push({ type: 'end', time: note.duration + note.time, note });
-        });
-        return songEvents;
-    };
-
-    useEffect(() => {
-        if(!midiData) { return };
-        let songEvents: SongEvent[] = [];
-        
-        const tracks = [midiData.tracks[0]];
-        tracks.forEach((track) => {
-            const events = getSongEvents(track.notes);
-            songEvents = [...songEvents, ...events]
-        });
-        if (songEvents.length === 0 ) { return };
-        songEvents.sort((a: SongEvent, b: SongEvent) => a.time - b.time);
-        handleMidiData(songEvents)
-    }, [midiData, handleMidiData]);
-
-    const [songIndex, setSongIndex] = useState<number>(0);
-    const [startTime, setStartTime] = useState<number>(Date.now());
-
-    async function delay(ms: number) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    useEffect(() => {
-        let isMounted = true; 
-        const playNextSongEvent = async () => {
-            if(playMidiTrack && songIndex < songEvents.length) {
-                const currentEvent = songEvents[songIndex];
-
-                const elapsedTime = (Date.now() - startTime) / 1000;
-                const waitTime = (currentEvent.time - elapsedTime) * 1000;
-                if (waitTime > 0) {
-                    await delay(waitTime);
-                }
-               
-                const key = currentEvent.note.name;
-                if (currentEvent.type === 'start') {
-                    keyHandlers.onKeyDown(key);
-                } else if (currentEvent.type === 'end') {
-                    keyHandlers.onKeyUp(key);
-                }
-                if (isMounted) {
-                    setSongIndex((prevIndex) => prevIndex + 1);
-                }
-            }
-        }
-        playNextSongEvent();
-    }, [playMidiTrack, songEvents, songIndex, startTime, keyHandlers]);
     
-    useEffect(() => {
-        if (playMidiTrack) {
-            setStartTime(Date.now());
-        }
-    }, [playMidiTrack]);
-
+    const midiPlayback = useMidiPlayback(parsedMidiData, keyHandlers);
     // Midi Player
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { loadAudio, audioIsLoaded, onReset},
-        inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled},
+        inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, handleMidiUpload, midiPlayback},
         modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
     };
 
@@ -152,9 +71,7 @@ const MainApp: React.FC = () => {
 
     return (
         <div className="border-2 border-black">
-            <OptionsPanel {...optionsPanelProps} />
-            <button onClick={startSongOn}>Start</button>
-            <input type="file" accept=".mid, .midi" onChange={handleMidiUpload} />
+            <OptionsPanel {...optionsPanelProps} />          
             <Keyboard {...keyboardProps} />
         </div>
     );

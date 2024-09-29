@@ -14,7 +14,14 @@ export interface GlobalProps {
 export interface InputProps {
     checkIsQwertyEnabled: () => boolean;
     toggleIsQwertyEnabled: () => void;
-}
+    handleMidiUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    midiPlayback: {
+        play: () => void;
+        pause: () => void;
+        stop: () => void;
+        playbackState: string;
+    }
+};
 
 export interface ModeProps {
     mode: Mode;
