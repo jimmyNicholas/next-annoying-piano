@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Key, HertzTable, KeyboardRange, AudioModule, Mode } from "@/_lib/_types/types";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
 import { getHertzTable } from "@/_utils/hertzHelpers";
@@ -16,13 +16,14 @@ const useKeyboard = (
 
     function resetHertzTable() { hertzTable.current = getHertzTable(keyboardRange)};
 
-    function onKeyDown(keyName: string){
+    const onKeyDown = useCallback((keyName: string) => {
         if (!audioIsLoaded || !audioService) { return };
         const hertz = hertzTable.current[keyName];
         audioService.playHertz(keyName, hertz);
-    };
+    }, [audioIsLoaded, audioService]);
 
-    function onKeyUp(keyName: string) {
+
+    const onKeyUp = useCallback((keyName: string) => {
         if (!audioIsLoaded || !audioService) { return };
         audioService.stopHertz(keyName);
         if (!lastReleased.current) {
@@ -40,7 +41,7 @@ const useKeyboard = (
             getMode(modeSelect);
             lastReleased.current = keyName;
         }
-    }
+    }, [audioIsLoaded, audioService, mode]);
 
     return { keys, resetHertzTable, keyHandlers: {onKeyDown, onKeyUp}};
 };
