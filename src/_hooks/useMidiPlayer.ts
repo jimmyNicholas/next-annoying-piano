@@ -58,7 +58,7 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
         } else if (audioContextRef.current.state === 'suspended') {
             audioContextRef.current.resume();
         };
-
+        
         const timeOffset = pauseTimeRef.current !== null ? pauseTimeRef.current : 0;
         const currentTime = audioContextRef.current.currentTime;
         startTimeRef.current = currentTime - timeOffset;
@@ -132,7 +132,7 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
         return () => {
             scheduledEvents.current.forEach(clearTimeout);
             releaseAllNotes();
-            if (audioContextRef.current) {
+            if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
                 audioContextRef.current.close();
             }
         };
