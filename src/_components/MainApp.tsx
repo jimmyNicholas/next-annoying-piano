@@ -3,17 +3,15 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
-import { useRef, useState } from "react";
+import { useRef} from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMode from "@/_hooks/useMode";
 import useMidiController from "@/_hooks/useMidiController";
-
-import { Midi } from "@tonejs/midi";
-import parseMidiFile from "@/_services/parseMidiFile";
 import { useMidiPlayback } from "@/_hooks/useMidiPlayer";
+import useMidiUploader from "@/_hooks/useMidiUploader";
 
 const MainApp: React.FC = () => {
    
@@ -45,22 +43,12 @@ const MainApp: React.FC = () => {
     useQwertyInput(qwertyInputProps);
     useMidiController(keys, keyHandlers);
 
-    // Midi Player //
-    const [parsedMidiData, setParsedMidiData] = useState<Midi | null>(null);
-    function handleMidiUpload(e: React.ChangeEvent<HTMLInputElement>) {
-        if (!e.target.files) { return };
-        parseMidiFile(e.target.files[0])
-            .then((parsedMidi) => {
-                setParsedMidiData(parsedMidi); 
-            });
-    };
-    
+    const { parsedMidiData, midiFileText, handleMidiUpload} = useMidiUploader();
     const midiPlayback = useMidiPlayback(parsedMidiData, keyHandlers);
-    // Midi Player
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { loadAudio, audioIsLoaded, onReset},
-        inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, handleMidiUpload, midiPlayback},
+        inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, handleMidiUpload, midiFileText, midiPlayback},
         modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
     };
 

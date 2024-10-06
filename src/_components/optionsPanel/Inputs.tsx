@@ -6,6 +6,7 @@ const Inputs: React.FC<InputProps> = ({
     checkIsQwertyEnabled,
     toggleIsQwertyEnabled,
     handleMidiUpload,
+    midiFileText,
     midiPlayback
 }) => {
     const [isEnabled, setIsEnabled] = useState(checkIsQwertyEnabled());
@@ -54,7 +55,20 @@ const Inputs: React.FC<InputProps> = ({
                         Stop
                 </button>
             </div>
-            <input type="file" accept=".mid, .midi" onChange={handleMidiUpload} />
+            <div className="grid grid-flow-col">
+                <label
+                    className={`bg-slate-300 m-2`}
+                >
+                    Upload Midi File
+                    <input 
+                        type="file" 
+                        accept=".mid, .midi" 
+                        onChange={handleMidiUpload} 
+                        className="hidden"
+                    />
+                </label>
+                {midiFileText ? midiFileText : (null)}
+            </div>
         </div>
     );
 };

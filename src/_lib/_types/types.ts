@@ -15,6 +15,7 @@ export interface InputProps {
     checkIsQwertyEnabled: () => boolean;
     toggleIsQwertyEnabled: () => void;
     handleMidiUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    midiFileText: string | null;
     midiPlayback: {
         play: () => void;
         pause: () => void;
