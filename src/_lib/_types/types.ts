@@ -112,6 +112,21 @@ export interface BaseKeyName {
     baseOctave: number;
 };
 
+export interface MidiPlaybackState {
+    fileName: string;
+    tracks: {
+        name: string;
+        muted: boolean;
+        noteEvents: NoteEvent[];
+    }[],
+}
+
+export interface NoteEvent {
+    name: string;
+    startTime: number;
+    duration: number;
+};
+
 // Audio Output Types
 export interface Note {
     keyName: string;

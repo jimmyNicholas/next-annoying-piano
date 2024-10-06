@@ -1,21 +1,6 @@
-import { KeyHandlers } from "@/_lib/_types/types";
+import { KeyHandlers, NoteEvent } from "@/_lib/_types/types";
 import { Midi } from "@tonejs/midi";
 import { useCallback, useEffect, useRef, useState } from "react";
-
-// interface MidiPlaybackState {
-//     fileName: string;
-//     tracks: {
-//         name: string;
-//         muted: boolean;
-//         noteEvents: NoteEvent[];
-//     }[],
-// }
-
-interface NoteEvent {
-    name: string;
-    startTime: number;
-    duration: number;
-};
 
 export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp}: KeyHandlers) {
     const [playbackState, setPlaybackState] = useState<'stopped' | 'playing' | 'paused'>('stopped');
