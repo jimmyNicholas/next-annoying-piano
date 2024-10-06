@@ -5,6 +5,9 @@ import { useMIDIInputs } from '@react-midi/hooks'
 const Inputs: React.FC<InputProps> = ({
     checkIsQwertyEnabled,
     toggleIsQwertyEnabled,
+    handleMidiUpload,
+    midiFileText,
+    midiPlayback
 }) => {
     const [isEnabled, setIsEnabled] = useState(checkIsQwertyEnabled());
     function onClick() {
@@ -13,6 +16,7 @@ const Inputs: React.FC<InputProps> = ({
     };
 
     const { inputs, selectInput, selectedInputId } = useMIDIInputs();
+    const { play, pause, stop } = midiPlayback;
 
     return (
         <div className="border-2 border-black grid">
@@ -34,6 +38,37 @@ const Inputs: React.FC<InputProps> = ({
                 </option>
                 ))}
             </select>
+            <div className="grid grid-flow-col">         
+                <button 
+                    className="border-2 border-black p-1"
+                    onClick={play}>
+                        Play
+                </button>
+                <button 
+                    className="border-2 border-black p-1"
+                    onClick={pause}>
+                        Pause
+                </button>
+                <button 
+                    className="border-2 border-black p-1"
+                    onClick={stop}>
+                        Stop
+                </button>
+            </div>
+            <div className="grid grid-flow-col">
+                <label
+                    className={`bg-slate-300 m-2`}
+                >
+                    Upload Midi File
+                    <input 
+                        type="file" 
+                        accept=".mid, .midi" 
+                        onChange={handleMidiUpload} 
+                        className="hidden"
+                    />
+                </label>
+                {midiFileText ? midiFileText : (null)}
+            </div>
         </div>
     );
 };

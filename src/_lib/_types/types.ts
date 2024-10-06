@@ -14,7 +14,15 @@ export interface GlobalProps {
 export interface InputProps {
     checkIsQwertyEnabled: () => boolean;
     toggleIsQwertyEnabled: () => void;
-}
+    handleMidiUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    midiFileText: string | null;
+    midiPlayback: {
+        play: () => void;
+        pause: () => void;
+        stop: () => void;
+        playbackState: string;
+    }
+};
 
 export interface ModeProps {
     mode: Mode;
@@ -102,6 +110,21 @@ export interface QwertyMap {
 export interface BaseKeyName {
     pitch: string;
     baseOctave: number;
+};
+
+export interface MidiPlaybackState {
+    fileName: string;
+    tracks: {
+        name: string;
+        muted: boolean;
+        noteEvents: NoteEvent[];
+    }[],
+}
+
+export interface NoteEvent {
+    name: string;
+    startTime: number;
+    duration: number;
 };
 
 // Audio Output Types
