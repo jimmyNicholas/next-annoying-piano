@@ -6,7 +6,6 @@ export interface OptionsPanelProps {
 };
 
 export interface GlobalProps {
-    loadAudio: () => void;
     audioIsLoaded: boolean;
     onReset: () => void;
 };
@@ -133,8 +132,7 @@ export interface Note {
     hertz: number;
 };
 
-export interface AudioModule {
-    setupAudio: () => void;
+export interface HertzPlayback {
     playHertz: (keyName: string, hertz:number) => void;
     stopHertz: (keyName: string) => void;
 };
