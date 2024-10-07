@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as ToneType from 'tone';
-import { Note } from '@/_lib/_types/types'
+import { Note } from '@/_lib/_types/types';
 
 const useAudio = () => {
     // setup audio with Tonejs
@@ -8,28 +8,31 @@ const useAudio = () => {
     const [ tone, setTone ] = useState<typeof ToneType | null>(null);
     
     const startAudio = useCallback(async () => {
-        if (!audioIsLoaded) {
-            const Tone = await import('tone') as typeof ToneType;
-            setTone(Tone);
-            await Tone.start()
-                .then(() => {
-                    setAudioIsLoaded(true)
-                });
-        };
+        if (audioIsLoaded) return;
+        const Tone = await import('tone') as typeof ToneType;
+        setTone(Tone);
+        await Tone.start()
+            .then(() => setAudioIsLoaded(true))
+            .catch((err) => console.error('Failed to start audio: ', err));
     }, [audioIsLoaded]);
 
     useEffect(() => {
-        function setupAudio() {
-            window.addEventListener('click', startAudio);
-            window.addEventListener('keydown', startAudio);
-            return () => {
-                window.removeEventListener('click', () => setAudioIsLoaded(false));
-                window.removeEventListener('keydown', () => setAudioIsLoaded(false))
-            };
-        };
-        setupAudio();
-    }, [startAudio]);    
+        if (audioIsLoaded) return;
 
+        const handleInteraction = () => {
+            startAudio();
+            window.removeEventListener('click', handleInteraction);
+            window.removeEventListener('keydown', handleInteraction);
+        };
+
+        window.addEventListener('click', handleInteraction);
+        window.addEventListener('keydown', handleInteraction); 
+            
+        return () => {
+            window.removeEventListener('click', handleInteraction);
+            window.removeEventListener('keydown', handleInteraction);
+        };
+    }, [audioIsLoaded, startAudio]);    
 
     // load default synth, now and playing notes hook
     const [ polySynth, setPolySynth] = useState<ToneType.PolySynth | null>(null);
