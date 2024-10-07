@@ -30,38 +30,36 @@ const useAudio = () => {
         setupAudio();
     }, [startAudio]);    
 
-    const [ now, setNow ] = useState<number | null>(null);
+
+    // load default synth, now and playing notes hook
     const [ polySynth, setPolySynth] = useState<ToneType.PolySynth | null>(null);
     const playingNotes = useRef<Note[]>([]);
 
     useEffect(() => { 
         if (!audioIsLoaded || !tone) return;
-        setNow(tone.now());
         const polySynth = new tone.PolySynth(tone.Synth).toDestination();
         setPolySynth(polySynth);
-    }, [audioIsLoaded])
+    }, [audioIsLoaded, tone])
 
     const playHertz = useCallback((keyName: string, hertz: number): void => {
-        if (!audioIsLoaded || !now || !polySynth) return;
-        polySynth.triggerAttack(hertz, now);
+        if (!audioIsLoaded || !tone || !polySynth) return;
+        polySynth.triggerAttack(hertz, tone.now());
         playingNotes.current.push({keyName, hertz})
-    }, [audioIsLoaded, now, polySynth]);
+    }, [audioIsLoaded, tone, polySynth]);
 
     const stopHertz = useCallback((keyName: string): void => {
-        if (!audioIsLoaded || !now || !polySynth) return;
+        if (!audioIsLoaded || !tone || !polySynth) return;
         const currentNote = playingNotes.current.find((playingNote) => {return playingNote.keyName === keyName });
         if (typeof currentNote === 'undefined') return;
-        polySynth.triggerRelease(currentNote.hertz, now);
+        polySynth.triggerRelease(currentNote.hertz, tone.now());
 
         playingNotes.current = playingNotes.current.filter(
             playingNote => playingNote !== currentNote
         );
         
-    }, [audioIsLoaded, now, polySynth]);
+    }, [audioIsLoaded, tone, polySynth]);
 
-    const audioService = { playHertz, stopHertz};
-
-    return { audioIsLoaded, audioService};
+    return { audioIsLoaded, audioService: { playHertz, stopHertz}};
 }   
 
 export default useAudio;
