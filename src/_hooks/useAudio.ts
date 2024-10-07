@@ -40,7 +40,8 @@ const useAudio = () => {
 
     useEffect(() => { 
         if (!audioIsLoaded || !tone) return;
-        const polySynth = new tone.PolySynth(tone.Synth).toDestination();
+        const gainNode = new tone.Gain(0).toDestination();
+        const polySynth = new tone.PolySynth(tone.Synth).connect(gainNode).toDestination();
         setPolySynth(polySynth);
     }, [audioIsLoaded, tone])
 
