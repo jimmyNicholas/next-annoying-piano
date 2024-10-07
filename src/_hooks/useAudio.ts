@@ -59,7 +59,7 @@ const useAudio = () => {
         
     }, [audioIsLoaded, tone, polySynth]);
 
-    return { audioIsLoaded, audioService: { playHertz, stopHertz}};
+    return { audioIsLoaded, hertzPlayback: {playHertz, stopHertz}};
 }   
 
 export default useAudio;

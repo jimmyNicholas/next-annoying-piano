@@ -132,7 +132,7 @@ export interface Note {
     hertz: number;
 };
 
-export interface AudioModule {
+export interface HertzPlayback {
     playHertz: (keyName: string, hertz:number) => void;
     stopHertz: (keyName: string) => void;
 };

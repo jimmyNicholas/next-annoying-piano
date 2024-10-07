@@ -15,10 +15,10 @@ import useMidiUploader from "@/_hooks/useMidiUploader";
 
 const MainApp: React.FC = () => {
    
-    const { audioIsLoaded, audioService} = useAudio();
+    const { audioIsLoaded, hertzPlayback} = useAudio();
     const { mode, updateMode, onModChange } = useMode(onReset);
     const keyboardRange = {startPitch: 'A', startOctave: 0, endPitch: 'C', endOctave: 8};
-    const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, audioIsLoaded, audioService, mode);
+    const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, audioIsLoaded, hertzPlayback, mode);
 
     function onReset() {
         resetHertzTable();
