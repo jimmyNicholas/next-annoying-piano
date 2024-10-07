@@ -15,7 +15,7 @@ import useMidiUploader from "@/_hooks/useMidiUploader";
 
 const MainApp: React.FC = () => {
    
-    const { loadAudio, audioIsLoaded, audioService } = useAudio();
+    const { audioIsLoaded, audioService} = useAudio();
     const { mode, updateMode, onModChange } = useMode(onReset);
     const keyboardRange = {startPitch: 'A', startOctave: 0, endPitch: 'C', endOctave: 8};
     const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, audioIsLoaded, audioService, mode);
@@ -47,7 +47,7 @@ const MainApp: React.FC = () => {
     const midiPlayback = useMidiPlayback(parsedMidiData, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
-        globalProps: { loadAudio, audioIsLoaded, onReset},
+        globalProps: { audioIsLoaded, onReset},
         inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, handleMidiUpload, midiFileText, midiPlayback},
         modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
     };
