@@ -127,6 +127,9 @@ export interface NoteEvent {
 };
 
 // Audio Output Types
+import * as ToneType from 'tone';
+export { ToneType };
+
 export interface Note {
     keyName: string;
     hertz: number;
