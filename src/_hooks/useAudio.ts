@@ -40,7 +40,7 @@ export function useSynth(audioIsLoaded: boolean, tone: typeof ToneType | null) {
 
     useEffect(() => { 
         if (!audioIsLoaded || !tone) return;
-        const newPolySynth = new tone.PolySynth(tone.Synth).toDestination();
+        const newPolySynth = new tone.PolySynth(tone.Synth);
         setPolySynth(newPolySynth);
 
         return () => {
@@ -56,7 +56,7 @@ const useGainEffect = (audioIsLoaded: boolean, tone: typeof ToneType | null) => 
 
     useEffect(() => { 
         if (!audioIsLoaded || !tone) return;
-        const newGain = new tone.Gain(0);
+        const newGain = new tone.Gain(0).toDestination();
         setGainNode(newGain);
 
         return () => {
@@ -71,25 +71,65 @@ const useGainEffect = (audioIsLoaded: boolean, tone: typeof ToneType | null) => 
     }, [gainNode]);
 
     return { gainNode, setGain };
-}   
+};   
+
+const useReverbEffect = (audioIsLoaded: boolean, tone: typeof ToneType | null) => {
+    const [reverbNode, setReverbNode] = useState<ToneType.Reverb | null>(null);
+
+    useEffect(() => { 
+        if (!audioIsLoaded || !tone) return;
+        const newReverb = new tone.Reverb(5).toDestination();
+        setReverbNode(newReverb);
+
+        return () => {
+            newReverb.dispose();
+        };
+    }, [audioIsLoaded, tone]);
+
+    const setDecay = useCallback((time: number) => {
+        if (reverbNode) {
+          reverbNode.decay = time;
+        }
+    }, [reverbNode]);
+
+    return { reverbNode, setDecay };
+};   
 
 export function useAudio(audioIsLoaded: boolean, tone: typeof ToneType | null) {
     const polySynth = useSynth(audioIsLoaded, tone);
     const { gainNode, setGain } = useGainEffect(audioIsLoaded, tone);
+    const { reverbNode, setDecay } = useReverbEffect(audioIsLoaded, tone);
 
     useEffect(() => { 
-        if (polySynth && gainNode) {
-            polySynth.connect(gainNode);
+        if (polySynth && gainNode && reverbNode) {
+            polySynth
+                .connect(reverbNode)
+                .connect(gainNode)    
         };
         return () => {
             if (polySynth) {
                 polySynth.disconnect();
             }
         };
-    }, [polySynth, gainNode]);
+    }, [polySynth, gainNode, reverbNode]);
 
-    const setEffects = [setGain]
-    return { polySynth, setEffects}; 
+    const effects = [
+        {
+            title: reverbNode?.name,
+            decayValue: reverbNode?.decay,
+            setDecay,
+            minDecay: 0,
+            maxDecay: 5,
+        },
+        {
+            title: gainNode?.name,
+            gainValue: gainNode?.get().gain,
+            setGain,
+            minGain: 0,
+            maxGain: 5,
+        }
+    ];
+    return { polySynth, effects}; 
 };
 
 export function useHertzPlayback(audioIsLoaded: boolean, tone: typeof ToneType | null, polySynth: ToneType.PolySynth | null) {
