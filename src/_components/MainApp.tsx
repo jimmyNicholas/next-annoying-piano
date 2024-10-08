@@ -6,7 +6,7 @@ import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_type
 import { useRef} from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
-import useAudio, { useLoadAudio, useSynth } from "@/_hooks/useAudio";
+import { useAudio, useHertzPlayback, useLoadAudio } from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMode from "@/_hooks/useMode";
 import useMidiController from "@/_hooks/useMidiController";
@@ -17,8 +17,9 @@ const MainApp: React.FC = () => {
    
     //const { audioIsLoaded, hertzPlayback} = useAudio();
     const { audioIsLoaded, tone } = useLoadAudio();
-    const { polySynth } = useSynth(audioIsLoaded, tone);
-    
+    const { polySynth, setEffects } = useAudio(audioIsLoaded, tone); 
+    const { hertzPlayback } = useHertzPlayback(audioIsLoaded, tone, polySynth);
+
     const { mode, updateMode, onModChange } = useMode(onReset);
     const keyboardRange = {startPitch: 'A', startOctave: 0, endPitch: 'C', endOctave: 8};
     const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, audioIsLoaded, hertzPlayback, mode);
