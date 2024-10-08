@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import * as ToneType from 'tone';
-import { Note } from '@/_lib/_types/types';
+import { Note, ToneType } from '@/_lib/_types/types';
 
-const useAudio = () => {
-    // setup audio with Tonejs
+export function useLoadAudio() {
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
     const [ tone, setTone ] = useState<typeof ToneType | null>(null);
     
@@ -32,18 +30,67 @@ const useAudio = () => {
             window.removeEventListener('click', handleInteraction);
             window.removeEventListener('keydown', handleInteraction);
         };
-    }, [audioIsLoaded, startAudio]);    
+    }, [audioIsLoaded, startAudio]);
 
-    // load default synth, now and playing notes hook
+    return { audioIsLoaded, tone };
+};
+
+export function useSynth(audioIsLoaded: boolean, tone: typeof ToneType | null) {
     const [ polySynth, setPolySynth] = useState<ToneType.PolySynth | null>(null);
     const playingNotes = useRef<Note[]>([]);
 
     useEffect(() => { 
         if (!audioIsLoaded || !tone) return;
-        const gainNode = new tone.Gain(0).toDestination();
-        const polySynth = new tone.PolySynth(tone.Synth).connect(gainNode).toDestination();
-        setPolySynth(polySynth);
-    }, [audioIsLoaded, tone])
+        const newPolySynth = new tone.PolySynth(tone.Synth);
+        setPolySynth(newPolySynth);
+
+        return () => {
+            newPolySynth.dispose();
+        };
+    }, [audioIsLoaded, tone]);
+
+    const playHertz = useCallback((keyName: string, hertz: number): void => {
+        if (!audioIsLoaded || !tone || !polySynth) return;
+        polySynth.triggerAttack(hertz, tone.now());
+        playingNotes.current.push({keyName, hertz})
+    }, [audioIsLoaded, tone, polySynth]);
+
+    const stopHertz = useCallback((keyName: string): void => {
+        if (!audioIsLoaded || !tone || !polySynth) return;
+        const currentNote = playingNotes.current.find((playingNote) => {return playingNote.keyName === keyName });
+        if (typeof currentNote === 'undefined') return;
+        polySynth.triggerRelease(currentNote.hertz, tone.now());
+
+        playingNotes.current = playingNotes.current.filter(
+            playingNote => playingNote !== currentNote
+        );
+        
+    }, [audioIsLoaded, tone, polySynth]);
+
+    return polySynth;
+};
+
+const useAudio = (audioIsLoaded: boolean) => {
+    // load default synth, now and playing notes hook
+    const [ polySynth, setPolySynth] = useState<ToneType.PolySynth | null>(null);
+    const playingNotes = useRef<Note[]>([]);
+
+    const [gainNode, setGainNode] = useState<ToneType.Gain | null>(null);
+
+    useEffect(() => { 
+        if (!audioIsLoaded || !tone) return;
+        const newGainNode = new tone.Gain(0).toDestination();
+        const newPolySynth = new tone.PolySynth(tone.Synth)
+            .connect(newGainNode)
+            .toDestination();
+        setPolySynth(newPolySynth);
+        setGainNode(newGainNode);
+
+        return () => {
+            newPolySynth.dispose();
+            newGainNode.dispose();
+        };
+    }, [audioIsLoaded, tone]);
 
     const playHertz = useCallback((keyName: string, hertz: number): void => {
         if (!audioIsLoaded || !tone || !polySynth) return;
