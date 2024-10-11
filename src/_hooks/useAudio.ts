@@ -95,14 +95,32 @@ const useReverbEffect = (audioIsLoaded: boolean, tone: typeof ToneType | null) =
     return { reverbNode, setDecay };
 };   
 
+const useVibratoEffect = (audioIsLoaded: boolean, tone: typeof ToneType | null) => {
+    const [vibratoNode, setVibratoNode] = useState<ToneType.Vibrato | null>(null);
+
+    useEffect(() => { 
+        if (!audioIsLoaded || !tone) return;
+        const newVibrato = new tone.Vibrato().toDestination();
+        setVibratoNode(newVibrato);
+
+        return () => {
+            newVibrato.dispose();
+        };
+    }, [audioIsLoaded, tone]);
+
+    return { vibratoNode };
+};
+
 export function useAudio(audioIsLoaded: boolean, tone: typeof ToneType | null) {
     const polySynth = useSynth(audioIsLoaded, tone);
     const { gainNode, setGain } = useGainEffect(audioIsLoaded, tone);
     const { reverbNode, setDecay } = useReverbEffect(audioIsLoaded, tone);
+    const { vibratoNode } = useVibratoEffect(audioIsLoaded, tone);
 
     useEffect(() => { 
-        if (polySynth && gainNode && reverbNode) {
+        if (polySynth && gainNode && reverbNode && vibratoNode) {
             polySynth
+                .connect(vibratoNode)
                 .connect(reverbNode)
                 .connect(gainNode)    
         };
@@ -114,6 +132,9 @@ export function useAudio(audioIsLoaded: boolean, tone: typeof ToneType | null) {
     }, [polySynth, gainNode, reverbNode]);
 
     const effects = [
+        {
+            title: vibratoNode?.name,
+        },
         {
             title: reverbNode?.name,
             decayValue: reverbNode?.decay,
