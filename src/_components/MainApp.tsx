@@ -16,7 +16,7 @@ import useMidiUploader from "@/_hooks/useMidiUploader";
 const MainApp: React.FC = () => {
    
     const { audioIsLoaded, tone } = useLoadAudio();
-    const { polySynth, effects } = useAudio(audioIsLoaded, tone); 
+    const { polySynth } = useAudio(audioIsLoaded, tone); 
     const { hertzPlayback } = useHertzPlayback(audioIsLoaded, tone, polySynth);
 
     const { mode, updateMode, onModChange } = useMode(onReset);
