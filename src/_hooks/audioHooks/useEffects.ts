@@ -1,111 +1,57 @@
-import { useCallback, useEffect, useState } from "react";
-import { ToneType } from "@/_lib/_types/types";
+import { useEffect, useRef } from "react";
+import { ToneType, Gain, Reverb, Vibrato } from "@/_lib/_types/types";
 
 const useGainEffect = (tone: typeof ToneType | null) => {
-    const [gainNode, setGainNode] = useState<ToneType.Gain | null>(null);
+    const gainNode = useRef<Gain | null>(null);
 
     useEffect(() => { 
         if (!tone) return;
-        const newGain = new tone.Gain(0).toDestination();
-        setGainNode(newGain);
+        gainNode.current = new tone.Gain(0).toDestination();
 
         return () => {
-            newGain.dispose();
+            gainNode.current?.dispose();
         };
     }, [tone]);
 
-    const setGain = useCallback((value: number) => {
-        if (gainNode) {
-          gainNode.gain.rampTo(value, 0.1);
-        }
-    }, [gainNode]);
-    console.log(gainNode?.get());
-    
-    const gainOptions = [
-        { 
-            node: gainNode,
-            title: gainNode?.name,
-            gainValue: gainNode?.get().gain,
-            setGain,
-            minGain: 0,
-            maxGain: 5,
-        }
-    ];
-
-    return { gainNode, gainOptions };
+    return gainNode.current;
 };   
 
 const useReverbEffect = (tone: typeof ToneType | null) => {
-    const [reverbNode, setReverbNode] = useState<ToneType.Reverb | null>(null);
+    const reverbNode = useRef<Reverb | null>(null);
 
     useEffect(() => { 
         if (!tone) return;
-        const newReverb = new tone.Reverb(5).toDestination();
-        setReverbNode(newReverb);
+        reverbNode.current = new tone.Reverb(5).toDestination();
 
         return () => {
-            newReverb.dispose();
+            reverbNode.current?.dispose();
         };
     }, [tone]);
 
-    const setDecay = useCallback((time: number) => {
-        if (reverbNode) {
-          reverbNode.decay = time;
-        }
-    }, [reverbNode]);
-
-    const reverbOptions = [
-        {
-            title: reverbNode?.name,
-            decayValue: reverbNode?.decay,
-            setDecay,
-            minDecay: 0,
-            maxDecay: 5,
-        }
-    ];
-
-    return { reverbNode, reverbOptions };
+    return reverbNode.current;
 };   
 
 const useVibratoEffect = (tone: typeof ToneType | null) => {
-    const [vibratoNode, setVibratoNode] = useState<ToneType.Vibrato | null>(null);
+    const vibratoNode = useRef<Vibrato | null>(null);
 
     useEffect(() => { 
         if (!tone) return;
-        const newVibrato = new tone.Vibrato().toDestination();
-        setVibratoNode(newVibrato);
+        vibratoNode.current = new tone.Vibrato().toDestination();
 
         return () => {
-            newVibrato.dispose();
+            vibratoNode.current?.dispose();
         };
     }, [tone]);
 
-    const vibratoOptions = [
-        { 
-            title: vibratoNode?.name,
-        }
-    ];
-
-    return { vibratoNode, vibratoOptions };
+    return vibratoNode.current;
 };
 
 const useEffects = (tone: typeof ToneType | null) => {
-    const { gainNode, gainOptions } = useGainEffect(tone);
-    const { reverbNode, reverbOptions } = useReverbEffect(tone);
-    const { vibratoNode, vibratoOptions } = useVibratoEffect(tone);
+    const gainNode = useGainEffect(tone);
+    const reverbNode = useReverbEffect(tone);
+    const vibratoNode = useVibratoEffect(tone);
 
-    const effectsNodes = [
-        gainNode, 
-        reverbNode, 
-        vibratoNode
-    ];
-    
-    const effectsOptions = [
-        vibratoOptions,
-        reverbOptions,
-        gainOptions
-    ];
-    return {effectsNodes, effectsOptions};
+    return { gainNode, reverbNode, vibratoNode };
 };
 
 export default useEffects;
