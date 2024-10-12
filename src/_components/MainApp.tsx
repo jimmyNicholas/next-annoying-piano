@@ -2,22 +2,27 @@
 
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
-import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
+import { KeyboardProps, OptionsPanelProps, QwertyInputProps, ToneType } from '@/_lib/_types/types';
 import { useRef} from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
-import { useAudio } from "@/_hooks/useAudio";
+import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMode from "@/_hooks/useMode";
 import useMidiController from "@/_hooks/useMidiController";
 import { useMidiPlayback } from "@/_hooks/useMidiPlayer";
 import useMidiUploader from "@/_hooks/useMidiUploader";
+import useLoadAudio from "@/_hooks/audioHooks/useLoadAudio";
 
-const MainApp: React.FC = () => {
-   
-    const { audioIsLoaded, hertzPlayback, effects } = useAudio(); 
+const LoadingScreen: React.FC = () => (
+    <div>Click Screen To Load Audio</div>
+);
+
+const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
+    const audioIsLoaded = true; 
+    const { hertzPlayback, effects } = useAudio(tone ); 
     console.log(effects);
-    
+
     const { mode, updateMode, onModChange } = useMode(onReset);
     const keyboardRange = {startPitch: 'A', startOctave: 0, endPitch: 'C', endOctave: 8};
     const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, hertzPlayback, mode);
@@ -65,6 +70,11 @@ const MainApp: React.FC = () => {
             <Keyboard {...keyboardProps} />
         </div>
     );
+};
+
+const MainApp: React.FC = () => {
+    const { audioIsLoaded, tone } = useLoadAudio();
+    return audioIsLoaded ? <PianoWrapper tone={tone} /> : <LoadingScreen />;
 };
 
 export default MainApp;
