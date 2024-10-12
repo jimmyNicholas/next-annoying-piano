@@ -2,7 +2,7 @@ import {ResetIcon} from '@/_assets/icons'
 import { GlobalProps } from '@/_lib/_types/types';
 
 const Global: React.FC<GlobalProps> = ({
-    audioIsLoaded,
+    audioIsLoaded, 
     onReset   
 }) => {
     return (
