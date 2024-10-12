@@ -19,7 +19,7 @@ const LoadingScreen: React.FC = () => (
 );
 
 const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
-    const { hertzPlayback, effectsNodes } = useAudio(tone ); 
+    const { hertzPlayback, effectsNodes } = useAudio(tone); 
 
     const keyboardRange = useMemo(() => ({
         startPitch: 'A', 
