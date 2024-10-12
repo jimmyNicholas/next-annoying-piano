@@ -6,7 +6,6 @@ import getMode from "@/_utils/modes/getMode";
 
 const useKeyboard = (
     keyboardRange: KeyboardRange,
-    audioIsLoaded: boolean,
     hertzPlayback: HertzPlayback | null,
     mode: Mode,
 ) => {
@@ -17,14 +16,14 @@ const useKeyboard = (
     function resetHertzTable() { hertzTable.current = getHertzTable(keyboardRange)};
 
     const onKeyDown = useCallback((keyName: string) => {
-        if (!audioIsLoaded || !hertzPlayback) { return };
+        if (!hertzPlayback) { return };
         const hertz = hertzTable.current[keyName];
         hertzPlayback.playHertz(keyName, hertz);
-    }, [audioIsLoaded, hertzPlayback]);
+    }, [hertzPlayback]);
 
 
     const onKeyUp = useCallback((keyName: string) => {
-        if (!audioIsLoaded || !hertzPlayback) { return };
+        if (!hertzPlayback) { return };
         hertzPlayback.stopHertz(keyName);
         if (!lastReleased.current) {
             lastReleased.current = keyName;
@@ -41,7 +40,7 @@ const useKeyboard = (
             getMode(modeSelect);
             lastReleased.current = keyName;
         }
-    }, [audioIsLoaded, hertzPlayback, mode]);
+    }, [hertzPlayback, mode]);
 
     return { keys, resetHertzTable, keyHandlers: {onKeyDown, onKeyUp}};
 };

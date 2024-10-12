@@ -8,13 +8,14 @@ const OptionsPanel: React.FC<OptionsPanelProps> = ({
     globalProps,
     inputProps,
     modeProps,
+    outputProps
 }) => {
     return (
         <div className="grid grid-cols-[15%_25%_40%_20%] bg-cyan-200">
             <Global {...globalProps} />
             <Inputs {...inputProps}/>
             <Modes {...modeProps} />
-            <Outputs/>
+            <Outputs {...outputProps}/>
         </div>
     );
 };
