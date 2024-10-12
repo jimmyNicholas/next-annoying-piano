@@ -20,7 +20,7 @@ export function useConnectEffects( tone: typeof ToneType | null) {
                 polySynth.disconnect();
             }
         };
-    }, [polySynth]);
+    }, [polySynth, effectsNodes]);
 
     return { polySynth, effectsNodes }; 
 };
