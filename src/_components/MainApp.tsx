@@ -3,7 +3,7 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps, ToneType } from '@/_lib/_types/types';
-import { useRef} from "react";
+import { useMemo, useRef} from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
@@ -19,12 +19,15 @@ const LoadingScreen: React.FC = () => (
 );
 
 const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
-    //const audioIsLoaded = true; 
-    const { hertzPlayback, effectsOptions } = useAudio(tone ); 
-    console.log(effectsOptions);
+    const { hertzPlayback, effectsNodes } = useAudio(tone ); 
 
+    const keyboardRange = useMemo(() => ({
+        startPitch: 'A', 
+        startOctave: 0, 
+        endPitch: 'C', 
+        endOctave: 8
+    }), []);
     const { mode, updateMode, onModChange } = useMode(onReset);
-    const keyboardRange = {startPitch: 'A', startOctave: 0, endPitch: 'C', endOctave: 8};
     const { keys, resetHertzTable, keyHandlers} = useKeyboard(keyboardRange, hertzPlayback, mode);
 
     function onReset() {
@@ -54,9 +57,10 @@ const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
     const midiPlayback = useMidiPlayback(parsedMidiData, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
-        globalProps: { onReset},
+        globalProps: { onReset },
         inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, handleMidiUpload, midiFileText, midiPlayback},
-        modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
+        modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1},
+        outputProps: { effectsNodes }
     };
 
     const keyboardProps: KeyboardProps = { 
@@ -74,7 +78,7 @@ const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
 
 const MainApp: React.FC = () => {
     const { audioIsLoaded, tone } = useLoadAudio();
-    return audioIsLoaded ? <PianoWrapper tone={tone} /> : <LoadingScreen />;
+    return audioIsLoaded ? <PianoWrapper tone={tone.current} /> : <LoadingScreen />;
 };
 
 export default MainApp;
