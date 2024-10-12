@@ -6,7 +6,6 @@ export interface OptionsPanelProps {
 };
 
 export interface GlobalProps {
-    audioIsLoaded: boolean;
     onReset: () => void;
 };
 

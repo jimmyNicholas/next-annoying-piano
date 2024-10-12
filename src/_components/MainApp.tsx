@@ -19,7 +19,7 @@ const LoadingScreen: React.FC = () => (
 );
 
 const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
-    const audioIsLoaded = true; 
+    //const audioIsLoaded = true; 
     const { hertzPlayback, effectsOptions } = useAudio(tone ); 
     console.log(effectsOptions);
 
@@ -54,7 +54,7 @@ const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
     const midiPlayback = useMidiPlayback(parsedMidiData, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
-        globalProps: { audioIsLoaded, onReset},
+        globalProps: { onReset},
         inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, handleMidiUpload, midiFileText, midiPlayback},
         modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1}
     };
