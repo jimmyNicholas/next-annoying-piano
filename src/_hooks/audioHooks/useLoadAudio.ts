@@ -1,15 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ToneType } from '@/_lib/_types/types';
 
 const useLoadAudio = () => {
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
-    const [ tone, setTone ] = useState<typeof ToneType | null>(null);
+    const tone = useRef<typeof ToneType | null>(null);
     
     const startAudio = useCallback(async () => {
         if (audioIsLoaded) return;
-        const Tone = await import('tone') as typeof ToneType;
-        setTone(Tone);
-        await Tone.start()
+        tone.current = await import('tone') as typeof ToneType;
+        await tone.current.start()
             .then(() => setAudioIsLoaded(true))
             .catch((err) => console.error('Failed to start audio: ', err));
     }, [audioIsLoaded]);
