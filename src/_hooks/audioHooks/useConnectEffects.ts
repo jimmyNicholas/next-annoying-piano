@@ -6,22 +6,21 @@ import useEffects from "./useEffects";
 
 export function useConnectEffects( tone: typeof ToneType | null) {
     const polySynth = useSynth(tone);
-    const {effectsNodes, effectsOptions} = useEffects(tone);
+    const effectsNodes = useEffects(tone);
 
     useEffect(() => { 
-        if (polySynth && effectsNodes) {
-            effectsNodes.map((node) => {
-                if (node) {
-                    polySynth.connect(node)
-                }
-            });
-        };
+        if (!polySynth) return;
+        const { gainNode, reverbNode, vibratoNode } = effectsNodes;
+        if (vibratoNode) { polySynth.connect(vibratoNode) };
+        if (reverbNode) { polySynth.connect(reverbNode) };
+        if (gainNode) { polySynth.connect(gainNode) };
+       
         return () => {
             if (polySynth) {
                 polySynth.disconnect();
             }
         };
-    }, [polySynth, effectsNodes]);
+    }, [polySynth]);
 
-    return { polySynth, effectsOptions}; 
+    return { polySynth, effectsNodes }; 
 };
