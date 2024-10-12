@@ -20,8 +20,8 @@ const LoadingScreen: React.FC = () => (
 
 const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
     const audioIsLoaded = true; 
-    const { hertzPlayback, effects } = useAudio(tone ); 
-    console.log(effects);
+    const { hertzPlayback, effectsOptions } = useAudio(tone ); 
+    console.log(effectsOptions);
 
     const { mode, updateMode, onModChange } = useMode(onReset);
     const keyboardRange = {startPitch: 'A', startOctave: 0, endPitch: 'C', endOctave: 8};

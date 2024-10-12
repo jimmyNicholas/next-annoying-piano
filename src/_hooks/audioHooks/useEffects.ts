@@ -19,8 +19,20 @@ const useGainEffect = (tone: typeof ToneType | null) => {
           gainNode.gain.rampTo(value, 0.1);
         }
     }, [gainNode]);
+    console.log(gainNode?.get());
+    
+    const gainOptions = [
+        { 
+            node: gainNode,
+            title: gainNode?.name,
+            gainValue: gainNode?.get().gain,
+            setGain,
+            minGain: 0,
+            maxGain: 5,
+        }
+    ];
 
-    return { gainNode, setGain };
+    return { gainNode, gainOptions };
 };   
 
 const useReverbEffect = (tone: typeof ToneType | null) => {
@@ -42,7 +54,17 @@ const useReverbEffect = (tone: typeof ToneType | null) => {
         }
     }, [reverbNode]);
 
-    return { reverbNode, setDecay };
+    const reverbOptions = [
+        {
+            title: reverbNode?.name,
+            decayValue: reverbNode?.decay,
+            setDecay,
+            minDecay: 0,
+            maxDecay: 5,
+        }
+    ];
+
+    return { reverbNode, reverbOptions };
 };   
 
 const useVibratoEffect = (tone: typeof ToneType | null) => {
@@ -58,37 +80,32 @@ const useVibratoEffect = (tone: typeof ToneType | null) => {
         };
     }, [tone]);
 
-    return { vibratoNode };
+    const vibratoOptions = [
+        { 
+            title: vibratoNode?.name,
+        }
+    ];
+
+    return { vibratoNode, vibratoOptions };
 };
 
 const useEffects = (tone: typeof ToneType | null) => {
-    const { gainNode, setGain } = useGainEffect(tone);
-    const { reverbNode, setDecay } = useReverbEffect(tone);
-    const { vibratoNode } = useVibratoEffect(tone);
+    const { gainNode, gainOptions } = useGainEffect(tone);
+    const { reverbNode, reverbOptions } = useReverbEffect(tone);
+    const { vibratoNode, vibratoOptions } = useVibratoEffect(tone);
 
-    const effects = [
-        {
-            node: vibratoNode,
-            title: vibratoNode?.name,
-        },
-        {
-            node: reverbNode,
-            title: reverbNode?.name,
-            decayValue: reverbNode?.decay,
-            setDecay,
-            minDecay: 0,
-            maxDecay: 5,
-        },
-        {
-            node: gainNode,
-            title: gainNode?.name,
-            gainValue: gainNode?.get().gain,
-            setGain,
-            minGain: 0,
-            maxGain: 5,
-        }
+    const effectsNodes = [
+        gainNode, 
+        reverbNode, 
+        vibratoNode
     ];
-    return effects;
+    
+    const effectsOptions = [
+        vibratoOptions,
+        reverbOptions,
+        gainOptions
+    ];
+    return {effectsNodes, effectsOptions};
 };
 
 export default useEffects;

@@ -6,13 +6,13 @@ import useEffects from "./useEffects";
 
 export function useConnectEffects( tone: typeof ToneType | null) {
     const polySynth = useSynth(tone);
-    const effects = useEffects(tone);
+    const {effectsNodes, effectsOptions} = useEffects(tone);
 
     useEffect(() => { 
-        if (polySynth && effects) {
-            effects.map((effect) => {
-                if (effect.node) {
-                    polySynth.connect(effect.node)
+        if (polySynth && effectsNodes) {
+            effectsNodes.map((node) => {
+                if (node) {
+                    polySynth.connect(node)
                 }
             });
         };
@@ -21,7 +21,7 @@ export function useConnectEffects( tone: typeof ToneType | null) {
                 polySynth.disconnect();
             }
         };
-    }, [polySynth, effects]);
+    }, [polySynth, effectsNodes]);
 
-    return { polySynth, effects}; 
+    return { polySynth, effectsOptions}; 
 };
