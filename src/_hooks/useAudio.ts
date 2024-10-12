@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Note, ToneType } from '@/_lib/_types/types';
 
+// load tone
 export function useLoadAudio() {
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
     const [ tone, setTone ] = useState<typeof ToneType | null>(null);
@@ -35,6 +36,7 @@ export function useLoadAudio() {
     return { audioIsLoaded, tone };
 };
 
+// declare synth
 export function useSynth(audioIsLoaded: boolean, tone: typeof ToneType | null) {
     const [ polySynth, setPolySynth] = useState<ToneType.PolySynth | null>(null);
 
@@ -51,6 +53,7 @@ export function useSynth(audioIsLoaded: boolean, tone: typeof ToneType | null) {
     return polySynth;
 };
 
+// declare effects
 const useGainEffect = (audioIsLoaded: boolean, tone: typeof ToneType | null) => {
     const [gainNode, setGainNode] = useState<ToneType.Gain | null>(null);
 
@@ -111,7 +114,8 @@ const useVibratoEffect = (audioIsLoaded: boolean, tone: typeof ToneType | null) 
     return { vibratoNode };
 };
 
-export function useAudio(audioIsLoaded: boolean, tone: typeof ToneType | null) {
+// chain the effects together
+export function useConnectEffects(audioIsLoaded: boolean, tone: typeof ToneType | null) {
     const polySynth = useSynth(audioIsLoaded, tone);
     const { gainNode, setGain } = useGainEffect(audioIsLoaded, tone);
     const { reverbNode, setDecay } = useReverbEffect(audioIsLoaded, tone);
@@ -153,6 +157,7 @@ export function useAudio(audioIsLoaded: boolean, tone: typeof ToneType | null) {
     return { polySynth, effects}; 
 };
 
+// add playback functions
 export function useHertzPlayback(audioIsLoaded: boolean, tone: typeof ToneType | null, polySynth: ToneType.PolySynth | null) {
     const playingNotes = useRef<Note[]>([]);
 
@@ -175,4 +180,11 @@ export function useHertzPlayback(audioIsLoaded: boolean, tone: typeof ToneType |
     }, [audioIsLoaded, tone, polySynth]);
 
     return { hertzPlayback: {playHertz, stopHertz}};
+};
+
+export function useAudio() {
+    const { audioIsLoaded, tone } = useLoadAudio();
+    const { polySynth, effects } = useConnectEffects(audioIsLoaded, tone);
+    const { hertzPlayback } = useHertzPlayback(audioIsLoaded, tone, polySynth);
+    return { audioIsLoaded, tone, hertzPlayback, effects}
 };
