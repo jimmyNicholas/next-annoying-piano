@@ -1,32 +1,35 @@
 import parseMidiFile from "@/_services/parseMidiFile";
 import { Midi } from "@tonejs/midi";
-import { useState } from "react";
+import { useRef } from "react";
 
 const useMidiUploader = () => {
-    const [parsedMidiData, setParsedMidiData] = useState<Midi | null>(null);
-    const [midiFileText, setMidiFileText] = useState<string | null>(null);
+    const parsedMidiData = useRef<Midi | null>(null);
+    const midiFileText = useRef<string | null>(null);
 
     function handleMidiUpload(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (!e.target.files) { return };
         if (!file) {
-            setMidiFileText("No file selected");
+            midiFileText.current = "No file selected";
             return;
         };
-
-        setMidiFileText(null);
+        midiFileText.current = null;
 
         parseMidiFile(file)
             .then((parsedMidi) => {
-                setMidiFileText(file.name);
-                setParsedMidiData(parsedMidi); 
+                midiFileText.current = file.name;
+                parsedMidiData.current = parsedMidi;
             })
             .catch((error: Error) => {
-                setMidiFileText(error.message);
-                setParsedMidiData(null);
+                midiFileText.current = error.message;
+                parsedMidiData.current = null;
             });
     };
-    return {parsedMidiData, midiFileText, handleMidiUpload};
+    
+    return {
+        parsedMidiData: parsedMidiData.current, 
+        midiFileText: midiFileText.current, 
+        handleMidiUpload};
 };
 
 export default useMidiUploader;

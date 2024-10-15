@@ -10,8 +10,6 @@ import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMode from "@/_hooks/useMode";
 import useMidiController from "@/_hooks/useMidiController";
-import { useMidiPlayback } from "@/_hooks/useMidiPlayer";
-import useMidiUploader from "@/_hooks/useMidiUploader";
 import useLoadAudio from "@/_hooks/audioHooks/useLoadAudio";
 
 const LoadingScreen: React.FC = () => (
@@ -53,12 +51,9 @@ const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
     useQwertyInput(qwertyInputProps);
     useMidiController(keys, keyHandlers);
 
-    const { parsedMidiData, midiFileText, handleMidiUpload} = useMidiUploader();
-    const midiPlayback = useMidiPlayback(parsedMidiData, keyHandlers);
-
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { onReset },
-        inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, handleMidiUpload, midiFileText, midiPlayback},
+        inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, midiPlaybackProps: {keyHandlers, tone}},
         modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1},
         outputProps: { effectsNodes }
     };
