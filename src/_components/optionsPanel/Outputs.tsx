@@ -6,6 +6,7 @@ const Outputs: React.FC<OutputProps> = ({
     return (
         <div className="border-2 border-black">
             Outputs
+            {`${effectsNodes}`}
         </div>
     );
 };
