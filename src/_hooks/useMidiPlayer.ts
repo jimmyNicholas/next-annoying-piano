@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp}: KeyHandlers, tone: typeof ToneType | null) {
     const [playbackState, setPlaybackState] = useState<'stopped' | 'playing' | 'paused'>('stopped');
-    const toneRef = useRef<typeof ToneType | null>(tone);
     const activeNotes = useRef<Set<string>>(new Set());
 
     const releaseAllNotes = useCallback(() => {
@@ -18,9 +17,7 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
     }, [onKeyUp]);
 
     useEffect(() => {
-        console.log('Effect running. Tone:', !!toneRef, 'ParsedMidiData:', !!parsedMidiData);
-        if (!toneRef.current || !parsedMidiData) return;
-        const tone = toneRef.current;
+        if (!tone || !parsedMidiData) return;
 
         const noteEvents = parsedMidiData.tracks[0].notes.map((note) => ({
             time: note.time,
@@ -44,28 +41,28 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
             tone.getTransport().cancel();
             releaseAllNotes();
         };
-    }, [parsedMidiData, onKeyDown, onKeyUp, releaseAllNotes]);
+    }, [tone, parsedMidiData, onKeyDown, onKeyUp, releaseAllNotes]);
 
     const play = useCallback(async() => {
-        if (!toneRef.current) return;
-        toneRef.current.getTransport().start();
+        if (!tone) return;
+        tone.getTransport().start();
         setPlaybackState('playing');
     }, []);
 
     const pause = useCallback(() => {
-        if (!toneRef.current) return;
-        toneRef.current.getTransport().pause();
+        if (!tone) return;
+        tone.getTransport().pause();
         releaseAllNotes();
         setPlaybackState('paused');
-    }, [releaseAllNotes]);
+    }, [tone, releaseAllNotes]);
 
     const stop = useCallback(() => {
-        if (!toneRef.current) return;
-        toneRef.current.getTransport().stop();
-        toneRef.current.getTransport().position = 0;
+        if (!tone) return;
+        tone.getTransport().stop();
+        tone.getTransport().position = 0;
         releaseAllNotes();
         setPlaybackState('stopped');
-    }, [releaseAllNotes]);
+    }, [tone, releaseAllNotes]);
 
     return {
         play,
