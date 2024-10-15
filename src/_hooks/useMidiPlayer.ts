@@ -7,14 +7,14 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
     const toneRef = useRef<typeof ToneType | null>(tone);
     const activeNotes = useRef<Set<string>>(new Set());
 
-    const releaseAllNotes = useCallback(() => {    
-        function release() {
+    const releaseAllNotes = useCallback(() => {
+        const releaseDelayMs = 50;
+        setTimeout(() => {
             activeNotes.current.forEach((note) => {
                 onKeyUp(note);
             });
-        };
-        release();
-        activeNotes.current.clear();
+            activeNotes.current.clear();
+        }, releaseDelayMs);
     }, [onKeyUp]);
 
     useEffect(() => {
