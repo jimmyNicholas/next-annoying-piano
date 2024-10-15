@@ -1,13 +1,12 @@
 import { useState, useRef, useCallback } from "react";
-import { Key, HertzTable, KeyboardRange, AudioModule, Mode } from "@/_lib/_types/types";
+import { Key, HertzTable, KeyboardRange, HertzPlayback, Mode } from "@/_lib/_types/types";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
 import { getHertzTable } from "@/_utils/hertzHelpers";
 import getMode from "@/_utils/modes/getMode";
 
 const useKeyboard = (
     keyboardRange: KeyboardRange,
-    audioIsLoaded: boolean,
-    audioService: AudioModule | null,
+    hertzPlayback: HertzPlayback | null,
     mode: Mode,
 ) => {
     const [keys] = useState<Key[]>( getKeys( keyboardRange) );
@@ -17,15 +16,15 @@ const useKeyboard = (
     function resetHertzTable() { hertzTable.current = getHertzTable(keyboardRange)};
 
     const onKeyDown = useCallback((keyName: string) => {
-        if (!audioIsLoaded || !audioService) { return };
+        if (!hertzPlayback) { return };
         const hertz = hertzTable.current[keyName];
-        audioService.playHertz(keyName, hertz);
-    }, [audioIsLoaded, audioService]);
+        hertzPlayback.playHertz(keyName, hertz);
+    }, [hertzPlayback]);
 
 
     const onKeyUp = useCallback((keyName: string) => {
-        if (!audioIsLoaded || !audioService) { return };
-        audioService.stopHertz(keyName);
+        if (!hertzPlayback) { return };
+        hertzPlayback.stopHertz(keyName);
         if (!lastReleased.current) {
             lastReleased.current = keyName;
         } else if (lastReleased.current !== keyName){
@@ -41,7 +40,7 @@ const useKeyboard = (
             getMode(modeSelect);
             lastReleased.current = keyName;
         }
-    }, [audioIsLoaded, audioService, mode]);
+    }, [hertzPlayback, mode]);
 
     return { keys, resetHertzTable, keyHandlers: {onKeyDown, onKeyUp}};
 };

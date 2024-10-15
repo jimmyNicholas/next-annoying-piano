@@ -3,25 +3,22 @@ export interface OptionsPanelProps {
     globalProps: GlobalProps;
     inputProps: InputProps;
     modeProps: ModeProps;
+    outputProps: OutputProps;
 };
 
 export interface GlobalProps {
-    loadAudio: () => void;
-    audioIsLoaded: boolean;
     onReset: () => void;
 };
 
 export interface InputProps {
     checkIsQwertyEnabled: () => boolean;
     toggleIsQwertyEnabled: () => void;
-    handleMidiUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    midiFileText: string | null;
-    midiPlayback: {
-        play: () => void;
-        pause: () => void;
-        stop: () => void;
-        playbackState: string;
-    }
+    midiPlaybackProps: MidiPlaybackProps;
+};
+
+export interface MidiPlaybackProps {
+    keyHandlers: KeyHandlers;
+    tone: typeof ToneType | null;
 };
 
 export interface ModeProps {
@@ -29,6 +26,14 @@ export interface ModeProps {
     updateMode: (mode: number) => void;
     onModChange: (value: number, index: number) => void;
     maxModes: number;
+};
+
+export interface OutputProps {
+    effectsNodes: {
+        gainNode: Gain | null; 
+        reverbNode: Reverb | null;
+        vibratoNode: Vibrato | null;
+    };
 };
 
 // Mode Types
@@ -128,13 +133,24 @@ export interface NoteEvent {
 };
 
 // Audio Output Types
+import * as ToneType from 'tone';
+export { ToneType };
+
 export interface Note {
     keyName: string;
     hertz: number;
 };
 
-export interface AudioModule {
-    setupAudio: () => void;
+export interface HertzPlayback {
     playHertz: (keyName: string, hertz:number) => void;
     stopHertz: (keyName: string) => void;
 };
+
+// Audio Synth Types
+export type PolySynth = ToneType.PolySynth;
+
+// Audio Effects Types
+export type InputNode = ToneType.InputNode;
+export type Gain = ToneType.Gain;
+export type Reverb = ToneType.Reverb;
+export type Vibrato = ToneType.Vibrato;
