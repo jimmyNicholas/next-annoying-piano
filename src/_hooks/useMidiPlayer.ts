@@ -47,7 +47,7 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
         if (!tone) return;
         tone.getTransport().start();
         setPlaybackState('playing');
-    }, []);
+    }, [tone]);
 
     const pause = useCallback(() => {
         if (!tone) return;
