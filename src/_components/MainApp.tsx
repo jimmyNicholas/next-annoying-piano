@@ -54,7 +54,7 @@ const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
     useMidiController(keys, keyHandlers);
 
     const { parsedMidiData, midiFileText, handleMidiUpload} = useMidiUploader();
-    const midiPlayback = useMidiPlayback(parsedMidiData, keyHandlers);
+    const midiPlayback = useMidiPlayback(parsedMidiData, keyHandlers, tone);
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { onReset },
