@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-import { ToneType } from "@/_lib/_types/types";
 import useSynth from "./useSynth";
 import useEffects from "./useEffects";
 
-export function useConnectEffects( tone: typeof ToneType | null) {
-    const polySynth = useSynth(tone);
-    const effectsNodes = useEffects(tone);
+export function useConnectEffects() {
+    const polySynth = useSynth();
+    const effectsNodes = useEffects();
 
     useEffect(() => { 
         if (!polySynth) return;

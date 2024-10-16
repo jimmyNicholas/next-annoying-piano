@@ -13,12 +13,7 @@ export interface GlobalProps {
 export interface InputProps {
     checkIsQwertyEnabled: () => boolean;
     toggleIsQwertyEnabled: () => void;
-    midiPlaybackProps: MidiPlaybackProps;
-};
-
-export interface MidiPlaybackProps {
     keyHandlers: KeyHandlers;
-    tone: typeof ToneType | null;
 };
 
 export interface ModeProps {
