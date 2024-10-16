@@ -1,10 +1,15 @@
 import useMidiUploader from "@/_hooks/useMidiUploader";
-import { useMidiPlayback } from "@/_hooks/useMidiPlayer";
-import { MidiPlaybackProps } from "@/_lib/_types/types";
+import { useMidiPlayback } from "@/_hooks/useMidiPlayback";
+import { ToneContext } from "@/_components/MainApp";
+import { useContext } from "react";
+import { KeyHandlers } from "@/_lib/_types/types";
 
-const MidiPlayback: React.FC<MidiPlaybackProps> = ({ keyHandlers, tone }) => {
+const MidiPlayback: React.FC<KeyHandlers> = (keyHandlers) => {
+    const toner = useContext(ToneContext);
+    console.log(toner);
+    
     const { parsedMidiData, midiFileText, handleMidiUpload} = useMidiUploader();
-    const { play, pause, stop } = useMidiPlayback(parsedMidiData, keyHandlers, tone);
+    const { play, pause, stop } = useMidiPlayback(parsedMidiData, keyHandlers);
 
     return (
         <>

@@ -1,8 +1,10 @@
-import { KeyHandlers, ToneType } from "@/_lib/_types/types";
+import { KeyHandlers } from "@/_lib/_types/types";
 import { Midi } from "@tonejs/midi";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { ToneContext } from "@/_components/MainApp";
 
-export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp}: KeyHandlers, tone: typeof ToneType | null) {
+export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp}: KeyHandlers) {
+    const tone = useContext(ToneContext);
     const [playbackState, setPlaybackState] = useState<'stopped' | 'playing' | 'paused'>('stopped');
     const activeNotes = useRef<Set<string>>(new Set());
 

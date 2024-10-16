@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
-import { ToneType, Gain, Reverb, Vibrato } from "@/_lib/_types/types";
+import { useContext, useEffect, useRef } from "react";
+import { Gain, Reverb, Vibrato } from "@/_lib/_types/types";
+import { ToneContext } from "@/_components/MainApp";
 
-const useGainEffect = (tone: typeof ToneType | null) => {
+const useGainEffect = () => {
+    const tone = useContext(ToneContext);
     const gainNode = useRef<Gain | null>(null);
 
     useEffect(() => { 
@@ -16,7 +18,8 @@ const useGainEffect = (tone: typeof ToneType | null) => {
     return gainNode.current;
 };   
 
-const useReverbEffect = (tone: typeof ToneType | null) => {
+const useReverbEffect = () => {
+    const tone = useContext(ToneContext);
     const reverbNode = useRef<Reverb | null>(null);
 
     useEffect(() => { 
@@ -31,7 +34,8 @@ const useReverbEffect = (tone: typeof ToneType | null) => {
     return reverbNode.current;
 };   
 
-const useVibratoEffect = (tone: typeof ToneType | null) => {
+const useVibratoEffect = () => {
+    const tone = useContext(ToneContext);
     const vibratoNode = useRef<Vibrato | null>(null);
 
     useEffect(() => { 
@@ -46,10 +50,10 @@ const useVibratoEffect = (tone: typeof ToneType | null) => {
     return vibratoNode.current;
 };
 
-const useEffects = (tone: typeof ToneType | null) => {
-    const gainNode = useGainEffect(tone);
-    const reverbNode = useReverbEffect(tone);
-    const vibratoNode = useVibratoEffect(tone);
+const useEffects = () => {
+    const gainNode = useGainEffect();
+    const reverbNode = useReverbEffect();
+    const vibratoNode = useVibratoEffect();
 
     return { gainNode, reverbNode, vibratoNode };
 };
