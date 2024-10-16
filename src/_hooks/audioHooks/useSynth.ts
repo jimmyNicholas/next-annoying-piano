@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
-import { ToneType, PolySynth } from "@/_lib/_types/types";
+import { useContext, useEffect, useState } from "react";
+import { PolySynth } from "@/_lib/_types/types";
+import { ToneContext } from "@/_components/MainApp";
 
-const useSynth = (tone: typeof ToneType | null) => {
+const useSynth = () => {
+    const tone = useContext(ToneContext);
     const [ polySynth, setPolySynth] = useState<PolySynth | null>(null);
 
     useEffect(() => { 

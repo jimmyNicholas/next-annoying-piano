@@ -1,7 +1,9 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useContext, useRef } from "react";
 import { Note, ToneType } from "@/_lib/_types/types";
+import { ToneContext } from "@/_components/MainApp";
 
-const useHertzPlayback = (tone: typeof ToneType | null, polySynth: ToneType.PolySynth | null) => {
+const useHertzPlayback = (polySynth: ToneType.PolySynth | null) => {
+    const tone = useContext(ToneContext);
     const playingNotes = useRef<Note[]>([]);
 
     const playHertz = useCallback((keyName: string, hertz: number): void => {
