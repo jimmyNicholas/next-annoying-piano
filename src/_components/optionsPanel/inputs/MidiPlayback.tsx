@@ -5,9 +5,6 @@ import { useContext } from "react";
 import { KeyHandlers } from "@/_lib/_types/types";
 
 const MidiPlayback: React.FC<KeyHandlers> = (keyHandlers) => {
-    const toner = useContext(ToneContext);
-    console.log(toner);
-    
     const { parsedMidiData, midiFileText, handleMidiUpload} = useMidiUploader();
     const { play, pause, stop } = useMidiPlayback(parsedMidiData, keyHandlers);
 
