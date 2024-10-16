@@ -4,7 +4,7 @@ import useEffects from "./useEffects";
 
 export function useConnectEffects() {
     const polySynth = useSynth();
-    const effectsNodes = useEffects();
+    const {effectsNodes, effectsInterfaces} = useEffects();
 
     useEffect(() => { 
         if (!polySynth) return;
@@ -20,5 +20,5 @@ export function useConnectEffects() {
         };
     }, [polySynth, effectsNodes]);
 
-    return { polySynth, effectsNodes }; 
+    return { polySynth, effectsInterfaces }; 
 };

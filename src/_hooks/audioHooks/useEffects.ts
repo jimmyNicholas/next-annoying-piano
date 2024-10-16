@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 import { Gain, Reverb, Vibrato } from "@/_lib/_types/types";
 import { ToneContext } from "@/_components/MainApp";
 
@@ -15,7 +15,24 @@ const useGainEffect = () => {
         };
     }, [tone]);
 
-    return gainNode.current;
+    const getVolume = useCallback(() => {
+        return gainNode.current?.get().gain;
+    }, [gainNode]);
+
+    const setVolume = useCallback((volume: number) => {
+        gainNode.current?.set({gain: volume});
+    }, [gainNode]);
+
+    return {
+        gainNode: gainNode.current,
+        gainInterface: {
+            name: gainNode.current?.name,
+            getVolume,
+            setVolume,
+            minVolume: 0,
+            maxVolume: 5,
+        }
+    };
 };   
 
 const useReverbEffect = () => {
@@ -31,7 +48,12 @@ const useReverbEffect = () => {
         };
     }, [tone]);
 
-    return reverbNode.current;
+    return {
+        reverbNode: reverbNode.current,
+        reverbInterface: {
+            name: reverbNode.current?.name,
+        }
+    }; 
 };   
 
 const useVibratoEffect = () => {
@@ -47,15 +69,31 @@ const useVibratoEffect = () => {
         };
     }, [tone]);
 
-    return vibratoNode.current;
+    return {
+        vibratoNode: vibratoNode.current,
+        vibratoInterface: {
+            name: vibratoNode.current?.name,
+        }
+    };
 };
 
 const useEffects = () => {
-    const gainNode = useGainEffect();
-    const reverbNode = useReverbEffect();
-    const vibratoNode = useVibratoEffect();
+    const {gainNode, gainInterface} = useGainEffect();
+    const {reverbNode, reverbInterface} = useReverbEffect();
+    const {vibratoNode, vibratoInterface} = useVibratoEffect();
 
-    return { gainNode, reverbNode, vibratoNode };
+    return { 
+        effectsNodes: { 
+            gainNode, 
+            reverbNode, 
+            vibratoNode
+        },
+        effectsInterfaces: {
+            gainInterface,
+            reverbInterface,
+            vibratoInterface
+        } 
+    };
 };
 
 export default useEffects;

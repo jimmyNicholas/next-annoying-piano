@@ -17,7 +17,7 @@ const LoadingScreen: React.FC = () => (
 );
 
 const PianoWrapper: React.FC = () => {
-    const { hertzPlayback, effectsNodes } = useAudio(); 
+    const { hertzPlayback, effectsInterfaces } = useAudio(); 
 
     const keyboardRange = useMemo(() => ({
         startPitch: 'A', 
@@ -55,7 +55,7 @@ const PianoWrapper: React.FC = () => {
         globalProps: { onReset },
         inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, keyHandlers},
         modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1},
-        outputProps: { effectsNodes }
+        outputProps: { effectsInterfaces }
     };
 
     const keyboardProps: KeyboardProps = { 

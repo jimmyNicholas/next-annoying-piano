@@ -24,10 +24,10 @@ export interface ModeProps {
 };
 
 export interface OutputProps {
-    effectsNodes: {
-        gainNode: Gain | null; 
-        reverbNode: Reverb | null;
-        vibratoNode: Vibrato | null;
+    effectsInterfaces: {
+        gainInterface: GainInterface; 
+        reverbInterface: ReverbInterface;
+        vibratoInterface: VibratoInterface;
     };
 };
 
@@ -149,3 +149,19 @@ export type InputNode = ToneType.InputNode;
 export type Gain = ToneType.Gain;
 export type Reverb = ToneType.Reverb;
 export type Vibrato = ToneType.Vibrato;
+
+export interface GainInterface {
+    name: string | undefined;
+    getVolume: () => number | undefined;
+    setVolume: (volume: number) => void;
+    minVolume: number;
+    maxVolume: number;
+};
+
+export interface ReverbInterface {
+    name: string | undefined;
+};
+
+export interface VibratoInterface {
+    name: string | undefined;
+};
