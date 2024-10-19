@@ -71,8 +71,12 @@ const useReverbEffect = () => {
             name: reverbNode.current?.name,
             getWet,
             setWet,
+            minWet: 0,
+            maxWet: 1,
             getDecay,
             setDecay,
+            minDelay: 0,
+            maxDelay: 50
         }
     }; 
 };   

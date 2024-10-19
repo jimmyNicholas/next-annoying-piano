@@ -162,8 +162,12 @@ export interface ReverbInterface {
     name: string | undefined;
     getWet: () => number | undefined;
     setWet: (value: number) => void;
+    minWet: number;
+    maxWet: number;
     getDecay: () => number | undefined;
     setDecay: (value: number) => void;
+    minDelay: number;
+    maxDelay: number;
 };
 
 export interface VibratoInterface {
