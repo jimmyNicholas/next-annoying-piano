@@ -48,10 +48,31 @@ const useReverbEffect = () => {
         };
     }, [tone]);
 
+    const getWet = useCallback(() => {
+        return reverbNode.current?.get().wet;
+    }, [reverbNode]);
+
+    const setWet = useCallback((value: number) => {
+        if (value < 0 || value > 1) return;
+        reverbNode.current?.set({wet: value});
+    },[reverbNode]);
+
+    const getDecay = useCallback(() => {
+        return reverbNode.current?.get().decay;
+    }, [reverbNode]);
+
+    const setDecay = useCallback((value: number) => {
+        reverbNode.current?.set({decay: value});
+    }, [reverbNode]);
+
     return {
         reverbNode: reverbNode.current,
         reverbInterface: {
             name: reverbNode.current?.name,
+            getWet,
+            setWet,
+            getDecay,
+            setDecay,
         }
     }; 
 };   

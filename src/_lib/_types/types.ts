@@ -160,6 +160,10 @@ export interface GainInterface {
 
 export interface ReverbInterface {
     name: string | undefined;
+    getWet: () => number | undefined;
+    setWet: (value: number) => void;
+    getDecay: () => number | undefined;
+    setDecay: (value: number) => void;
 };
 
 export interface VibratoInterface {
