@@ -94,10 +94,23 @@ const useVibratoEffect = () => {
         };
     }, [tone]);
 
+    const getWet = useCallback(() => {
+        return vibratoNode.current?.get().wet;
+    }, [vibratoNode]);
+
+    const setWet = useCallback((value: number) => {
+        if (value < 0 || value > 1) return;
+        vibratoNode.current?.set({wet: value});
+    },[vibratoNode]);
+
     return {
         vibratoNode: vibratoNode.current,
         vibratoInterface: {
             name: vibratoNode.current?.name,
+            getWet,
+            setWet,
+            minWet: 0,
+            maxWet: 1,
         }
     };
 };

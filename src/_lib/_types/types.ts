@@ -172,4 +172,8 @@ export interface ReverbInterface {
 
 export interface VibratoInterface {
     name: string | undefined;
+    getWet: () => number | undefined;
+    setWet: (value: number) => void;
+    minWet: number;
+    maxWet: number;
 };
