@@ -129,6 +129,7 @@ export interface NoteEvent {
 
 // Audio Output Types
 import * as ToneType from 'tone';
+import { RecursivePartial } from 'tone/build/esm/core/util/Interface';
 export { ToneType };
 
 export interface Note {
@@ -152,10 +153,8 @@ export type Vibrato = ToneType.Vibrato;
 
 export interface GainInterface {
     name: string | undefined;
-    getVolume: () => number | undefined;
-    setVolume: (volume: number) => void;
-    minVolume: number;
-    maxVolume: number;
+    get: () => GainOptions | undefined;
+    set: (props: RecursivePartial<GainOptions>) => void; 
 };
 
 //export type EffectOptions = EffectOptions;
@@ -171,8 +170,6 @@ export interface ReverbInterface {
 
 export interface VibratoInterface {
     name: string | undefined;
-    getWet: () => number | undefined;
-    setWet: (value: number) => void;
-    minWet: number;
-    maxWet: number;
+    get: () => ToneType.VibratoOptions | undefined;
+    set: (props: RecursivePartial<ToneType.VibratoOptions>) => void;
 };

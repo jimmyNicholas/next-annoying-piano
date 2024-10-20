@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useRef } from "react";
-import { Gain, Reverb, Vibrato } from "@/_lib/_types/types";
+import { Gain, Reverb, ToneType, Vibrato } from "@/_lib/_types/types";
 import { ToneContext } from "@/_components/MainApp";
+import { RecursivePartial } from "tone/build/esm/core/util/Interface";
 
 const useGainEffect = () => {
     const tone = useContext(ToneContext);
@@ -15,22 +16,16 @@ const useGainEffect = () => {
         };
     }, [tone]);
 
-    const getVolume = useCallback(() => {
-        return gainNode.current?.get().gain;
-    }, [gainNode]);
-
-    const setVolume = useCallback((volume: number) => {
-        gainNode.current?.set({gain: volume});
+    const set = useCallback((props: RecursivePartial<GainOptions>) => {
+        return gainNode.current?.set(props);
     }, [gainNode]);
 
     return {
         gainNode: gainNode.current,
         gainInterface: {
             name: gainNode.current?.name,
-            getVolume,
-            setVolume,
-            minVolume: 0,
-            maxVolume: 5,
+            get: () => gainNode.current?.get(),
+            set
         }
     };
 };   
@@ -47,10 +42,6 @@ const useReverbEffect = () => {
             reverbNode.current?.dispose();
         };
     }, [tone]);
-
-    const get = useCallback(() => {
-        return reverbNode.current?.get();
-    }, [reverbNode])
 
     // Tone.js doens't have an exportable ReverbOptions Type as yet
     const set = useCallback((prop: 'decay' | 'preDelay' | 'wet', value: number) => {
@@ -78,7 +69,7 @@ const useReverbEffect = () => {
         reverbNode: reverbNode.current,
         reverbInterface: {
             name: reverbNode.current?.name,
-            get,
+            get: () => reverbNode.current?.get(),
             set,
         }
     }; 
@@ -96,23 +87,16 @@ const useVibratoEffect = () => {
         };
     }, [tone]);
 
-    const getWet = useCallback(() => {
-        return vibratoNode.current?.get().wet;
+    const set = useCallback((props: RecursivePartial<ToneType.VibratoOptions>) => {
+        return vibratoNode.current?.set(props);
     }, [vibratoNode]);
-
-    const setWet = useCallback((value: number) => {
-        if (value < 0 || value > 1) return;
-        vibratoNode.current?.set({wet: value});
-    },[vibratoNode]);
 
     return {
         vibratoNode: vibratoNode.current,
         vibratoInterface: {
             name: vibratoNode.current?.name,
-            getWet,
-            setWet,
-            minWet: 0,
-            maxWet: 1,
+            get: () => vibratoNode.current?.get(),
+            set,
         }
     };
 };
