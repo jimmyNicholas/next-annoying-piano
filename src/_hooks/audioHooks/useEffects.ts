@@ -44,35 +44,71 @@ const useReverbEffect = () => {
     }, [tone]);
 
     // Tone.js doens't have an exportable ReverbOptions Type as yet
-    const set = useCallback((prop: 'decay' | 'preDelay' | 'wet', value: number) => {
-        try {
-            switch (prop) {
-                case 'decay':
-                    reverbNode.current?.set({decay: value});
-                    return true;
-                case 'preDelay':
-                    reverbNode.current?.set({preDelay: value});
-                    return true;
-                case 'wet':
-                    reverbNode.current?.set({wet: value});
-                    return true;
-                default:
-                    return false;
-            }
-        } catch (error) {
-            console.error(error);
-            return false;   
-        }
-    }, [reverbNode]);
+    // const set = useCallback((prop: 'decay' | 'preDelay' | 'wet', value: number) => {
+    //     try {
+    //         switch (prop) {
+    //             case 'decay':
+    //                 reverbNode.current?.set({decay: value});
+    //                 return true;
+    //             case 'preDelay':
+    //                 reverbNode.current?.set({preDelay: value});
+    //                 return true;
+    //             case 'wet':
+    //                 reverbNode.current?.set({wet: value});
+    //                 return true;
+    //             default:
+    //                 return false;
+    //         }
+    //     } catch (error) {
+    //         console.error(error);
+    //         return false;   
+    //     }
+    // }, [reverbNode]);
 
     return {
         reverbNode: reverbNode.current,
         reverbInterface: {
             name: reverbNode.current?.name,
-            get: () => reverbNode.current?.get(),
-            set,
+            options: [
+                {
+                    title: 'Decay',
+                    name: 'decay',
+                    get: () => reverbNode.current?.get().decay,
+                    set: (value: number) => reverbNode.current?.set({decay: value}),
+                    min: 0.01,
+                    max: 10,
+                    step: 0.01,
+                },
+                {
+                    title: 'Pre-Delay',
+                    name: 'preDelay',
+                    get: () => reverbNode.current?.get().preDelay,
+                    set: (value: number) => reverbNode.current?.set({preDelay: value}),
+                    min: 0.01,
+                    max: 10,
+                    step: 0.01,
+                },
+                {
+                    title: 'Wet', 
+                    name: 'wet',
+                    get: () => reverbNode.current?.get().wet,
+                    set: (value: number) => reverbNode.current?.set({wet: value}),
+                    min: 0,
+                    max: 1,
+                    step: 0.01,
+                },
+            ]
         }
-    }; 
+    };
+
+    // return {
+    //     reverbNode: reverbNode.current,
+    //     reverbInterface: {
+    //         name: reverbNode.current?.name,
+    //         get: () => reverbNode.current?.get(),
+    //         set,
+    //     }
+    // }; 
 };   
 
 const useVibratoEffect = () => {

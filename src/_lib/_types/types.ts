@@ -157,19 +157,23 @@ export interface GainInterface {
     set: (props: RecursivePartial<GainOptions>) => void; 
 };
 
-//export type EffectOptions = EffectOptions;
 export interface ReverbInterface {
     name: string | undefined;
-    get: () => {
-        decay: number;
-        preDelay: number;
-        wet: number;
-    } | undefined;
-    set: (prop: 'decay' | 'preDelay' | 'wet', value: number) => boolean;
+    options: EffectOptions[];
 };
 
 export interface VibratoInterface {
     name: string | undefined;
     get: () => ToneType.VibratoOptions | undefined;
     set: (props: RecursivePartial<ToneType.VibratoOptions>) => void;
+};
+
+interface EffectOptions {
+    title: string;
+    name: string;
+    get: () => number | undefined;
+    set: (value: number) => void;
+    min: number;
+    max: number;
+    step: number
 };
