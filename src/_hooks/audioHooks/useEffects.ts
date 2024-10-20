@@ -48,35 +48,38 @@ const useReverbEffect = () => {
         };
     }, [tone]);
 
-    const getWet = useCallback(() => {
-        return reverbNode.current?.get().wet;
-    }, [reverbNode]);
+    const get = useCallback(() => {
+        return reverbNode.current?.get();
+    }, [reverbNode])
 
-    const setWet = useCallback((value: number) => {
-        if (value < 0 || value > 1) return;
-        reverbNode.current?.set({wet: value});
-    },[reverbNode]);
-
-    const getDecay = useCallback(() => {
-        return reverbNode.current?.get().decay;
-    }, [reverbNode]);
-
-    const setDecay = useCallback((value: number) => {
-        reverbNode.current?.set({decay: value});
+    // Tone.js doens't have an exportable ReverbOptions Type as yet
+    const set = useCallback((prop: 'decay' | 'preDelay' | 'wet', value: number) => {
+        try {
+            switch (prop) {
+                case 'decay':
+                    reverbNode.current?.set({decay: value});
+                    return true;
+                case 'preDelay':
+                    reverbNode.current?.set({preDelay: value});
+                    return true;
+                case 'wet':
+                    reverbNode.current?.set({wet: value});
+                    return true;
+                default:
+                    return false;
+            }
+        } catch (error) {
+            console.error(error);
+            return false;   
+        }
     }, [reverbNode]);
 
     return {
         reverbNode: reverbNode.current,
         reverbInterface: {
             name: reverbNode.current?.name,
-            getWet,
-            setWet,
-            minWet: 0,
-            maxWet: 1,
-            getDecay,
-            setDecay,
-            minDelay: 0,
-            maxDelay: 50
+            get,
+            set,
         }
     }; 
 };   
@@ -88,7 +91,6 @@ const useVibratoEffect = () => {
     useEffect(() => { 
         if (!tone) return;
         vibratoNode.current = new tone.Vibrato().toDestination();
-
         return () => {
             vibratoNode.current?.dispose();
         };

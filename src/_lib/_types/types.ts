@@ -158,16 +158,15 @@ export interface GainInterface {
     maxVolume: number;
 };
 
+//export type EffectOptions = EffectOptions;
 export interface ReverbInterface {
     name: string | undefined;
-    getWet: () => number | undefined;
-    setWet: (value: number) => void;
-    minWet: number;
-    maxWet: number;
-    getDecay: () => number | undefined;
-    setDecay: (value: number) => void;
-    minDelay: number;
-    maxDelay: number;
+    get: () => {
+        decay: number;
+        preDelay: number;
+        wet: number;
+    } | undefined;
+    set: (prop: 'decay' | 'preDelay' | 'wet', value: number) => boolean;
 };
 
 export interface VibratoInterface {
