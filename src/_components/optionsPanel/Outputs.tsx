@@ -1,16 +1,16 @@
-import { OutputProps } from "@/_lib/_types/types";
-import { useState } from "react";
+import { OutputProps, ReverbInterface } from "@/_lib/_types/types";
+import { useCallback, useEffect, useState } from "react";
 
 const Outputs: React.FC<OutputProps> = ({
     effectsInterfaces
 }) => {
     const {gainInterface, reverbInterface, vibratoInterface} = effectsInterfaces;
     
-    const [reverb, setReverb] = useState({
-        decay: reverbInterface?.get()?.decay ?? 0,
-        preDelay: reverbInterface.get()?.preDelay ?? 0,
-        wet: reverbInterface.get()?.wet ?? 0
-    });
+    const getValueFromName = useCallback((valueName: string, effectInterface: ReverbInterface) => {
+        return effectInterface.options.find(({name}) => name === valueName)?.get();
+    }, []);
+
+    const [reverb, setReverb] = useState<{[key: string]: number | undefined}>({});
     
     const [vibrato, setVibrato] = useState({
         frequency: vibratoInterface?.get()?.frequency ?? 0,
@@ -23,52 +23,25 @@ const Outputs: React.FC<OutputProps> = ({
     return (
         <div className="border-2 border-black">
             {reverbInterface.name}
-            <div key={'reverbDecay'} className="grid grid-cols-[25%_65%_10%]">
-                Decay:
-                <input 
-                    type="range"
-                    className="w-full"
-                    value={reverb.decay}
-                    min={0}
-                    max={100}
-                    onChange={(e) => {
-                        reverbInterface.set('decay',  Number(e.target.value))
-                        setReverb({...reverb, decay: Number(e.target.value)});
-                    }}                        
-                />
-                {reverbInterface.get()?.decay}
-            </div>
-            <div key={'reverbPreDelay'} className="grid grid-cols-[25%_65%_10%]">
-                preDelay:
-                <input 
-                    type="range"
-                    className="w-full"
-                    value={reverb.preDelay}
-                    min={0}
-                    max={100}
-                    onChange={(e) => {
-                        reverbInterface.set('preDelay',  Number(e.target.value))
-                        setReverb({...reverb, preDelay: Number(e.target.value)});
-                    }}                        
-                />
-                {reverbInterface.get()?.preDelay}
-            </div>
-            <div key={'reverbWet'} className="grid grid-cols-[25%_65%_10%]">
-                Wet:
-                <input 
-                    type="range"
-                    className="w-full"
-                    value={reverb.wet}
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    onChange={(e) => {
-                        reverbInterface.set('wet',  Number(e.target.value))
-                        setReverb({...reverb, wet: Number(e.target.value)});
-                    }}                        
-                />
-                {reverbInterface.get()?.wet}
-            </div>
+            {reverbInterface.options.map((option) => (
+                <div key={reverbInterface.name + option.name} className="grid grid-cols-[25%_65%_10%]">
+                    {option.name}
+                    <input 
+                        type="range"
+                        className="w-full"
+                        value={getValueFromName(option.name, reverbInterface)}
+                        min={option.min}
+                        max={option.max}
+                        step={option.step}
+                        onChange={(e) => {
+                            option.set(Number(e.target.value));
+                            setReverb({...reverb, [option.name]: Number(e.target.value)})
+                        }}                        
+                    />
+                    {option.get()}
+                </div>
+            ))}
+            
             {vibratoInterface.name}
             <div key={'vibratoFrequency'} className="grid grid-cols-[25%_65%_10%]">
                 Frequency:
