@@ -1,6 +1,6 @@
 import { KeyHandlers } from "@/_lib/_types/types";
 import { Midi } from "@tonejs/midi";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 import { ToneContext } from "@/_components/MainApp";
 
 export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp}: KeyHandlers) {
