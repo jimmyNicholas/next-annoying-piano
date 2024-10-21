@@ -15,7 +15,23 @@ const useGainEffect = () => {
         };
     }, [tone]);
 
-    return gainNode.current;
+    return {
+        gainNode: gainNode.current,
+        gainInterface: {
+            name: gainNode.current?.name,
+            options: [
+                {
+                    title: 'Volume',
+                    name: 'volume',
+                    get: () => gainNode.current?.get().gain,
+                    set: (value: number) => gainNode.current?.set({gain: value}),
+                    min: 0,
+                    max: 1,
+                    step: 0.01,
+                }
+            ]
+        }
+    };
 };   
 
 const useReverbEffect = () => {
@@ -31,7 +47,41 @@ const useReverbEffect = () => {
         };
     }, [tone]);
 
-    return reverbNode.current;
+    return {
+        reverbNode: reverbNode.current,
+        reverbInterface: {
+            name: reverbNode.current?.name,
+            options: [
+                {
+                    title: 'Decay',
+                    name: 'decay',
+                    get: () => reverbNode.current?.get().decay,
+                    set: (value: number) => reverbNode.current?.set({decay: value}),
+                    min: 0.01,
+                    max: 10,
+                    step: 0.01,
+                },
+                {
+                    title: 'Pre-Delay',
+                    name: 'preDelay',
+                    get: () => reverbNode.current?.get().preDelay,
+                    set: (value: number) => reverbNode.current?.set({preDelay: value}),
+                    min: 0.01,
+                    max: 10,
+                    step: 0.01,
+                },
+                {
+                    title: 'Wet', 
+                    name: 'wet',
+                    get: () => reverbNode.current?.get().wet,
+                    set: (value: number) => reverbNode.current?.set({wet: value}),
+                    min: 0,
+                    max: 1,
+                    step: 0.01,
+                },
+            ]
+        }
+    };
 };   
 
 const useVibratoEffect = () => {
@@ -41,21 +91,65 @@ const useVibratoEffect = () => {
     useEffect(() => { 
         if (!tone) return;
         vibratoNode.current = new tone.Vibrato().toDestination();
-
         return () => {
             vibratoNode.current?.dispose();
         };
     }, [tone]);
 
-    return vibratoNode.current;
+    return {
+        vibratoNode: vibratoNode.current,
+        vibratoInterface: {
+            name: vibratoNode.current?.name,
+            options: [
+                {
+                    title: 'Frequency', 
+                    name: 'frequency',
+                    get: () => vibratoNode.current?.get().frequency as number,
+                    set: (value: number) => vibratoNode.current?.set({frequency: value}),
+                    min: 1,
+                    max: 100,
+                    step: 1,
+                },
+                {
+                    title: 'Depth', 
+                    name: 'depth',
+                    get: () => vibratoNode.current?.get().depth,
+                    set: (value: number) => vibratoNode.current?.set({depth: value}),
+                    min: 0,
+                    max: 1,
+                    step: 0.01,
+                },
+                {
+                    title: 'Wet', 
+                    name: 'wet',
+                    get: () => vibratoNode.current?.get().wet,
+                    set: (value: number) => vibratoNode.current?.set({wet: value}),
+                    min: 0,
+                    max: 1,
+                    step: 0.01,
+                },
+            ],
+        }
+    };
 };
 
 const useEffects = () => {
-    const gainNode = useGainEffect();
-    const reverbNode = useReverbEffect();
-    const vibratoNode = useVibratoEffect();
+    const {gainNode, gainInterface} = useGainEffect();
+    const {reverbNode, reverbInterface} = useReverbEffect();
+    const {vibratoNode, vibratoInterface} = useVibratoEffect();
 
-    return { gainNode, reverbNode, vibratoNode };
+    return { 
+        effectsNodes: { 
+            gainNode, 
+            reverbNode, 
+            vibratoNode
+        },
+        effectsInterfaces: {
+            gainInterface,
+            reverbInterface,
+            vibratoInterface
+        } 
+    };
 };
 
 export default useEffects;
