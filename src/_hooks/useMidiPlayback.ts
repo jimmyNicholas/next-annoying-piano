@@ -5,7 +5,7 @@ import { ToneContext } from "@/_components/MainApp";
 
 export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp}: KeyHandlers) {
     const tone = useContext(ToneContext);
-    const [playbackState, setPlaybackState] = useState<'stopped' | 'playing' | 'paused'>('stopped');
+    const playbackState = useRef<'stopped' | 'playing' | 'paused'>('stopped');
     const activeNotes = useRef<Set<string>>(new Set());
 
     const releaseAllNotes = useCallback(() => {
@@ -48,14 +48,14 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
     const play = useCallback(async() => {
         if (!tone) return;
         tone.getTransport().start();
-        setPlaybackState('playing');
+        playbackState.current = 'playing';
     }, [tone]);
 
     const pause = useCallback(() => {
         if (!tone) return;
         tone.getTransport().pause();
         releaseAllNotes();
-        setPlaybackState('paused');
+        playbackState.current = 'paused';
     }, [tone, releaseAllNotes]);
 
     const stop = useCallback(() => {
@@ -63,13 +63,17 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
         tone.getTransport().stop();
         tone.getTransport().position = 0;
         releaseAllNotes();
-        setPlaybackState('stopped');
+        playbackState.current = 'stopped';
     }, [tone, releaseAllNotes]);
+
+    const getState = useCallback(() => {
+        return playbackState.current;
+    }, [playbackState])
 
     return {
         play,
         pause,
         stop,
-        playbackState
+        getState
     };
 };
