@@ -8,6 +8,14 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
     const playbackState = useRef<'stopped' | 'playing' | 'paused'>('stopped');
     const activeNotes = useRef<Set<string>>(new Set());
 
+    const getPlaybackState = useCallback(() => {
+        return playbackState.current;
+    }, [playbackState]);
+
+    const setPlaybackState = useCallback((state: 'stopped' | 'playing' | 'paused') => {
+        playbackState.current = state;
+    }, [playbackState]);
+
     const releaseAllNotes = useCallback(() => {
         const releaseDelayMs = 50;
         setTimeout(() => {
@@ -46,34 +54,30 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
     }, [tone, parsedMidiData, onKeyDown, onKeyUp, releaseAllNotes]);
 
     const play = useCallback(async() => {
-        if (!tone) return;
+        if (!tone || getPlaybackState() === 'playing') return;
         tone.getTransport().start();
-        playbackState.current = 'playing';
-    }, [tone]);
+        setPlaybackState('playing');
+    }, [tone, getPlaybackState, setPlaybackState]);
 
     const pause = useCallback(() => {
-        if (!tone) return;
+        if (!tone || getPlaybackState() === 'paused') return;
         tone.getTransport().pause();
         releaseAllNotes();
-        playbackState.current = 'paused';
-    }, [tone, releaseAllNotes]);
+        setPlaybackState('paused');
+    }, [tone, releaseAllNotes, getPlaybackState, setPlaybackState]);
 
     const stop = useCallback(() => {
-        if (!tone) return;
+        if (!tone || getPlaybackState() === 'stopped') return;
         tone.getTransport().stop();
         tone.getTransport().position = 0;
         releaseAllNotes();
-        playbackState.current = 'stopped';
-    }, [tone, releaseAllNotes]);
-
-    const getState = useCallback(() => {
-        return playbackState.current;
-    }, [playbackState])
+        setPlaybackState('stopped');
+    }, [tone, releaseAllNotes, getPlaybackState, setPlaybackState]);
 
     return {
         play,
         pause,
         stop,
-        getState
+        getPlaybackState
     };
 };
