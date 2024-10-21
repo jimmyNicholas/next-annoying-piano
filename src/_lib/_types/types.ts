@@ -25,9 +25,9 @@ export interface ModeProps {
 
 export interface OutputProps {
     effectsInterfaces: {
-        gainInterface: GainInterface; 
-        reverbInterface: ReverbInterface;
-        vibratoInterface: VibratoInterface;
+        gainInterface: EffectInterface; 
+        reverbInterface: EffectInterface;
+        vibratoInterface: EffectInterface;
     };
 };
 
@@ -129,7 +129,6 @@ export interface NoteEvent {
 
 // Audio Output Types
 import * as ToneType from 'tone';
-import { RecursivePartial } from 'tone/build/esm/core/util/Interface';
 export { ToneType };
 
 export interface Note {
@@ -151,18 +150,7 @@ export type Gain = ToneType.Gain;
 export type Reverb = ToneType.Reverb;
 export type Vibrato = ToneType.Vibrato;
 
-export interface GainInterface {
-    name: string | undefined;
-    get: () => GainOptions | undefined;
-    set: (props: RecursivePartial<GainOptions>) => void; 
-};
-
-export interface ReverbInterface {
-    name: string | undefined;
-    options: EffectOptions[];
-};
-
-export interface VibratoInterface {
+export interface EffectInterface {
     name: string | undefined;
     options: EffectOptions[];
 };
