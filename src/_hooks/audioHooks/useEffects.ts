@@ -43,28 +43,6 @@ const useReverbEffect = () => {
         };
     }, [tone]);
 
-    // Tone.js doens't have an exportable ReverbOptions Type as yet
-    // const set = useCallback((prop: 'decay' | 'preDelay' | 'wet', value: number) => {
-    //     try {
-    //         switch (prop) {
-    //             case 'decay':
-    //                 reverbNode.current?.set({decay: value});
-    //                 return true;
-    //             case 'preDelay':
-    //                 reverbNode.current?.set({preDelay: value});
-    //                 return true;
-    //             case 'wet':
-    //                 reverbNode.current?.set({wet: value});
-    //                 return true;
-    //             default:
-    //                 return false;
-    //         }
-    //     } catch (error) {
-    //         console.error(error);
-    //         return false;   
-    //     }
-    // }, [reverbNode]);
-
     return {
         reverbNode: reverbNode.current,
         reverbInterface: {
@@ -100,15 +78,6 @@ const useReverbEffect = () => {
             ]
         }
     };
-
-    // return {
-    //     reverbNode: reverbNode.current,
-    //     reverbInterface: {
-    //         name: reverbNode.current?.name,
-    //         get: () => reverbNode.current?.get(),
-    //         set,
-    //     }
-    // }; 
 };   
 
 const useVibratoEffect = () => {
