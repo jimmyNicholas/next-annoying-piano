@@ -1,11 +1,10 @@
 import { useConnectEffects } from './audioHooks/useConnectEffects';
 import useHertzPlayback from './audioHooks/useHertzPlayback';
-import { ToneType } from '@/_lib/_types/types';
 
-const useAudio = (tone: typeof ToneType | null ) => {
-    const { polySynth, effectsNodes } = useConnectEffects(tone);
-    const { hertzPlayback } = useHertzPlayback(tone, polySynth);
-    return { tone, hertzPlayback, effectsNodes}
+const useAudio = () => {
+    const { polySynth, effectsInterfaces } = useConnectEffects();
+    const { hertzPlayback } = useHertzPlayback(polySynth);
+    return { hertzPlayback, effectsInterfaces}
 };
 
 export default useAudio;

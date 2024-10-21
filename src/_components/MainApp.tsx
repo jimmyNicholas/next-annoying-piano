@@ -3,7 +3,7 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps, ToneType } from '@/_lib/_types/types';
-import { useMemo, useRef} from "react";
+import { createContext, useMemo, useRef} from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
@@ -16,8 +16,8 @@ const LoadingScreen: React.FC = () => (
     <div>Click Screen To Load Audio</div>
 );
 
-const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
-    const { hertzPlayback, effectsNodes } = useAudio(tone); 
+const PianoWrapper: React.FC = () => {
+    const { hertzPlayback, effectsInterfaces } = useAudio(); 
 
     const keyboardRange = useMemo(() => ({
         startPitch: 'A', 
@@ -53,9 +53,9 @@ const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: { onReset },
-        inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, midiPlaybackProps: {keyHandlers, tone}},
+        inputProps: { checkIsQwertyEnabled, toggleIsQwertyEnabled, keyHandlers},
         modeProps: { mode: mode, updateMode, onModChange, maxModes: modes.length - 1},
-        outputProps: { effectsNodes }
+        outputProps: { effectsInterfaces }
     };
 
     const keyboardProps: KeyboardProps = { 
@@ -71,9 +71,17 @@ const PianoWrapper: React.FC<{ tone: typeof ToneType | null}> = ({tone}) => {
     );
 };
 
+export const ToneContext = createContext<typeof ToneType | null>(null);
+
 const MainApp: React.FC = () => {
     const { audioIsLoaded, tone } = useLoadAudio();
-    return audioIsLoaded ? <PianoWrapper tone={tone.current} /> : <LoadingScreen />;
+    return (
+        audioIsLoaded && tone.current ? 
+            <ToneContext.Provider value={tone.current}>
+                <PianoWrapper /> 
+            </ToneContext.Provider>
+            : <LoadingScreen />
+    );
 };
 
 export default MainApp;

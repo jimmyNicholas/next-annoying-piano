@@ -13,12 +13,7 @@ export interface GlobalProps {
 export interface InputProps {
     checkIsQwertyEnabled: () => boolean;
     toggleIsQwertyEnabled: () => void;
-    midiPlaybackProps: MidiPlaybackProps;
-};
-
-export interface MidiPlaybackProps {
     keyHandlers: KeyHandlers;
-    tone: typeof ToneType | null;
 };
 
 export interface ModeProps {
@@ -29,10 +24,10 @@ export interface ModeProps {
 };
 
 export interface OutputProps {
-    effectsNodes: {
-        gainNode: Gain | null; 
-        reverbNode: Reverb | null;
-        vibratoNode: Vibrato | null;
+    effectsInterfaces: {
+        gainInterface: EffectInterface; 
+        reverbInterface: EffectInterface;
+        vibratoInterface: EffectInterface;
     };
 };
 
@@ -133,8 +128,9 @@ export interface NoteEvent {
 };
 
 // Audio Output Types
-import * as ToneType from 'tone';
+import * as ToneType from "tone";
 export { ToneType };
+
 
 export interface Note {
     keyName: string;
@@ -154,3 +150,18 @@ export type InputNode = ToneType.InputNode;
 export type Gain = ToneType.Gain;
 export type Reverb = ToneType.Reverb;
 export type Vibrato = ToneType.Vibrato;
+
+export interface EffectInterface {
+    name: string | undefined;
+    options: EffectOptions[];
+};
+
+interface EffectOptions {
+    title: string;
+    name: string;
+    get: () => number | undefined;
+    set: (value: number) => void;
+    min: number;
+    max: number;
+    step: number
+};
