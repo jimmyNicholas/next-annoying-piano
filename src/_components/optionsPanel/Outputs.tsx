@@ -16,7 +16,7 @@ const Outputs: React.FC<OutputProps> = ({
 
     return (
         <div className="border-2 border-black">
-            {reverbInterface.name}
+            {reverbInterface.name || 'Effect'}
             {reverbInterface.options.map((option) => (
                 <div key={reverbInterface.name + option.name} className="grid grid-cols-[25%_65%_10%]">
                     {option.title}
@@ -36,7 +36,7 @@ const Outputs: React.FC<OutputProps> = ({
                 </div>
             ))}
             
-            {vibratoInterface.name}
+            {vibratoInterface.name || 'Effect'}
             {vibratoInterface.options.map((option) => (
                 <div key={vibratoInterface.name + option.name} className="grid grid-cols-[25%_65%_10%]">
                     {option.title}
@@ -56,7 +56,7 @@ const Outputs: React.FC<OutputProps> = ({
                 </div>
             ))}
 
-            {gainInterface.name}
+            {gainInterface.name || 'Effect'}
             {gainInterface.options.map((option) => (
                 <div key={gainInterface.name + option.name} className="grid grid-cols-[25%_65%_10%]">
                     {option.title}
