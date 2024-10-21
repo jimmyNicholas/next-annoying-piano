@@ -128,8 +128,9 @@ export interface NoteEvent {
 };
 
 // Audio Output Types
-import * as ToneType from 'tone';
+import * as ToneType from "tone";
 export { ToneType };
+
 
 export interface Note {
     keyName: string;

@@ -1,7 +1,6 @@
-import { useCallback, useContext, useEffect, useRef } from "react";
-import { Gain, Reverb, ToneType, Vibrato } from "@/_lib/_types/types";
+import { useContext, useEffect, useRef } from "react";
+import { Gain, Reverb, Vibrato } from "@/_lib/_types/types";
 import { ToneContext } from "@/_components/MainApp";
-import { RecursivePartial } from "tone/build/esm/core/util/Interface";
 
 const useGainEffect = () => {
     const tone = useContext(ToneContext);
@@ -97,10 +96,6 @@ const useVibratoEffect = () => {
         };
     }, [tone]);
 
-    const set = useCallback((props: RecursivePartial<ToneType.VibratoOptions>) => {
-        return vibratoNode.current?.set(props);
-    }, [vibratoNode]);
-
     return {
         vibratoNode: vibratoNode.current,
         vibratoInterface: {
@@ -109,7 +104,7 @@ const useVibratoEffect = () => {
                 {
                     title: 'Frequency', 
                     name: 'frequency',
-                    get: () => vibratoNode.current?.get().frequency,
+                    get: () => vibratoNode.current?.get().frequency as number,
                     set: (value: number) => vibratoNode.current?.set({frequency: value}),
                     min: 1,
                     max: 100,
@@ -134,8 +129,6 @@ const useVibratoEffect = () => {
                     step: 0.01,
                 },
             ],
-            get: () => vibratoNode.current?.get(),
-            set,
         }
     };
 };
