@@ -16,16 +16,21 @@ const useGainEffect = () => {
         };
     }, [tone]);
 
-    const set = useCallback((props: RecursivePartial<GainOptions>) => {
-        return gainNode.current?.set(props);
-    }, [gainNode]);
-
     return {
         gainNode: gainNode.current,
         gainInterface: {
             name: gainNode.current?.name,
-            get: () => gainNode.current?.get(),
-            set
+            options: [
+                {
+                    title: 'Volume',
+                    name: 'volume',
+                    get: () => gainNode.current?.get().gain,
+                    set: (value: number) => gainNode.current?.set({gain: value}),
+                    min: 0,
+                    max: 1,
+                    step: 0.01,
+                }
+            ]
         }
     };
 };   
