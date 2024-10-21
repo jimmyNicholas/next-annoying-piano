@@ -100,6 +100,35 @@ const useVibratoEffect = () => {
         vibratoNode: vibratoNode.current,
         vibratoInterface: {
             name: vibratoNode.current?.name,
+            options: [
+                {
+                    title: 'Frequency', 
+                    name: 'frequency',
+                    get: () => vibratoNode.current?.get().frequency,
+                    set: (value: number) => vibratoNode.current?.set({frequency: value}),
+                    min: 1,
+                    max: 100,
+                    step: 1,
+                },
+                {
+                    title: 'Depth', 
+                    name: 'depth',
+                    get: () => vibratoNode.current?.get().depth,
+                    set: (value: number) => vibratoNode.current?.set({depth: value}),
+                    min: 0,
+                    max: 1,
+                    step: 0.01,
+                },
+                {
+                    title: 'Wet', 
+                    name: 'wet',
+                    get: () => vibratoNode.current?.get().wet,
+                    set: (value: number) => vibratoNode.current?.set({wet: value}),
+                    min: 0,
+                    max: 1,
+                    step: 0.01,
+                },
+            ],
             get: () => vibratoNode.current?.get(),
             set,
         }

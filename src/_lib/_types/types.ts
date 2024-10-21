@@ -164,8 +164,7 @@ export interface ReverbInterface {
 
 export interface VibratoInterface {
     name: string | undefined;
-    get: () => ToneType.VibratoOptions | undefined;
-    set: (props: RecursivePartial<ToneType.VibratoOptions>) => void;
+    options: EffectOptions[];
 };
 
 interface EffectOptions {
