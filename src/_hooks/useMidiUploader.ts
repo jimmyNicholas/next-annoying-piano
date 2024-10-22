@@ -36,7 +36,7 @@ const useMidiUploader = () => {
     
     return {
         parsedMidiData: parsedMidiData.current, 
-        midiFileText: midiFileText, 
+        getMidiFileText, 
         handleMidiUpload
     };
 };
