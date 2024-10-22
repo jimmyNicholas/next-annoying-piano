@@ -1,16 +1,20 @@
-import useMidiUploader from "@/_hooks/useMidiUploader";
-import { useMidiPlayback } from "@/_hooks/useMidiPlayback";
-import { KeyHandlers } from "@/_lib/_types/types";
+import { MidiPlaybackProps } from "@/_lib/_types/types";
 import { useState } from "react";
 
-const MidiPlayback: React.FC<KeyHandlers> = (keyHandlers) => {
-    const { parsedMidiData, getMidiFileText, handleMidiUpload} = useMidiUploader();
+const MidiPlayback: React.FC<MidiPlaybackProps> = ({
+    getMidiFileText, 
+    handleMidiUpload,
+    play, 
+    pause, 
+    stop, 
+    getPlaybackState
+  }) => {
+    const [ playbackState ] = useState<'stopped' | 'playing' | 'paused'>(getPlaybackState());
     const [midiFileText] = useState<string | null>(getMidiFileText());
-
-    const { play, pause, stop } = useMidiPlayback(parsedMidiData, keyHandlers);
 
     return (
         <>
+            {playbackState}
             <div className="grid grid-flow-col">         
                 <button 
                     className="border-2 border-black p-1"
