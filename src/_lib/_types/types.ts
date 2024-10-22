@@ -26,8 +26,8 @@ export interface MidiPlaybackProps {
 };
 
 export interface ModeProps {
-    mode: Mode;
-    updateMode: (mode: number) => void;
+    getModeState: () => Mode;
+    setModeState: (mode: number) => void;
     onModChange: (value: number, index: number) => void;
     maxModes: number;
 };
