@@ -1,9 +1,12 @@
 import useMidiUploader from "@/_hooks/useMidiUploader";
 import { useMidiPlayback } from "@/_hooks/useMidiPlayback";
 import { KeyHandlers } from "@/_lib/_types/types";
+import { useState } from "react";
 
 const MidiPlayback: React.FC<KeyHandlers> = (keyHandlers) => {
-    const { parsedMidiData, midiFileText, handleMidiUpload} = useMidiUploader();
+    const { parsedMidiData, getMidiFileText, handleMidiUpload} = useMidiUploader();
+    const [midiFileText] = useState<string | null>(getMidiFileText());
+
     const { play, pause, stop } = useMidiPlayback(parsedMidiData, keyHandlers);
 
     return (
