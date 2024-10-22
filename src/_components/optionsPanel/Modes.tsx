@@ -1,12 +1,29 @@
-import { ModeProps } from '@/_lib/_types/types';
+import { Mode, ModeProps } from '@/_lib/_types/types';
+import { useCallback, useEffect, useState } from 'react';
 
 const Modes: React.FC<ModeProps> = ({
-    mode,
-    updateMode,
-    onModChange,
+    getModeState,
+    setModeState,
+    setMod,
     maxModes,
 }) => {
-    
+    const [mode, setMode] = useState<Mode>(getModeState());
+    const [updateCounter, setUpdateCounter] = useState<number>(0);
+
+    useEffect(() => {
+        setMode(getModeState());
+    }, [getModeState, updateCounter]);
+
+    const onModeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setModeState(Number(e.target.value));
+        setUpdateCounter(prev => prev + 1);
+    },[setModeState, setUpdateCounter]);
+
+    const onModChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        setMod(Number(e.target.value), index);
+        setUpdateCounter(prev => prev + 1);
+    },[setMod]);
+
     return (
         <div className="border-2 border-black grid grid-rows-2">
             <div className="grid grid-cols-[15%_70%_15%]">         
@@ -17,7 +34,7 @@ const Modes: React.FC<ModeProps> = ({
                     value={mode.index}
                     min={0}
                     max={maxModes}
-                    onChange={(e) => updateMode(Number(e.target.value))}
+                    onChange={(e) => onModeChange(e)}
                 />
                 {mode.text}
             </div>
@@ -31,7 +48,7 @@ const Modes: React.FC<ModeProps> = ({
                             value={mod.value}
                             min={mod.min}
                             max={mod.max}
-                            onChange={(e) => onModChange(Number(e.target.value), index)}
+                            onChange={(e) => onModChange(e, index)}
                         />
                         {mod.value}
                     </div>
@@ -41,29 +58,3 @@ const Modes: React.FC<ModeProps> = ({
 };
 
 export default Modes;
-
-
-/*
-{modes.map((mode) => (
-                <button
-                    key={mode.value}
-                    className={`
-                        ${mode.isSelected ? 'bg-orange-400' : 'bg-slate-300'}
-                        m-2
-                        `
-                    }
-                    onClick={((e) => onClick(e))}
-                    value={mode.value}
-                >
-                    {mode.text}  
-                    <input 
-                        type="range"
-                        className="w-10"
-                        min={0}
-                        max={100}
-                        step={10}
-                        onChange={(e) => setKnobValue(Number(e.target.value))}
-                    />
-                </button>
-            ))}
-*/
