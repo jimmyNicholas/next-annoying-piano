@@ -6,26 +6,26 @@ const useMode = (
     onReset: () => void,
 ) => {
     const modeIndex = useRef<number>(0);
-    const mode = useRef<Mode>(modes[modeIndex.current]);
+    const modeState = useRef<Mode>(modes[modeIndex.current]);
 
-    const getMode = useCallback(() => {
-        return mode.current;
+    const getModeState = useCallback(() => {
+        return modeState.current;
     }, []);
 
-    const setMode = useCallback((newModeIndex: number) => {
+    const setModeState = useCallback((newModeIndex: number) => {
         modeIndex.current = newModeIndex;
-        mode.current = modes[modeIndex.current];
+        modeState.current = modes[modeIndex.current];
         onReset();
     },[onReset]);
 
     const onModChange = useCallback((newValue: number, index: number) => {
-        if (!mode.current.modifiers) return;
-        const modifier = mode.current.modifiers[index];
+        if (!modeState.current.modifiers) return;
+        const modifier = modeState.current.modifiers[index];
         if (newValue < modifier.min || newValue > modifier.max) return;
-        mode.current.modifiers[index].value = newValue;
+        modeState.current.modifiers[index].value = newValue;
     }, []);
 
-    return { getMode, setMode, onModChange };
+    return { getModeState, setModeState, onModChange };
 };
 
 export default useMode;
