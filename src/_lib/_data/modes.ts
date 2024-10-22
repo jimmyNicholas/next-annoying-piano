@@ -10,7 +10,7 @@ export const modes = [
         index: 1,
         text: 'Gravity',
         value: 'GRAVITY',
-        description: "The last released key pulls the pitch of the previous key toward it",
+        description: "Pulls the pitch of the previous key toward it the last released key.",
         modifiers: [
             {
                 modName: 'STRENGTH',
