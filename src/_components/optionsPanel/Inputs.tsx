@@ -6,7 +6,7 @@ import MidiPlayback from "./inputs/MidiPlayback";
 const Inputs: React.FC<InputProps> = ({
     checkIsQwertyEnabled,
     toggleIsQwertyEnabled,
-    keyHandlers
+    midiPlaybackProps
 }) => {
     const [isEnabled, setIsEnabled] = useState(checkIsQwertyEnabled());
     function onClick() {
@@ -36,7 +36,7 @@ const Inputs: React.FC<InputProps> = ({
                 </option>
                 ))}
             </select>
-            <MidiPlayback {...keyHandlers}/>
+            <MidiPlayback {...midiPlaybackProps}/>
         </div>
     );
 };
