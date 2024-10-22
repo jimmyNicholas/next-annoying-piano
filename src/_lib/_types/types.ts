@@ -45,6 +45,7 @@ export interface Mode {
     index: number;
     text: string;
     value: string;
+    description: string;
     modifiers?: ModeModifiers[];
 }
 
@@ -54,6 +55,7 @@ interface ModeModifiers {
     min: number;
     value: number;
     max: number;
+    step: number;
 }
 
 //Keyboard Types
