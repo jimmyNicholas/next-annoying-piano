@@ -28,7 +28,7 @@ const PianoWrapper: React.FC = () => {
     const {
         getModeState,
         setModeState,
-        onModChange
+        setMod
     } = useMode(onReset);
 
     const {
@@ -85,7 +85,7 @@ const PianoWrapper: React.FC = () => {
         modeProps: {
             getModeState,
             setModeState,
-            onModChange,
+            setMod,
             maxModes: modes.length - 1
         },
         outputProps: {

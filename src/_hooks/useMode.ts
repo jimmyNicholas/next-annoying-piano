@@ -18,14 +18,14 @@ const useMode = (
         onReset();
     },[onReset]);
 
-    const onModChange = useCallback((newValue: number, index: number) => {
+    const setMod = useCallback((newValue: number, index: number) => {
         if (!modeState.current.modifiers) return;
         const modifier = modeState.current.modifiers[index];
         if (newValue < modifier.min || newValue > modifier.max) return;
         modeState.current.modifiers[index].value = newValue;
     }, []);
 
-    return { getModeState, setModeState, onModChange };
+    return { getModeState, setModeState, setMod };
 };
 
 export default useMode;
