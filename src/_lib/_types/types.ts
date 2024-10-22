@@ -13,7 +13,16 @@ export interface GlobalProps {
 export interface InputProps {
     checkIsQwertyEnabled: () => boolean;
     toggleIsQwertyEnabled: () => void;
-    keyHandlers: KeyHandlers;
+    midiPlaybackProps: MidiPlaybackProps;
+};
+
+export interface MidiPlaybackProps {
+    getMidiFileText: () => string | null;
+    handleMidiUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    play: () => void; 
+    pause: () => void;
+    stop: () => void;
+    getPlaybackState: () => 'stopped' | 'playing' | 'paused'
 };
 
 export interface ModeProps {
@@ -119,7 +128,7 @@ export interface MidiPlaybackState {
         muted: boolean;
         noteEvents: NoteEvent[];
     }[],
-}
+};
 
 export interface NoteEvent {
     name: string;

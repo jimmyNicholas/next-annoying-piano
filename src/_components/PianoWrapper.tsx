@@ -6,6 +6,8 @@ import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
+import useMidiUploader from "@/_hooks/useMidiUploader";
+import { useMidiPlayback } from "@/_hooks/useMidiPlayback";
 import useMode from "@/_hooks/useMode";
 import useMidiController from "@/_hooks/useMidiController";
 
@@ -61,6 +63,8 @@ const PianoWrapper: React.FC = () => {
 
     useQwertyInput(qwertyInputProps);
     useMidiController(keys, keyHandlers);
+    const { parsedMidiData, getMidiFileText, handleMidiUpload} = useMidiUploader();
+    const { play, pause, stop, getPlaybackState } = useMidiPlayback(parsedMidiData, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: {
@@ -69,7 +73,14 @@ const PianoWrapper: React.FC = () => {
         inputProps: {
             checkIsQwertyEnabled,
             toggleIsQwertyEnabled,
-            keyHandlers
+            midiPlaybackProps: {
+              getMidiFileText, 
+              handleMidiUpload,
+              play, 
+              pause, 
+              stop, 
+              getPlaybackState
+            }
         },
         modeProps: {
             mode: mode,

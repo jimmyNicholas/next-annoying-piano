@@ -1,12 +1,20 @@
 import { KeyHandlers } from "@/_lib/_types/types";
 import { Midi } from "@tonejs/midi";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 import { ToneContext } from "@/_components/MainApp";
 
 export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp}: KeyHandlers) {
     const tone = useContext(ToneContext);
-    const [playbackState, setPlaybackState] = useState<'stopped' | 'playing' | 'paused'>('stopped');
+    const playbackState = useRef<'stopped' | 'playing' | 'paused'>('stopped');
     const activeNotes = useRef<Set<string>>(new Set());
+
+    const getPlaybackState = useCallback(() => {
+        return playbackState.current;
+    }, [playbackState]);
+
+    const setPlaybackState = useCallback((state: 'stopped' | 'playing' | 'paused') => {
+        playbackState.current = state;
+    }, [playbackState]);
 
     const releaseAllNotes = useCallback(() => {
         const releaseDelayMs = 50;
@@ -46,30 +54,30 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
     }, [tone, parsedMidiData, onKeyDown, onKeyUp, releaseAllNotes]);
 
     const play = useCallback(async() => {
-        if (!tone) return;
+        if (!tone || getPlaybackState() === 'playing') return;
         tone.getTransport().start();
         setPlaybackState('playing');
-    }, [tone]);
+    }, [tone, getPlaybackState, setPlaybackState]);
 
     const pause = useCallback(() => {
-        if (!tone) return;
+        if (!tone || getPlaybackState() === 'paused') return;
         tone.getTransport().pause();
         releaseAllNotes();
         setPlaybackState('paused');
-    }, [tone, releaseAllNotes]);
+    }, [tone, releaseAllNotes, getPlaybackState, setPlaybackState]);
 
     const stop = useCallback(() => {
-        if (!tone) return;
+        if (!tone || getPlaybackState() === 'stopped') return;
         tone.getTransport().stop();
         tone.getTransport().position = 0;
         releaseAllNotes();
         setPlaybackState('stopped');
-    }, [tone, releaseAllNotes]);
+    }, [tone, releaseAllNotes, getPlaybackState, setPlaybackState]);
 
     return {
         play,
         pause,
         stop,
-        playbackState
+        getPlaybackState
     };
 };
