@@ -25,7 +25,7 @@ const useMode = (
         modeState.current.modifiers[index].value = newValue;
     }, []);
 
-    return { getModeState, setModeState, setMod };
+    return { getModeState, setModeState, setMod, modes };
 };
 
 export default useMode;

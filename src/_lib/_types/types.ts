@@ -29,6 +29,7 @@ export interface ModeProps {
     getModeState: () => Mode;
     setModeState: (mode: number) => void;
     setMod: (value: number, index: number) => void;
+    modes: Mode[];
 };
 
 export interface OutputProps {

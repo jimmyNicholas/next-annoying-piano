@@ -27,7 +27,8 @@ const PianoWrapper: React.FC = () => {
     const {
         getModeState,
         setModeState,
-        setMod
+        setMod,
+        modes
     } = useMode(onReset);
 
     const {
@@ -84,7 +85,8 @@ const PianoWrapper: React.FC = () => {
         modeProps: {
             getModeState,
             setModeState,
-            setMod
+            setMod,
+            modes
         },
         outputProps: {
             effectsInterfaces

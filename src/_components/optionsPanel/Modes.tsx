@@ -1,4 +1,3 @@
-import { modes } from '@/_lib/_data/modes';
 import { Mode, ModeProps } from '@/_lib/_types/types';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
@@ -6,6 +5,7 @@ const Modes: React.FC<ModeProps> = ({
     getModeState,
     setModeState,
     setMod,
+    modes
 }) => {
     const [mode, setMode] = useState<Mode>(getModeState());
     const [updateCounter, setUpdateCounter] = useState<number>(0);
