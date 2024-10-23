@@ -48,11 +48,13 @@ const Modes: React.FC<ModeProps> = ({
                             value={mod.value}
                             min={mod.min}
                             max={mod.max}
+                            step={mod.step}
                             onChange={(e) => onModChange(e, index)}
                         />
                         {mod.value}
                     </div>
             )})}
+            <div className='text-center'>{mode.description}</div>
         </div>
     );
 };
