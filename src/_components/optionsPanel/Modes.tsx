@@ -1,5 +1,6 @@
+import { modes } from '@/_lib/_data/modes';
 import { Mode, ModeProps } from '@/_lib/_types/types';
-import { useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 const Modes: React.FC<ModeProps> = ({
     getModeState,
@@ -14,7 +15,7 @@ const Modes: React.FC<ModeProps> = ({
         setMode(getModeState());
     }, [getModeState, updateCounter]);
 
-    const onModeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const onModeChange = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
         setModeState(Number(e.target.value));
         setUpdateCounter(prev => prev + 1);
     },[setModeState, setUpdateCounter]);
@@ -26,18 +27,16 @@ const Modes: React.FC<ModeProps> = ({
 
     return (
         <div className="border-2 border-black grid grid-rows-2">
-            <div className="grid grid-cols-[15%_70%_15%]">         
-                Mode:
-                <input 
-                    type="range"
-                    className="w-full"
-                    value={mode.index}
-                    min={0}
-                    max={maxModes}
-                    onChange={(e) => onModeChange(e)}
-                />
-                {mode.text}
-            </div>
+            <select
+                value={mode.index}
+                onChange={(e) => onModeChange(e)}
+            >
+                {modes.map((mode) => (
+                <option key={mode.index} value={mode.index}>
+                    {mode.text}
+                </option>
+                ))}
+            </select>
             {mode.modifiers?.map((mod, index) => {
                 return (
                     <div key={mod.label} className="grid grid-cols-[15%_70%_15%]">
