@@ -3,7 +3,6 @@ import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
 import { useMemo, useRef} from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
-import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMidiUploader from "@/_hooks/useMidiUploader";
@@ -85,8 +84,7 @@ const PianoWrapper: React.FC = () => {
         modeProps: {
             getModeState,
             setModeState,
-            setMod,
-            maxModes: modes.length - 1
+            setMod
         },
         outputProps: {
             effectsInterfaces

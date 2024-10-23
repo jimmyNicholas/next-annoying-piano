@@ -6,7 +6,6 @@ const Modes: React.FC<ModeProps> = ({
     getModeState,
     setModeState,
     setMod,
-    maxModes,
 }) => {
     const [mode, setMode] = useState<Mode>(getModeState());
     const [updateCounter, setUpdateCounter] = useState<number>(0);
