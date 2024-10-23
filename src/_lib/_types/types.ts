@@ -26,10 +26,10 @@ export interface MidiPlaybackProps {
 };
 
 export interface ModeProps {
-    mode: Mode;
-    updateMode: (mode: number) => void;
-    onModChange: (value: number, index: number) => void;
-    maxModes: number;
+    getModeState: () => Mode;
+    setModeState: (mode: number) => void;
+    setMod: (value: number, index: number) => void;
+    modes: Mode[];
 };
 
 export interface OutputProps {
@@ -45,6 +45,7 @@ export interface Mode {
     index: number;
     text: string;
     value: string;
+    description: string;
     modifiers?: ModeModifiers[];
 }
 
@@ -54,6 +55,7 @@ interface ModeModifiers {
     min: number;
     value: number;
     max: number;
+    step: number;
 }
 
 //Keyboard Types

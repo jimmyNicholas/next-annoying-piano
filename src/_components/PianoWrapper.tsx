@@ -3,7 +3,6 @@ import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
 import { useMemo, useRef} from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
-import { modes } from "@/_lib/_data/modes";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMidiUploader from "@/_hooks/useMidiUploader";
@@ -26,16 +25,17 @@ const PianoWrapper: React.FC = () => {
     }), []);
 
     const {
-        mode,
-        updateMode,
-        onModChange
+        getModeState,
+        setModeState,
+        setMod,
+        modes
     } = useMode(onReset);
 
     const {
         keys,
         resetHertzTable,
         keyHandlers
-    } = useKeyboard(keyboardRange, hertzPlayback, mode);
+    } = useKeyboard(keyboardRange, hertzPlayback, getModeState);
 
     function onReset() {
         resetHertzTable();
@@ -83,10 +83,10 @@ const PianoWrapper: React.FC = () => {
             }
         },
         modeProps: {
-            mode: mode,
-            updateMode,
-            onModChange,
-            maxModes: modes.length - 1
+            getModeState,
+            setModeState,
+            setMod,
+            modes
         },
         outputProps: {
             effectsInterfaces
