@@ -25,20 +25,23 @@ const Modes: React.FC<ModeProps> = ({
     },[setMod]);
 
     return (
-        <div className="border-2 border-black grid grid-rows-2">
-            <select
-                value={mode.index}
-                onChange={(e) => onModeChange(e)}
-            >
-                {modes.map((mode) => (
-                <option key={mode.index} value={mode.index}>
-                    {mode.text}
-                </option>
-                ))}
-            </select>
-            {mode.modifiers?.map((mod, index) => {
-                return (
-                    <div key={mod.label} className="grid grid-cols-[15%_70%_15%]">
+        <div className="border-2 border-black grid grid-rows-[30%_70%]">
+            <div className="grid grid-cols-2">
+                <select
+                    value={mode.index}
+                    onChange={(e) => onModeChange(e)}
+                >
+                    {modes.map((mode) => (
+                    <option key={mode.index} value={mode.index}>
+                        {mode.text}
+                    </option>
+                    ))}
+                </select>
+                <div className='p-2'>{mode.description}</div>
+            </div>
+
+            {mode.modifiers?.map((mod, index) => (
+                    <div key={mod.label} className="grid grid-cols-[15%_70%_15%] items-center text-center">
                         {mod.label}
                         <input 
                             type="range"
@@ -51,8 +54,7 @@ const Modes: React.FC<ModeProps> = ({
                         />
                         {mod.value}
                     </div>
-            )})}
-            <div className='text-center'>{mode.description}</div>
+            ))}  
         </div>
     );
 };
