@@ -9,7 +9,7 @@ const useKeyboard = (
     hertzPlayback: HertzPlayback | null,
     getModeState: () => Mode,
 ) => {
-    const [keys] = useState<Key[]>( getKeys( keyboardRange) );
+    const keys = useRef<Key[]>( getKeys( keyboardRange) );
     const hertzTable = useRef<HertzTable>(getHertzTable( keyboardRange ));
     const lastReleased = useRef<string | null>(null);
 
@@ -43,7 +43,7 @@ const useKeyboard = (
         }
     }, [hertzPlayback, getModeState]);
 
-    return { keys, resetHertzTable, keyHandlers: {onKeyDown, onKeyUp}};
+    return { keys: keys.current, resetHertzTable, keyHandlers: {onKeyDown, onKeyUp}};
 };
 
 export default useKeyboard;
