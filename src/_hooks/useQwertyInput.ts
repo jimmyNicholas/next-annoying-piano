@@ -9,14 +9,6 @@ export function useQwertyInput({octaveRange, keyHandlers}: QwertyInputProps) {
     const isQwertyEnabled = useRef(false);
     const [pressedQwerty, setPressedQwerty] = useState<string[]>([]);
 
-    // const toggleIsQwertyEnabled = () => {
-    //     isQwertyEnabled.current = !isQwertyEnabled.current;
-    // };
-
-    // const checkIsQwertyEnabled = (): boolean => {
-    //     return isQwertyEnabled.current;
-    // };
-
     const getIsQwertyEnabled = useCallback(() => {
         return isQwertyEnabled.current;
     }, []);
