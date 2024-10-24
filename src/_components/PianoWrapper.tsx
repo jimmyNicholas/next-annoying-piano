@@ -1,7 +1,7 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
-import { useMemo, useRef} from "react";
+import { useMemo } from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
@@ -13,7 +13,8 @@ import useMidiController from "@/_hooks/useMidiController";
 const PianoWrapper: React.FC = () => {
 
     const { 
-        hertzPlayback, 
+        hertzPlayback,
+        keyEmitter, 
         effectsInterfaces
     } = useAudio();
 
@@ -84,6 +85,7 @@ const PianoWrapper: React.FC = () => {
 
     const keyboardProps: KeyboardProps = {
         keys,
+        keyEmitter,
         keyHandlers
     };
 

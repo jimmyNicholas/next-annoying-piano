@@ -61,6 +61,7 @@ interface ModeModifiers {
 //Keyboard Types
 export interface KeyboardProps {
     keys: Key[],
+    keyEmitter: ToneType.Emitter | null,
     keyHandlers: KeyHandlers;
 }
 

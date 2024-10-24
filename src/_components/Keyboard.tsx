@@ -1,28 +1,54 @@
 import { KeyboardProps } from '@/_lib/_types/types';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 const Keyboard: React.FC<KeyboardProps> = ({
     keys,
+    keyEmitter,
     keyHandlers
 }) => {
     const {onKeyDown, onKeyUp} = keyHandlers;
     const activeKeyRef = useRef<string | null>(null);
+    const [activeKeys, setActiveKeys] = useState<string[]>([]);
+
+    const addActiveKey = useCallback((keyName: string) => {
+        setActiveKeys((prev) => {
+            if (prev.includes(keyName)) return prev;
+            return [...prev, keyName];
+        });
+    }, [setActiveKeys]);
+
+    const removeActiveKey = useCallback((keyName: string) => {
+        setActiveKeys((prev) => prev.filter(key => key !== keyName));
+    }, [setActiveKeys]);
+
+    useEffect(() => {
+        if (!keyEmitter) return;
+        keyEmitter.on('keyDown', ({keyName}:{keyName: string}) => {
+            addActiveKey(keyName);            
+        }); 
+        keyEmitter.on('keyUp', ({keyName}:{keyName: string}) => {
+            removeActiveKey(keyName);  
+        }); 
+    }, [keyEmitter, addActiveKey, removeActiveKey]);
     
     const handleOnKeyDown = useCallback((keyName: string) => {
         activeKeyRef.current = keyName;
-        onKeyDown(keyName);  
-    }, [onKeyDown]);
+        onKeyDown(keyName);
+        addActiveKey(keyName);
+    }, [onKeyDown, addActiveKey]);
 
     const handleOnKeyUp = useCallback((keyName: string) => {
         if (activeKeyRef.current === keyName) {
             onKeyUp(keyName); 
         }
         activeKeyRef.current = null;
-    }, [onKeyUp]);
+        removeActiveKey(keyName);
+    }, [onKeyUp, removeActiveKey]);
 
     const handlePointerLeave = useCallback(() => {
         if (activeKeyRef.current) {
           onKeyUp(activeKeyRef.current);
+          removeActiveKey(activeKeyRef.current);
           activeKeyRef.current = null;
         }
       }, [onKeyUp]);
@@ -49,6 +75,9 @@ const Keyboard: React.FC<KeyboardProps> = ({
                     if (key.pitch === 'C' || key.pitch === 'F') {
                         whiteKeyMargin = '';
                     }
+
+                    const isActive = activeKeys.includes(key.name);
+
                     return (
                         <React.Fragment key={key.name}> 
                             {key.pitch[1] === '#' ? 
@@ -58,7 +87,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
                                     onPointerUp={() => handleOnKeyUp(key.name)}
                                     onPointerLeave={handlePointerLeave}
                                     onPointerCancel={() => handleOnKeyUp(key.name)}
-                                    className=' 
+                                    className={` 
                                         relative 
                                         float-left 
                                         h-16 
@@ -69,9 +98,11 @@ const Keyboard: React.FC<KeyboardProps> = ({
                                         border-black 
                                         rounded-b-[3px] 
                                         shadow-[inset_-1px_-1px_2px_rgba(255,255,255,0.2),inset_0_-5px_2px_3px_rgba(0,0,0,0.6),0_2px_4px_rgba(0,0,0,0.5)] 
-                                        bg-gradient-to-br from-[#222] to-[#555]  
-                                        active:shadow-[inset_-1px_-1px_2px_rgba(255,255,255,0.2),inset_0_-2px_2px_3px_rgba(0,0,0,0.6),inset_0_1px_2px_rgba(0,0,0,0.5)] 
-                                        active:bg-gradient-to-r from-[#444] to-[#222]'
+                                        bg-gradient-to-br from-[#222] to-[#555]
+                                        ${isActive ?   
+                                            'active:shadow-[inset_-1px_-1px_2px_rgba(255,255,255,0.2),inset_0_-2px_2px_3px_rgba(0,0,0,0.6),inset_0_1px_2px_rgba(0,0,0,0.5)] active:bg-gradient-to-r from-[#444] to-[#222]'
+                                            : ''    
+                                        }`}
                                 >
                                 </button> 
                                 : 
@@ -94,12 +125,10 @@ const Keyboard: React.FC<KeyboardProps> = ({
                                         rounded-b-[5px] 
                                         shadow-[inset_-1px_0_0_rgba(255,255,255,0.8),inset_0_0_5px_#ccc,inset_0_0_3px_rgba(0,0,0,0.2)] 
                                         bg-gradient-to-b from-[#eee] to-white 
-                                        active:border-t 
-                                        active:border-l 
-                                        active:border-b 
-                                        active:border-[#999] 
-                                        active:shadow-[inset_2px_0_3px_rgba(0,0,0,0.1),inset_-5px_5px_20px_rgba(0,0,0,0.2),inset_0_0_3px_rgba(0,0,0,0.2)] 
-                                        active:bg-gradient-to-b from-white to-[#e9e9e9]`}>
+                                        ${isActive ?   
+                                            'border-t border-l border-b border-[#999] shadow-[inset_2px_0_3px_rgba(0,0,0,0.1),inset_-5px_5px_20px_rgba(0,0,0,0.2),inset_0_0_3px_rgba(0,0,0,0.2)] bg-gradient-to-b from-white to-[#e9e9e9]'
+                                            : ''    
+                                        }`}>
                                 </button>}
                         </React.Fragment> 
                     )
