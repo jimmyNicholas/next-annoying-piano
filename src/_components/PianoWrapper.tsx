@@ -41,18 +41,7 @@ const PianoWrapper: React.FC = () => {
         resetHertzTable();
     };
     
-    const isQwertyEnabled = useRef(false);
-
-    const toggleIsQwertyEnabled = () => {
-        isQwertyEnabled.current = !isQwertyEnabled.current;
-    };
-
-    const checkIsQwertyEnabled = (): boolean => {
-        return isQwertyEnabled.current;
-    };
-
     const qwertyInputProps: QwertyInputProps = {
-        checkIsQwertyEnabled,
         octaveRange: {
             octaveMin: keyboardRange.startOctave,
             currentOctave: 2,
@@ -61,7 +50,7 @@ const PianoWrapper: React.FC = () => {
         keyHandlers
     };
 
-    useQwertyInput(qwertyInputProps);
+    const { getIsQwertyEnabled, setIsQwertyEnabled } = useQwertyInput(qwertyInputProps);
     useMidiController(keys, keyHandlers);
     const { parsedMidiData, getMidiFileText, handleMidiUpload} = useMidiUploader();
     const { play, pause, stop, getPlaybackState } = useMidiPlayback(parsedMidiData, keyHandlers);
@@ -71,8 +60,8 @@ const PianoWrapper: React.FC = () => {
             onReset
         },
         inputProps: {
-            checkIsQwertyEnabled,
-            toggleIsQwertyEnabled,
+            getIsQwertyEnabled, 
+            setIsQwertyEnabled,
             midiPlaybackProps: {
               getMidiFileText, 
               handleMidiUpload,

@@ -11,8 +11,8 @@ export interface GlobalProps {
 };
 
 export interface InputProps {
-    checkIsQwertyEnabled: () => boolean;
-    toggleIsQwertyEnabled: () => void;
+    getIsQwertyEnabled: () => boolean;
+    setIsQwertyEnabled: (value: boolean) => void;
     midiPlaybackProps: MidiPlaybackProps;
 };
 
@@ -103,7 +103,6 @@ export interface KeyHandlers {
 
 // User Input Types
 export interface QwertyInputProps {
-    checkIsQwertyEnabled: () => boolean; 
     octaveRange: OctaveRange;
     keyHandlers: KeyHandlers;
 };
