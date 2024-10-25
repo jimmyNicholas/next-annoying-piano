@@ -1,6 +1,6 @@
 import { HertzModifiers, HertzTable } from "@/_lib/_types/types";
 
-const swapHertz = (hertzModifiers: HertzModifiers, hertzTable: HertzTable): void => {
+const modifySwap = (hertzModifiers: HertzModifiers, hertzTable: HertzTable): void => {
     const { lastKey, currentKey } = hertzModifiers;
 
     const lastHertz = hertzTable[lastKey];
@@ -9,4 +9,11 @@ const swapHertz = (hertzModifiers: HertzModifiers, hertzTable: HertzTable): void
     hertzTable[currentKey] = lastHertz;
 };
 
-export default swapHertz;
+const swapMode = {
+    name: 'Swap',
+    description: "Swaps pitch of the last released key with the previous key.",
+    modify: modifySwap,
+    modifiers: []
+};
+
+export default swapMode;
