@@ -51,7 +51,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
           removeActiveKey(activeKeyRef.current);
           activeKeyRef.current = null;
         }
-      }, [onKeyUp]);
+      }, [onKeyUp, removeActiveKey]);
 
     return (
         <div className='grid content-center h-full bg-[url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/187/vwood.png)]'>
