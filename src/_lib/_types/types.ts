@@ -11,8 +11,8 @@ export interface GlobalProps {
 };
 
 export interface InputProps {
-    getIsQwertyEnabled: () => boolean;
-    setIsQwertyEnabled: (value: boolean) => void;
+    isQwertyEnabled: boolean;
+    toggleIsQwertyEnabled: () => void;
     midiPlaybackProps: MidiPlaybackProps;
 };
 
