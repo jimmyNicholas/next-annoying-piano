@@ -1,18 +1,19 @@
 import { InputProps } from "@/_lib/_types/types";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useMIDIInputs } from '@react-midi/hooks'
 import MidiPlayback from "./inputs/MidiPlayback";
 
 const Inputs: React.FC<InputProps> = ({
-    checkIsQwertyEnabled,
+    isQwertyEnabled,
     toggleIsQwertyEnabled,
     midiPlaybackProps
 }) => {
-    const [isEnabled, setIsEnabled] = useState(checkIsQwertyEnabled());
-    function onClick() {
+    const [isEnabled, setIsEnabled] = useState<boolean>(isQwertyEnabled);
+    
+    const onClick = useCallback(() =>  {
         toggleIsQwertyEnabled();
-        setIsEnabled(checkIsQwertyEnabled());
-    };
+        setIsEnabled(prev => !prev);
+    }, [toggleIsQwertyEnabled, setIsEnabled]);
 
     const { inputs, selectInput, selectedInputId } = useMIDIInputs();
 

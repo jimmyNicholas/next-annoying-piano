@@ -1,16 +1,13 @@
 import { MidiPlaybackProps } from "@/_lib/_types/types";
-import { useState } from "react";
 
 const MidiPlayback: React.FC<MidiPlaybackProps> = ({
-    getMidiFileText, 
+    midiFileText, 
     handleMidiUpload,
     play, 
     pause, 
     stop, 
-    getPlaybackState
+    playbackState
   }) => {
-    const [ playbackState ] = useState<'stopped' | 'playing' | 'paused'>(getPlaybackState());
-    const [midiFileText] = useState<string | null>(getMidiFileText());
 
     return (
         <>

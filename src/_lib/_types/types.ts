@@ -11,18 +11,18 @@ export interface GlobalProps {
 };
 
 export interface InputProps {
-    checkIsQwertyEnabled: () => boolean;
+    isQwertyEnabled: boolean;
     toggleIsQwertyEnabled: () => void;
     midiPlaybackProps: MidiPlaybackProps;
 };
 
 export interface MidiPlaybackProps {
-    getMidiFileText: () => string | null;
+    midiFileText: string | null;
     handleMidiUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
     play: () => void; 
     pause: () => void;
     stop: () => void;
-    getPlaybackState: () => 'stopped' | 'playing' | 'paused'
+    playbackState:  'stopped' | 'playing' | 'paused';
 };
 
 export interface ModeProps {
@@ -61,6 +61,7 @@ interface ModeModifiers {
 //Keyboard Types
 export interface KeyboardProps {
     keys: Key[],
+    keyEmitter: ToneType.Emitter | null,
     keyHandlers: KeyHandlers;
 }
 
@@ -103,7 +104,6 @@ export interface KeyHandlers {
 
 // User Input Types
 export interface QwertyInputProps {
-    checkIsQwertyEnabled: () => boolean; 
     octaveRange: OctaveRange;
     keyHandlers: KeyHandlers;
 };

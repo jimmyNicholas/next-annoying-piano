@@ -1,7 +1,7 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
-import { useMemo, useRef} from "react";
+import { useMemo } from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
@@ -13,7 +13,8 @@ import useMidiController from "@/_hooks/useMidiController";
 const PianoWrapper: React.FC = () => {
 
     const { 
-        hertzPlayback, 
+        hertzPlayback,
+        keyEmitter, 
         effectsInterfaces
     } = useAudio();
 
@@ -41,18 +42,7 @@ const PianoWrapper: React.FC = () => {
         resetHertzTable();
     };
     
-    const isQwertyEnabled = useRef(false);
-
-    const toggleIsQwertyEnabled = () => {
-        isQwertyEnabled.current = !isQwertyEnabled.current;
-    };
-
-    const checkIsQwertyEnabled = (): boolean => {
-        return isQwertyEnabled.current;
-    };
-
     const qwertyInputProps: QwertyInputProps = {
-        checkIsQwertyEnabled,
         octaveRange: {
             octaveMin: keyboardRange.startOctave,
             currentOctave: 2,
@@ -61,25 +51,25 @@ const PianoWrapper: React.FC = () => {
         keyHandlers
     };
 
-    useQwertyInput(qwertyInputProps);
+    const { isQwertyEnabled, toggleIsQwertyEnabled } = useQwertyInput(qwertyInputProps);
     useMidiController(keys, keyHandlers);
-    const { parsedMidiData, getMidiFileText, handleMidiUpload} = useMidiUploader();
-    const { play, pause, stop, getPlaybackState } = useMidiPlayback(parsedMidiData, keyHandlers);
+    const { parsedMidiData, midiFileText, handleMidiUpload} = useMidiUploader();
+    const { play, pause, stop, playbackState } = useMidiPlayback(parsedMidiData, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: {
             onReset
         },
         inputProps: {
-            checkIsQwertyEnabled,
+            isQwertyEnabled, 
             toggleIsQwertyEnabled,
             midiPlaybackProps: {
-              getMidiFileText, 
+              midiFileText, 
               handleMidiUpload,
               play, 
               pause, 
               stop, 
-              getPlaybackState
+              playbackState
             }
         },
         modeProps: {
@@ -95,6 +85,7 @@ const PianoWrapper: React.FC = () => {
 
     const keyboardProps: KeyboardProps = {
         keys,
+        keyEmitter,
         keyHandlers
     };
 
