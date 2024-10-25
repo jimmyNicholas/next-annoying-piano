@@ -17,12 +17,12 @@ export interface InputProps {
 };
 
 export interface MidiPlaybackProps {
-    getMidiFileText: () => string | null;
+    midiFileText: string | null;
     handleMidiUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
     play: () => void; 
     pause: () => void;
     stop: () => void;
-    getPlaybackState: () => 'stopped' | 'playing' | 'paused'
+    playbackState:  'stopped' | 'playing' | 'paused';
 };
 
 export interface ModeProps {

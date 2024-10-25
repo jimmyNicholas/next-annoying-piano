@@ -53,8 +53,8 @@ const PianoWrapper: React.FC = () => {
 
     const { isQwertyEnabled, toggleIsQwertyEnabled } = useQwertyInput(qwertyInputProps);
     useMidiController(keys, keyHandlers);
-    const { parsedMidiData, getMidiFileText, handleMidiUpload} = useMidiUploader();
-    const { play, pause, stop, getPlaybackState } = useMidiPlayback(parsedMidiData, keyHandlers);
+    const { parsedMidiData, midiFileText, handleMidiUpload} = useMidiUploader();
+    const { play, pause, stop, playbackState } = useMidiPlayback(parsedMidiData, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: {
@@ -64,12 +64,12 @@ const PianoWrapper: React.FC = () => {
             isQwertyEnabled, 
             toggleIsQwertyEnabled,
             midiPlaybackProps: {
-              getMidiFileText, 
+              midiFileText, 
               handleMidiUpload,
               play, 
               pause, 
               stop, 
-              getPlaybackState
+              playbackState
             }
         },
         modeProps: {
