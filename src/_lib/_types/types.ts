@@ -42,9 +42,7 @@ export interface OutputProps {
 
 // Mode Types
 export interface Mode {
-    index: number;
-    text: string;
-    value: string;
+    name: string;
     description: string;
     modifiers?: ModeModifiers[];
 }
