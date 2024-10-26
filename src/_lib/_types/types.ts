@@ -49,7 +49,7 @@ export interface Mode {
     modifiers?: ModeModifiers[];
 }
 
-interface ModeModifiers {
+export interface ModeModifiers {
     modName: string,
     label: string;
     min: number;
