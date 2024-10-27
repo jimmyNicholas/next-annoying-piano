@@ -26,9 +26,9 @@ const PianoWrapper: React.FC = () => {
     }), []);
 
     const {
-        getModeState,
-        setModeState,
-        setMod,
+        getModeRef,
+        setModeRef,
+        updateModifier,
         modes
     } = useMode(onReset);
 
@@ -36,7 +36,7 @@ const PianoWrapper: React.FC = () => {
         keys,
         resetHertzTable,
         keyHandlers
-    } = useKeyboard(keyboardRange, hertzPlayback, getModeState);
+    } = useKeyboard(keyboardRange, hertzPlayback, getModeRef);
 
     function onReset() {
         resetHertzTable();
@@ -73,9 +73,9 @@ const PianoWrapper: React.FC = () => {
             }
         },
         modeProps: {
-            getModeState,
-            setModeState,
-            setMod,
+            getModeRef,
+            setModeRef,
+            updateModifier,
             modes
         },
         outputProps: {
