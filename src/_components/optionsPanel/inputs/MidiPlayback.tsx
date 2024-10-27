@@ -1,4 +1,6 @@
 import { MidiPlaybackProps } from "@/_lib/_types/types";
+import { UploadFileIcon } from "@/_assets/icons";
+import { PlayIcon, PauseIcon, StopIcon } from "@/_assets/icons";
 
 const MidiPlayback: React.FC<MidiPlaybackProps> = ({
     midiFileText, 
@@ -11,29 +13,28 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
 
     return (
         <>
-            {playbackState}
             <div className="grid grid-flow-col">         
                 <button 
-                    className="border-2 border-black p-1"
+                    className={`${playbackState === 'playing' ? "bg-yellow-300" : "bg-slate-300"} border-2 border-black p-1 grid justify-center content-center`}
                     onClick={play}>
-                        Play
+                        <PlayIcon className="size-12"/> 
                 </button>
                 <button 
-                    className="border-2 border-black p-1"
+                    className={`${playbackState === 'paused' ? "bg-yellow-300" : "bg-slate-300"} border-2 border-black p-1 grid justify-center content-center`}
                     onClick={pause}>
-                        Pause
+                        <PauseIcon className="size-12"/>
                 </button>
                 <button 
-                    className="border-2 border-black p-1"
+                    className={`${playbackState === 'stopped' ? "bg-yellow-300" : "bg-slate-300"} border-2 border-black p-1 grid justify-center content-center`}
                     onClick={stop}>
-                        Stop
+                        <StopIcon className="size-12"/>
                 </button>
             </div>
             <div className="grid grid-flow-col">
                 <label
-                    className={`bg-slate-300 m-2`}
+                    className={`bg-slate-300 grid justify-center content-center`}
                 >
-                    Upload Midi File
+                    <UploadFileIcon className="size-20"/>
                     <input 
                         type="file" 
                         accept=".mid, .midi" 
