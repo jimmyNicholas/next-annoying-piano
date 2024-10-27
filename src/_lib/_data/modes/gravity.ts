@@ -4,12 +4,13 @@ import { Mode } from "@/_lib/_data/modes/Mode";
 export class GravityMode extends Mode {
     constructor() {
         super(
+            'GRAVITY',
             'Gravity',
             'Pulls the pitch of the previous key toward it the last released key.',
             [
                 {
-                    modName: 'STRENGTH',
-                    label: 'Strength',
+                    id: 'STRENGTH',
+                    name: 'Strength',
                     min: 1,
                     value: 2,
                     max: 10,
@@ -23,7 +24,7 @@ export class GravityMode extends Mode {
         const { lastKey, currentKey } = hertzModifiers;
         const lastHertz = hertzTable[lastKey];
         const currentHertz = hertzTable[currentKey];
-        const strength = this.modifiers.find((mod) => {return mod.modName === 'STRENGTH'});
+        const strength = this.modifiers.find((mod) => {return mod.id === 'STRENGTH'});
         if (!strength) return;
         const newHertz = Math.round(lastHertz - ((lastHertz - currentHertz) / (strength.max - strength.value)));
         hertzTable[lastKey] = newHertz;  
