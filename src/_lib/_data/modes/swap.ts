@@ -4,6 +4,7 @@ import { HertzModifiers, HertzTable } from "@/_lib/_types/types";
 export class SwapMode extends Mode {
     constructor() {
         super(
+            'SWAP',
             'Swap',
             'Swaps pitch of the last released key with the previous key.',
             []
