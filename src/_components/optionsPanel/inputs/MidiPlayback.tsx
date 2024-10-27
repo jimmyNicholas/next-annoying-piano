@@ -11,7 +11,6 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
 
     return (
         <>
-            {playbackState}
             <div className="grid grid-flow-col">         
                 <button 
                     className="border-2 border-black p-1"
