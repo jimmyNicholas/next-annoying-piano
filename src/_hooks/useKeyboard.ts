@@ -2,12 +2,11 @@ import { useRef, useCallback } from "react";
 import { Key, HertzTable, KeyboardRange, HertzPlayback, Mode } from "@/_lib/_types/types";
 import { getKeys } from "@/_utils/keys/keyboardSetup";
 import { getHertzTable } from "@/_utils/hertzHelpers";
-import getMode from "@/_utils/modes/getMode";
 
 const useKeyboard = (
     keyboardRange: KeyboardRange,
     hertzPlayback: HertzPlayback | null,
-    getModeState: () => Mode,
+    getMode: () => Mode,
 ) => {
     const keys = useRef<Key[]>( getKeys( keyboardRange) );
     const hertzTable = useRef<HertzTable>(getHertzTable( keyboardRange ));
@@ -28,20 +27,15 @@ const useKeyboard = (
         if (!lastReleased.current) {
             lastReleased.current = keyName;
         } else if (lastReleased.current !== keyName){
-            const mode = getModeState();
-            const modeSelect = {
-                mode: mode.value,
-                hertzModifiers: {
-                    lastKey: lastReleased.current,
-                    currentKey: keyName,
-                    modifiers: mode.modifiers
-                },
-                hertzTable: hertzTable.current
+            const mode = getMode();
+            const hertzModifiers = {
+                lastKey: lastReleased.current,
+                currentKey: keyName,
             };
-            getMode(modeSelect);
+            mode.modify(hertzModifiers, hertzTable.current);
             lastReleased.current = keyName;
         }
-    }, [hertzPlayback, getModeState]);
+    }, [hertzPlayback, getMode]);
 
     return { keys: keys.current, resetHertzTable, keyHandlers: {onKeyDown, onKeyUp}};
 };
