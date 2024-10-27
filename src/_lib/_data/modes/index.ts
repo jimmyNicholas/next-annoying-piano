@@ -3,6 +3,6 @@ import { GravityMode } from "./gravity";
 import { SwapMode } from "./swap";
 
 export const modes: Mode[] = [
-    new GravityMode(),
-    new SwapMode()
+    new SwapMode(),
+    new GravityMode()
 ];
