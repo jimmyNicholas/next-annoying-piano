@@ -1,4 +1,5 @@
 import { MidiPlaybackProps } from "@/_lib/_types/types";
+import { UploadFileIcon } from "@/_assets/icons";
 
 const MidiPlayback: React.FC<MidiPlaybackProps> = ({
     midiFileText, 
@@ -30,9 +31,9 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
             </div>
             <div className="grid grid-flow-col">
                 <label
-                    className={`bg-slate-300 m-2`}
+                    className={`bg-slate-300 grid justify-center content-center`}
                 >
-                    Upload Midi File
+                    <UploadFileIcon className="size-20"/>
                     <input 
                         type="file" 
                         accept=".mid, .midi" 
