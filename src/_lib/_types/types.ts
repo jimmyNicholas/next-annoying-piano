@@ -26,9 +26,9 @@ export interface MidiPlaybackProps {
 };
 
 export interface ModeProps {
-    getModeState: () => Mode;
-    setModeState: (mode: number) => void;
-    setMod: (value: number, index: number) => void;
+    getModeRef: () => Mode;
+    setModeRef: (newMode: Mode) => void;
+    updateModifier: (newValue: number, index: number) => void;
     modes: Mode[];
 };
 
@@ -42,16 +42,16 @@ export interface OutputProps {
 
 // Mode Types
 export interface Mode {
-    index: number;
-    text: string;
-    value: string;
+    id: string;
+    name: string;
     description: string;
     modifiers?: ModeModifiers[];
+    modify: (hertzModifiers: HertzModifiers, hertzTable: HertzTable) => void;
 }
 
-interface ModeModifiers {
-    modName: string,
-    label: string;
+export interface ModeModifiers {
+    id: string,
+    name: string;
     min: number;
     value: number;
     max: number;
@@ -89,7 +89,6 @@ export interface ModeSelect {
 export interface HertzModifiers {
     lastKey: string;
     currentKey: string;
-    modifiers: ModeModifiers[] | undefined; 
 }
 
 export interface HertzTable {
