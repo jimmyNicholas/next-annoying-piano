@@ -15,7 +15,6 @@
     "@heroicons/react": "^2.1.5",
     "@react-midi/hooks": "^2.0.1",
     "@tonejs/midi": "^2.0.28",
-    "bootstrap-icons": "^1.11.3",
     "next": "^14.2.13",
     "prettier": "^3.3.3",
     "react": "^18.3.1",
