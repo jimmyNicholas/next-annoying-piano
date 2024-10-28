@@ -7,7 +7,7 @@ import { MIDIProvider } from "@react-midi/hooks";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[12%_80%_8%] h-lvh">
+    <div className="grid grid-rows-[4%_92%_4%] w-full h-full">
       <Header/>
       <MIDIProvider>
         <MainApp/>
