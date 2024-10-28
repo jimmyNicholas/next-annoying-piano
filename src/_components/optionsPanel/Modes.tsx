@@ -30,8 +30,8 @@ const Modes: React.FC<ModeProps> = ({
     };
 
     return (
-        <div className="border-2 border-black grid grid-rows-[30%_70%]">
-            <div className="grid grid-cols-2">
+        <div className="border-2 border-black">
+            <div className="grid grid-cols-[30%_70%]">
                 <select
                     value={modeState.id}
                     onChange={(e) => onModeChange(e.target.value)}

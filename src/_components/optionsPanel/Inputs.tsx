@@ -19,25 +19,27 @@ const Inputs: React.FC<InputProps> = ({
     const { inputs, selectInput, selectedInputId } = useMIDIInputs();
 
     return (
-        <div className="border-2 border-black grid grid-cols-2">
-            <button
-                key={'enableAudio'}
-                className={`${isEnabled ? "bg-yellow-300" : "bg-slate-300"} grid justify-center content-center`}
-                onClick={onClick}
-            >
-                <QwertyIcon className="size-20"/>
-            </button>
-            <select 
-                value={selectedInputId || ''} 
-                onChange={(e) => selectInput(e.target.value)}
-            >
-                <option value="">Select MIDI Input</option>
-                {inputs.map((input) => (
-                <option key={input.id} value={input.id}>
-                    {input.name}
-                </option>
-                ))}
-            </select>
+        <div className="border-2 border-black grid grid-cols-[40%_60%]">
+            <div className="grid grid-rows-[60%_40%]">
+                <button
+                    key={'enableAudio'}
+                    className={`${isEnabled ? "bg-yellow-300" : "bg-slate-300"} grid justify-center content-center`}
+                    onClick={onClick}
+                >
+                    <QwertyIcon className="size-20"/>
+                </button>
+                <select 
+                    value={selectedInputId || ''} 
+                    onChange={(e) => selectInput(e.target.value)}
+                >
+                    <option value="">Select MIDI Controller</option>
+                    {inputs.map((input) => (
+                    <option key={input.id} value={input.id}>
+                        {input.name}
+                    </option>
+                    ))}
+                </select>
+            </div>
             <MidiPlayback {...midiPlaybackProps}/>
         </div>
     );
