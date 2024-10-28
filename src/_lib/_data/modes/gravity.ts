@@ -22,6 +22,7 @@ export class GravityMode extends Mode {
 
     modify(hertzModifiers: HertzModifiers, hertzTable: HertzTable): void {
         const { lastKey, currentKey } = hertzModifiers;
+        if (lastKey === currentKey) return;
         const lastHertz = hertzTable[lastKey];
         const currentHertz = hertzTable[currentKey];
         const strength = this.modifiers.find((mod) => {return mod.id === 'STRENGTH'});
