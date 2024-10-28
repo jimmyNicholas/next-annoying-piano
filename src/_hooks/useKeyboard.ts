@@ -26,15 +26,15 @@ const useKeyboard = (
         hertzPlayback.stopHertz(keyName);
         if (!lastReleased.current) {
             lastReleased.current = keyName;
-        } else if (lastReleased.current !== keyName){
-            const mode = getMode();
-            const hertzModifiers = {
-                lastKey: lastReleased.current,
-                currentKey: keyName,
-            };
-            mode.modify(hertzModifiers, hertzTable.current);
-            lastReleased.current = keyName;
-        }
+        } 
+        const mode = getMode();
+        const hertzModifiers = {
+            lastKey: lastReleased.current,
+            currentKey: keyName,
+        };
+        mode.modify(hertzModifiers, hertzTable.current);
+        lastReleased.current = keyName;
+        
     }, [hertzPlayback, getMode]);
 
     return { keys: keys.current, resetHertzTable, keyHandlers: {onKeyDown, onKeyUp}};
