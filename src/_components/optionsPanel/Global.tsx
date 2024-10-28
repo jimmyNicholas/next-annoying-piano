@@ -5,10 +5,10 @@ const Global: React.FC<GlobalProps> = ({
     onReset   
 }) => {
     return (
-        <div className="border-2 border-black grid grid-cols-2">
+        <div className="border-2 border-black grid">
             <button
                 key={'reset'}
-                className="bg-rose-400 m-2 active:bg-rose-300 flex justify-center"
+                className="bg-rose-400 p-2 aspect-square active:bg-rose-300"
                 onClick={onReset}
             >
                 <ResetIcon className='p-2'/>
