@@ -1,22 +1,21 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { PolySynth } from "@/_lib/_types/types";
 import { ToneContext } from "@/_components/MainApp";
 
 const useSynth = () => {
     const tone = useContext(ToneContext);
-    const [ polySynth, setPolySynth] = useState<PolySynth | null>(null);
+    const polySynth = useRef<PolySynth | null>(null);
 
     useEffect(() => { 
         if (!tone) return;
-        const newPolySynth = new tone.PolySynth(tone.Synth);
-        setPolySynth(newPolySynth);
+        polySynth.current = new tone.PolySynth(tone.Synth);
 
         return () => {
-            newPolySynth.dispose();
+            polySynth.current?.dispose();
         };
     }, [tone]);
 
-    return polySynth;
+    return polySynth.current;
 };
 
 export default useSynth;

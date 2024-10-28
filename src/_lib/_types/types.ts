@@ -11,16 +11,25 @@ export interface GlobalProps {
 };
 
 export interface InputProps {
-    checkIsQwertyEnabled: () => boolean;
+    isQwertyEnabled: boolean;
     toggleIsQwertyEnabled: () => void;
-    keyHandlers: KeyHandlers;
+    midiPlaybackProps: MidiPlaybackProps;
+};
+
+export interface MidiPlaybackProps {
+    midiFileText: string | null;
+    handleMidiUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    play: () => void; 
+    pause: () => void;
+    stop: () => void;
+    playbackState:  'stopped' | 'playing' | 'paused';
 };
 
 export interface ModeProps {
-    mode: Mode;
-    updateMode: (mode: number) => void;
-    onModChange: (value: number, index: number) => void;
-    maxModes: number;
+    getModeRef: () => Mode;
+    setModeRef: (newMode: Mode) => void;
+    updateModifier: (newValue: number, index: number) => void;
+    modes: Mode[];
 };
 
 export interface OutputProps {
@@ -33,23 +42,26 @@ export interface OutputProps {
 
 // Mode Types
 export interface Mode {
-    index: number;
-    text: string;
-    value: string;
+    id: string;
+    name: string;
+    description: string;
     modifiers?: ModeModifiers[];
+    modify: (hertzModifiers: HertzModifiers, hertzTable: HertzTable) => void;
 }
 
-interface ModeModifiers {
-    modName: string,
-    label: string;
+export interface ModeModifiers {
+    id: string,
+    name: string;
     min: number;
     value: number;
     max: number;
+    step: number;
 }
 
 //Keyboard Types
 export interface KeyboardProps {
     keys: Key[],
+    keyEmitter: ToneType.Emitter | null,
     keyHandlers: KeyHandlers;
 }
 
@@ -77,7 +89,6 @@ export interface ModeSelect {
 export interface HertzModifiers {
     lastKey: string;
     currentKey: string;
-    modifiers: ModeModifiers[] | undefined; 
 }
 
 export interface HertzTable {
@@ -92,7 +103,6 @@ export interface KeyHandlers {
 
 // User Input Types
 export interface QwertyInputProps {
-    checkIsQwertyEnabled: () => boolean; 
     octaveRange: OctaveRange;
     keyHandlers: KeyHandlers;
 };
@@ -119,7 +129,7 @@ export interface MidiPlaybackState {
         muted: boolean;
         noteEvents: NoteEvent[];
     }[],
-}
+};
 
 export interface NoteEvent {
     name: string;

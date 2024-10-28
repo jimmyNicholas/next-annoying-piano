@@ -1,31 +1,29 @@
-import { useState, useRef } from "react";
-import { modes } from "@/_lib/_data/modes";
+import { useCallback, useRef } from "react";
 import { Mode } from "@/_lib/_types/types";
+import { modes } from '@/_lib/_data/modes/index' 
 
 const useMode = (
     onReset: () => void,
 ) => {
-    const modeIndex = useRef<number>(0);
-    const [mode, setMode] = useState<Mode>(modes[modeIndex.current]);
+    const modeRef = useRef<Mode>(modes[0]);
 
-    function updateMode(newModeIndex: number) {
-        modeIndex.current = newModeIndex;
-        setMode(modes[modeIndex.current]);
+    const getModeRef = useCallback(() => {
+        return modeRef.current;
+    }, []);
+
+    const setModeRef = useCallback((newMode: Mode) => {
+        modeRef.current = newMode;
         onReset();
-    };
+    },[onReset]);
 
-    function onModChange(value: number, index: number) {
-        setMode(prevMode => ({
-            ...prevMode,
-            modifiers: prevMode.modifiers?.map((modifier, i) => 
-                i === index
-                    ? {...modifier, value: value}
-                    : modifier
-            )
-        }));
-    };
+    const updateModifier = useCallback((newValue: number, index: number) => {
+        if (!modeRef.current.modifiers) return;
+        const modifier = modeRef.current.modifiers[index];
+        if (newValue < modifier.min || newValue > modifier.max) return;
+        modeRef.current.modifiers[index].value = newValue;
+    }, []);
 
-    return { mode, updateMode, onModChange };
+    return { getModeRef, setModeRef, updateModifier, modes };
 };
 
 export default useMode;

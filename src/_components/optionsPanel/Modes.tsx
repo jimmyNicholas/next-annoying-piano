@@ -1,69 +1,70 @@
-import { ModeProps } from '@/_lib/_types/types';
+import { Mode, ModeProps } from '@/_lib/_types/types';
+import { useCallback, useEffect, useState } from 'react';
 
 const Modes: React.FC<ModeProps> = ({
-    mode,
-    updateMode,
-    onModChange,
-    maxModes,
+    getModeRef,
+    setModeRef,
+    updateModifier,
+    modes
 }) => {
-    
+    const [modeState, setModeState] = useState<Mode>(getModeRef());
+    const [updateCounter, setUpdateCounter] = useState<number>(0);
+
+    useEffect(() => {
+        setModeState(getModeRef());
+    }, [getModeRef, updateCounter]);
+
+    const onModeChange = useCallback((id: string) => {
+        const newMode = modes.find(m => m.id === id);
+        if (newMode) setModeRef(newMode);
+        setUpdateCounter(prev => prev + 1);
+    },[modes, setModeRef]);
+
+    const onModChange = useCallback((value: string, index: number) => {
+        updateModifier(Number(value), index);
+        setUpdateCounter(prev => prev + 1);
+    },[updateModifier, setUpdateCounter]);
+
+    if (!modes.length) {
+        return <div>No modes available</div>;
+    };
+
     return (
-        <div className="border-2 border-black grid grid-rows-2">
-            <div className="grid grid-cols-[15%_70%_15%]">         
-                Mode:
-                <input 
-                    type="range"
-                    className="w-full"
-                    value={mode.index}
-                    min={0}
-                    max={maxModes}
-                    onChange={(e) => updateMode(Number(e.target.value))}
-                />
-                {mode.text}
+        <div className="border-2 border-black grid grid-rows-[30%_70%]">
+            <div className="grid grid-cols-2">
+                <select
+                    value={modeState.id}
+                    onChange={(e) => onModeChange(e.target.value)}
+                >
+                    {modes.map((mode) => (
+                    <option key={mode.id} value={mode.id}>
+                        {mode.name}
+                    </option>
+                    ))}
+                </select>
+                <div className='p-2'>{modeState.description}</div>
             </div>
-            {mode.modifiers?.map((mod, index) => {
-                return (
-                    <div key={mod.label} className="grid grid-cols-[15%_70%_15%]">
-                        {mod.label}
-                        <input 
-                            type="range"
-                            className="w-full"
-                            value={mod.value}
-                            min={mod.min}
-                            max={mod.max}
-                            onChange={(e) => onModChange(Number(e.target.value), index)}
-                        />
-                        {mod.value}
-                    </div>
-            )})}
+
+            {modeState.modifiers?.map((mod, index) => (
+                <div 
+                    key={`${mod.id}-${index}`} 
+                    className="grid grid-cols-[15%_70%_15%] items-center text-center"
+                >
+                    {mod.name}
+                    <input 
+                        type="range"
+                        className="w-full"
+                        value={mod.value}
+                        min={mod.min}
+                        max={mod.max}
+                        step={mod.step}
+                        onChange={(e) => onModChange(e.target.value, index)}
+                    />
+                    {mod.value}
+                </div>
+            ))}  
         </div>
     );
 };
 
 export default Modes;
-
-
-/*
-{modes.map((mode) => (
-                <button
-                    key={mode.value}
-                    className={`
-                        ${mode.isSelected ? 'bg-orange-400' : 'bg-slate-300'}
-                        m-2
-                        `
-                    }
-                    onClick={((e) => onClick(e))}
-                    value={mode.value}
-                >
-                    {mode.text}  
-                    <input 
-                        type="range"
-                        className="w-10"
-                        min={0}
-                        max={100}
-                        step={10}
-                        onChange={(e) => setKnobValue(Number(e.target.value))}
-                    />
-                </button>
-            ))}
-*/

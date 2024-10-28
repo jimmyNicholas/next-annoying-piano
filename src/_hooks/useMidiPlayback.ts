@@ -5,6 +5,7 @@ import { ToneContext } from "@/_components/MainApp";
 
 export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp}: KeyHandlers) {
     const tone = useContext(ToneContext);
+    const loadedMidiDataRef = useRef<Midi | null>(parsedMidiData);
     const [playbackState, setPlaybackState] = useState<'stopped' | 'playing' | 'paused'>('stopped');
     const activeNotes = useRef<Set<string>>(new Set());
 
@@ -46,25 +47,30 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
     }, [tone, parsedMidiData, onKeyDown, onKeyUp, releaseAllNotes]);
 
     const play = useCallback(async() => {
-        if (!tone) return;
+        if (!tone || playbackState === 'playing') return;
         tone.getTransport().start();
         setPlaybackState('playing');
-    }, [tone]);
+    }, [tone, playbackState, setPlaybackState]);
 
     const pause = useCallback(() => {
-        if (!tone) return;
+        if (!tone || playbackState === 'paused') return;
         tone.getTransport().pause();
         releaseAllNotes();
         setPlaybackState('paused');
-    }, [tone, releaseAllNotes]);
+    }, [tone, releaseAllNotes, playbackState, setPlaybackState]);
 
     const stop = useCallback(() => {
-        if (!tone) return;
+        if (!tone || playbackState === 'stopped') return;
         tone.getTransport().stop();
         tone.getTransport().position = 0;
         releaseAllNotes();
         setPlaybackState('stopped');
-    }, [tone, releaseAllNotes]);
+    }, [tone, releaseAllNotes, playbackState, setPlaybackState]);
+
+    useEffect(() => {
+        if (parsedMidiData !== loadedMidiDataRef.current) return;
+        stop();
+    }, [parsedMidiData, stop]);
 
     return {
         play,

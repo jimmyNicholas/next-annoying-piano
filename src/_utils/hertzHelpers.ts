@@ -1,7 +1,7 @@
 import { notePitches } from "@/_lib/_data/noteNames";
 import { KeyboardRange, HertzTable } from "@/_lib/_types/types";
 
-function calculateHertz(baseHertz: number, interval: number): number {
+export const calculateHertz = (baseHertz: number, interval: number): number => {
     if (interval === 0) {
         return baseHertz;
     }

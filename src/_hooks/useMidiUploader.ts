@@ -1,6 +1,6 @@
 import parseMidiFile from "@/_services/parseMidiFile";
 import { Midi } from "@tonejs/midi";
-import { useRef, useState } from "react";
+import { useRef, useState} from "react";
 
 const useMidiUploader = () => {
     const parsedMidiData = useRef<Midi | null>(null);
@@ -28,8 +28,9 @@ const useMidiUploader = () => {
     
     return {
         parsedMidiData: parsedMidiData.current, 
-        midiFileText: midiFileText, 
-        handleMidiUpload};
+        midiFileText, 
+        handleMidiUpload
+    };
 };
 
 export default useMidiUploader;
