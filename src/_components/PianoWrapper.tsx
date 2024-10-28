@@ -1,7 +1,7 @@
 import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
-import { useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
@@ -9,8 +9,15 @@ import useMidiUploader from "@/_hooks/useMidiUploader";
 import { useMidiPlayback } from "@/_hooks/useMidiPlayback";
 import useMode from "@/_hooks/useMode";
 import useMidiController from "@/_hooks/useMidiController";
+import { ToneContext } from "./MainApp";
 
 const PianoWrapper: React.FC = () => {
+    const tone = useContext(ToneContext)
+    const [isToneLoaded, setIsToneLoaded] = useState(false);
+
+    useEffect(() => {
+        if (!isToneLoaded && tone) setIsToneLoaded(true);
+    }, [tone, isToneLoaded, setIsToneLoaded]);
 
     const { 
         hertzPlayback,

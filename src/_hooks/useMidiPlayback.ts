@@ -5,6 +5,7 @@ import { ToneContext } from "@/_components/MainApp";
 
 export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp}: KeyHandlers) {
     const tone = useContext(ToneContext);
+    const loadedMidiDataRef = useRef<Midi | null>(parsedMidiData);
     const [playbackState, setPlaybackState] = useState<'stopped' | 'playing' | 'paused'>('stopped');
     const activeNotes = useRef<Set<string>>(new Set());
 
@@ -65,6 +66,11 @@ export function useMidiPlayback(parsedMidiData: Midi | null, {onKeyDown, onKeyUp
         releaseAllNotes();
         setPlaybackState('stopped');
     }, [tone, releaseAllNotes, playbackState, setPlaybackState]);
+
+    useEffect(() => {
+        if (parsedMidiData !== loadedMidiDataRef.current) return;
+        stop();
+    }, [parsedMidiData, stop]);
 
     return {
         play,
