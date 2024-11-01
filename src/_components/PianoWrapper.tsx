@@ -97,7 +97,7 @@ const PianoWrapper: React.FC = () => {
     };
 
     return (
-      <div className="border-2 border-black">
+      <div className="border-2 border-black h-full flex flex-col">
           <OptionsPanel {...optionsPanelProps} />          
           <Keyboard {...keyboardProps} />
       </div>
