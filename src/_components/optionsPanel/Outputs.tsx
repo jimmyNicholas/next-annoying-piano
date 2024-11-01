@@ -36,7 +36,7 @@ const Outputs: React.FC<OutputProps> = ({
                 </div>
             ))}
             
-            {/* {vibratoInterface.name || 'Effect'}
+            {vibratoInterface.name || 'Effect'}
             {vibratoInterface.options.map((option) => (
                 <div key={vibratoInterface.name + option.name} className="grid grid-cols-[25%_65%_10%]">
                     {option.title}
@@ -74,7 +74,7 @@ const Outputs: React.FC<OutputProps> = ({
                     />
                     {option.get()}
                 </div>
-            ))} */}
+            ))}
         </div>
     );
 };
