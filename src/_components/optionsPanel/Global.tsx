@@ -5,13 +5,13 @@ const Global: React.FC<GlobalProps> = ({
     onReset   
 }) => {
     return (
-        <div className="border-2 border-black grid">
+        <div className="flex p-2">
             <button
                 key={'reset'}
-                className="bg-rose-400 p-2 aspect-square active:bg-rose-300"
+                className="bg-rose-500 hover:bg-rose-600 text-white rounded-lg px-6 transition-colors shadow-md items-center"
                 onClick={onReset}
             >
-                <ResetIcon className='p-2'/>
+                <ResetIcon className='w-10 h-10'/>
             </button>
         </div>
     );
