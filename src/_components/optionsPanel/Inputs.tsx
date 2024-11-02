@@ -1,13 +1,11 @@
 import { InputProps } from "@/_lib/_types/types";
 import { useCallback, useState } from "react";
 import { useMIDIInputs } from '@react-midi/hooks'
-import MidiPlayback from "./inputs/MidiPlayback";
 import { QwertyIcon } from "@/_assets/icons";
 
 const Inputs: React.FC<InputProps> = ({
     isQwertyEnabled,
     toggleIsQwertyEnabled,
-    midiPlaybackProps
 }) => {
     const [isEnabled, setIsEnabled] = useState<boolean>(isQwertyEnabled);
     
@@ -19,18 +17,19 @@ const Inputs: React.FC<InputProps> = ({
     const { inputs, selectInput, selectedInputId } = useMIDIInputs();
 
     return (
-        <div className="border-2 border-black grid grid-cols-[40%_60%]">
-            <div className="grid grid-rows-[60%_40%]">
+        <div className="grid grid-cols-[40%_60%] p-2">
+            <div className="grid grid-rows-2 gap-2">
                 <button
                     key={'enableAudio'}
-                    className={`${isEnabled ? "bg-yellow-300" : "bg-slate-300"} grid justify-center content-center`}
+                    className={`${isEnabled ? "bg-yellow-400 hover:bg-yellow-500" : "bg-slate-300 hover:bg-slate-400"} grid justify-center content-center rounded-lg`}
                     onClick={onClick}
                 >
-                    <QwertyIcon className="size-20"/>
+                    <QwertyIcon className="w-20 h-20"/>
                 </button>
                 <select 
                     value={selectedInputId || ''} 
                     onChange={(e) => selectInput(e.target.value)}
+                    className="p-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                     <option value="">Select MIDI Controller</option>
                     {inputs.map((input) => (
@@ -40,7 +39,6 @@ const Inputs: React.FC<InputProps> = ({
                     ))}
                 </select>
             </div>
-            <MidiPlayback {...midiPlaybackProps}/>
         </div>
     );
 };
