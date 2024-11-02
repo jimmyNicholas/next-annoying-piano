@@ -1,4 +1,5 @@
 import { Mode, ModeProps } from '@/_lib/_types/types';
+import DraggableInput from '@/_ui/DraggableInput';
 import { useCallback, useEffect, useState } from 'react';
 
 const Modes: React.FC<ModeProps> = ({
@@ -20,7 +21,7 @@ const Modes: React.FC<ModeProps> = ({
         setUpdateCounter(prev => prev + 1);
     },[modes, setModeRef]);
 
-    const onModChange = useCallback((value: string, index: number) => {
+    const onModChange = useCallback((value: string | number, index: number) => {
         updateModifier(Number(value), index);
         setUpdateCounter(prev => prev + 1);
     },[updateModifier, setUpdateCounter]);
@@ -30,11 +31,12 @@ const Modes: React.FC<ModeProps> = ({
     };
 
     return (
-        <div className="border-2 border-black">
-            <div className="grid grid-cols-[30%_70%]">
+        <div className="flex-2">
+            <div className="grid grid-rows-2 gap-2 m-2">
                 <select
                     value={modeState.id}
                     onChange={(e) => onModeChange(e.target.value)}
+                    className="p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                     {modes.map((mode) => (
                     <option key={mode.id} value={mode.id}>
@@ -42,28 +44,29 @@ const Modes: React.FC<ModeProps> = ({
                     </option>
                     ))}
                 </select>
-                <div className='p-2'>{modeState.description}</div>
-            </div>
 
-            {modeState.modifiers?.map((mod, index) => (
-                <div 
-                    key={`${mod.id}-${index}`} 
-                    className="grid grid-cols-[15%_70%_15%] items-center text-center"
-                >
-                    {mod.name}
-                    <input 
-                        type="range"
-                        className="w-full"
-                        value={mod.value}
-                        min={mod.min}
-                        max={mod.max}
-                        step={mod.step}
-                        onChange={(e) => onModChange(e.target.value, index)}
-                    />
-                    {mod.value}
+                <div className='text-md text-slate-600 p-4'>
+                    {modeState.description}
                 </div>
-            ))}  
-        </div>
+
+                {modeState.modifiers?.map((mod, index) => (
+                    <div 
+                        key={`${mod.id}-${index}`} 
+                        className="grid grid-cols-3 text-sm items-center text-center"
+                    >
+                        <DraggableInput 
+                            label={`${mod.name}: `}
+                            value={mod.value}
+                            min={mod.min}
+                            max={mod.max}
+                            step={mod.step}
+                            onChange={(value) => onModChange(value, index)}
+                        />
+                    </div>
+                ))}  
+
+            </div> 
+        </div>           
     );
 };
 
