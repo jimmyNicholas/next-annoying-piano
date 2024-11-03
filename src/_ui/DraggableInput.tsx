@@ -12,6 +12,7 @@ interface DraggableInputProps {
 const DRAGGING_DENOMINATOR = 200;
 
 const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value: inputValue, step, min, max }) => {
+    const [displayValue, setDisplayValue] = useState<number | null>(null)
     const [value, setValue] = useState(inputValue || 0);
 
     const handleMouseWheel = useCallback<WheelEventHandler<HTMLDivElement>>(
@@ -22,6 +23,8 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
     const handleChange = useCallback(
         (v: number) => {
             onChange?.(v)
+            const decimalAdjustment = step !== 1 ? 100 : 1;
+            setDisplayValue(Math.round(v / step) / decimalAdjustment)
         }, 
         [onChange]
     );
@@ -29,11 +32,9 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
     const handleDrag = useCallback(
         (e: MouseEvent) => {
             e.preventDefault()
-            setValue((prev) => {
-                const rawValue = prev + -e.movementY * ((max - min) / DRAGGING_DENOMINATOR);
-                const steppedValue = parseFloat(rawValue.toFixed(2));
-                return Math.max(min, Math.min(max, steppedValue));
-            });
+            setValue((prev) => 
+                Math.max(min, Math.min(max, prev + -e.movementY * ((max - min) / DRAGGING_DENOMINATOR)))
+            );
         }, [max, min]
     );
 
@@ -61,7 +62,7 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
                 className="flex p-1"
             >
                 <span className="w-16">{label}</span>
-                <span className="font-mono min-w-10">{value}</span>
+                <span className="font-mono min-w-10">{displayValue}</span>
             </div>
         </div>
     );
