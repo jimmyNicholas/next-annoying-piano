@@ -12,7 +12,7 @@ const Outputs: React.FC<OutputProps> = ({
     }, []);
 
     return (
-        <div className="flex-1 grid grid-flow-col max-w-full">
+        <div className="flex-1 grid grid-flow-col">
              {[reverbInterface, vibratoInterface, gainInterface].map((effect, effectIndex) => (
                 <div 
                     key={effect.name !== undefined ? effect.name : effectIndex}
