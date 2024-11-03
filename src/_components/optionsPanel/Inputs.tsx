@@ -17,7 +17,7 @@ const Inputs: React.FC<InputProps> = ({
     const { inputs, selectInput, selectedInputId } = useMIDIInputs();
 
     return (
-        <div className="grid grid-cols-[40%_60%] p-2">
+        <div className="grid grid-cols-[40%_60%] p-2 bg-cyan-100 rounded-lg m-2">
             <div className="grid grid-rows-2 gap-2">
                 <button
                     key={'enableAudio'}
@@ -29,7 +29,7 @@ const Inputs: React.FC<InputProps> = ({
                 <select 
                     value={selectedInputId || ''} 
                     onChange={(e) => selectInput(e.target.value)}
-                    className="p-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="p-2 rounded-lg ring-2 ring-blue-400 hover:ring-blue-500 focus:ring-blue-500 focus:border-transparent"
                 >
                     <option value="">Select MIDI Controller</option>
                     {inputs.map((input) => (
