@@ -13,7 +13,7 @@ const OptionsPanel: React.FC<OptionsPanelProps> = ({
 }) => {
     const {midiPlaybackProps} = inputProps;
     return (
-        <div className="flex flex-wrap bg-cyan-200 gap-2">
+        <div className="flex flex-wrap bg-cyan-600 gap-2">
             {/* <Global {...globalProps} /> */}
             <Inputs {...inputProps}/>
             <MidiPlayback {...midiPlaybackProps}/>
