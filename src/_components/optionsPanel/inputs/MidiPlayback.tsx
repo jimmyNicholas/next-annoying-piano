@@ -12,7 +12,7 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
   }) => {
 
     return (
-        <div className="flex-1 grid grid-cols-2 gap-2 p-2 bg-cyan-100 rounded-lg m-2">
+        <div className="flex-1 grid gap-2 p-2 bg-cyan-100 rounded-lg m-2">
             <div className="grid grid-flow-col gap-1">         
                 <button 
                     className={`${playbackState === 'playing' ? "bg-yellow-300" : "bg-slate-300"} p-2 place-items-center rounded-lg`}
