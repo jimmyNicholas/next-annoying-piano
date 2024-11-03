@@ -1,7 +1,7 @@
 import { ResetIcon } from '@/_assets/icons';
 import { Mode, ModeProps } from '@/_lib/_types/types';
 import DraggableInput from '@/_ui/DraggableInput';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const Modes: React.FC<ModeProps> = ({
     getModeRef,
