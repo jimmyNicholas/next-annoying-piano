@@ -32,20 +32,32 @@ const Modes: React.FC<ModeProps> = ({
     };
 
     return (
-        <div className="flex-1 grid grid-flow-col gap-2 p-2 bg-cyan-100 rounded-lg m-2">
-            <select
-                value={modeState.id}
-                onChange={(e) => onModeChange(e.target.value)}
-                className="px-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        <div className="flex-1 grid gap-2 p-2 bg-cyan-100 rounded-lg m-2">
+            <div
+                className='grid grid-flow-col gap-2'
             >
-                {modes.map((mode) => (
-                <option key={mode.id} value={mode.id}>
-                    {mode.name}
-                </option>
-                ))}
-            </select>
-            <div>
-                <div className='text-md text-wrap px-2 content-center border border-2 rounded-lg text-white bg-teal-900'>
+                <select
+                    value={modeState.id}
+                    onChange={(e) => onModeChange(e.target.value)}
+                    className="px-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                    {modes.map((mode) => (
+                    <option key={mode.id} value={mode.id}>
+                        {mode.name}
+                    </option>
+                    ))}
+                </select>
+                <button
+                    key={'reset'}
+                    className="bg-rose-500 hover:bg-rose-600 text-white rounded-lg px-6 transition-colors shadow-md flex place-content-center"
+                    onClick={onReset}
+                >
+                    <ResetIcon className='w-10 h-10 place-self-center'/>
+                </button>
+            </div>
+
+            <div className='flex xl:flex-row max-xl:flex-col'>
+                <div className='text-md text-wrap px-2 h-full content-center border border-2 rounded-lg text-white bg-teal-900'>
                     {modeState.description}
                 </div>
 
@@ -65,13 +77,6 @@ const Modes: React.FC<ModeProps> = ({
                     </div>
                 ))}  
             </div>
-            <button
-                key={'reset'}
-                className="bg-rose-500 hover:bg-rose-600 text-white rounded-lg px-6 transition-colors shadow-md items-center"
-                onClick={onReset}
-            >
-                <ResetIcon className='w-10 h-10'/>
-            </button>
         </div>      
     );
 };
