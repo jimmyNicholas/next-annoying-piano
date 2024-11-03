@@ -12,7 +12,7 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
   }) => {
 
     return (
-        <div className="flex-1 grid grid-rows-2 gap-2 p-2">
+        <div className="flex-1 grid grid-flow-col gap-2 p-2">
             <div className="grid grid-flow-col gap-1">         
                 <button 
                     className={`${playbackState === 'playing' ? "bg-yellow-300" : "bg-slate-300"} p-2 place-items-center rounded-lg`}
@@ -30,7 +30,7 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
                         <StopIcon className="w-10 h-10"/>
                 </button>
             </div>
-            <div className="grid grid-flow-col">
+            <div className="grid grid-flow-row">
                 <label
                     className={`bg-slate-300 grid justify-center content-center rounded-lg`}
                 >
@@ -42,7 +42,11 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
                         className="hidden"
                     />
                 </label>
-                {midiFileText ? midiFileText : (null)}
+                <div
+                    className="text-sm text-center content-center"
+                >
+                    {midiFileText ? midiFileText : (<div>No Midi File Loaded</div>)}
+                </div>
             </div>
         </div>
     );
