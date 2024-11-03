@@ -65,7 +65,7 @@ const PianoWrapper: React.FC = () => {
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: {
-            onReset
+            //onReset
         },
         inputProps: {
             isQwertyEnabled, 
@@ -83,7 +83,8 @@ const PianoWrapper: React.FC = () => {
             getModeRef,
             setModeRef,
             updateModifier,
-            modes
+            modes,
+            onReset
         },
         outputProps: {
             effectsInterfaces

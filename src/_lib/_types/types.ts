@@ -7,7 +7,7 @@ export interface OptionsPanelProps {
 };
 
 export interface GlobalProps {
-    onReset: () => void;
+
 };
 
 export interface InputProps {
@@ -30,6 +30,7 @@ export interface ModeProps {
     setModeRef: (newMode: Mode) => void;
     updateModifier: (newValue: number, index: number) => void;
     modes: Mode[];
+    onReset: () => void;
 };
 
 export interface OutputProps {
