@@ -32,11 +32,11 @@ const Modes: React.FC<ModeProps> = ({
     };
 
     return (
-        <div className="flex-1 grid grid-flow-col gap-2 m-2">
+        <div className="flex-1 grid grid-flow-col gap-2 p-2 bg-cyan-100 rounded-lg m-2">
             <select
                 value={modeState.id}
                 onChange={(e) => onModeChange(e.target.value)}
-                className="w-32 px-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
                 {modes.map((mode) => (
                 <option key={mode.id} value={mode.id}>
@@ -44,26 +44,27 @@ const Modes: React.FC<ModeProps> = ({
                 </option>
                 ))}
             </select>
-
-            <div className='text-md text-slate-600 p-4'>
-                {modeState.description}
-            </div>
-
-            {modeState.modifiers?.map((mod, index) => (
-                <div 
-                    key={`${mod.id}-${index}`} 
-                    className="grid grid-cols-3 text-sm items-center text-center"
-                >
-                    <DraggableInput 
-                        label={`${mod.name}: `}
-                        value={mod.value}
-                        min={mod.min}
-                        max={mod.max}
-                        step={mod.step}
-                        onChange={(value) => onModChange(value, index)}
-                    />
+            <div>
+                <div className='text-md text-wrap px-2 content-center border border-2 rounded-lg text-white bg-teal-900'>
+                    {modeState.description}
                 </div>
-            ))}  
+
+                {modeState.modifiers?.map((mod, index) => (
+                    <div 
+                        key={`${mod.id}-${index}`} 
+                        className="grid grid-cols-3 text-sm items-center text-center"
+                    >
+                        <DraggableInput 
+                            label={`${mod.name}: `}
+                            value={mod.value}
+                            min={mod.min}
+                            max={mod.max}
+                            step={mod.step}
+                            onChange={(value) => onModChange(value, index)}
+                        />
+                    </div>
+                ))}  
+            </div>
             <button
                 key={'reset'}
                 className="bg-rose-500 hover:bg-rose-600 text-white rounded-lg px-6 transition-colors shadow-md items-center"

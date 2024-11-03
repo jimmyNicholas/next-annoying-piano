@@ -12,11 +12,11 @@ const Outputs: React.FC<OutputProps> = ({
     }, []);
 
     return (
-        <div className="flex-1 grid grid-flow-col">
+        <div className="flex-1 grid grid-flow-col bg-cyan-100 rounded-lg mb-2 mx-2">
              {[reverbInterface, vibratoInterface, gainInterface].map((effect, effectIndex) => (
                 <div 
                     key={effect.name !== undefined ? effect.name : effectIndex}
-                    className="p-2 bg-slate-100 rounded-lg m-2 grid grid-cols-[18%_82%]"
+                    className="p-2 bg-cyan-50 rounded-lg m-2 grid grid-cols-[18%_82%]"
                 >
                     <h3 className="text-sm text-center">
                         {effect.name || 'Effect'}
