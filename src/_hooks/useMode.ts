@@ -17,7 +17,7 @@ const useMode = (
     },[onReset]);
 
     const updateModifier = useCallback((newValue: number, index: number) => {
-        if (!modeRef.current.modifiers) return;
+        if (!modeRef.current.modifiers || modeRef.current.modifiers.length === 0) return;
         const modifier = modeRef.current.modifiers[index];
         if (newValue < modifier.min || newValue > modifier.max) return;
         modeRef.current.modifiers[index].value = newValue;
