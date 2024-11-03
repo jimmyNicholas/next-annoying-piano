@@ -54,7 +54,9 @@ const Keyboard: React.FC<KeyboardProps> = ({
     }, [onKeyUp, removeActiveKey]);
     
     return (
-        <div className='grid h-full bg-[url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/187/vwood.png)]'>
+        <div 
+            className='grid h-full bg-[url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/187/vwood.png)]'
+        >
             { [keys.slice(keys.length / 2), keys.slice(0, keys.length / 2)].map((keyArray, index) => (
                 <div 
                     className='grid content-center'
@@ -64,7 +66,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
                         className="
                             relative 
                             flex 
-                            h-[9.4375em] 
+                            h-[9.4375em]
                             w-auto 
                             mx-auto 
                             my-auto 
@@ -74,7 +76,9 @@ const Keyboard: React.FC<KeyboardProps> = ({
                             rounded-lg 
                             bg-gradient-to-br from-black/30 to-black/0 
                             bg-pink-600 
-                            shadow-[inset_0_0_50px_rgba(0,0,0,0.5),inset_0_1px_rgba(212,152,125,0.2),0_5px_15px_rgba(0,0,0,0.5)] box-border">
+                            shadow-[inset_0_0_50px_rgba(0,0,0,0.5),inset_0_1px_rgba(212,152,125,0.2),0_5px_15px_rgba(0,0,0,0.5)] box-border
+                            max-sm:scale-x-50 md:scale-x-75 lg:scale-x-100 2xl:scale-150"
+                    >
                         {keyArray.map((key) => {
                             let whiteKeyMargin = '-ml-[0.5em]';
                             if (key.pitch === 'C' || key.pitch === 'F') {
