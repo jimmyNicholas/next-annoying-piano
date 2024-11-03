@@ -24,7 +24,7 @@ const Inputs: React.FC<InputProps> = ({
                     className={`${isEnabled ? "bg-yellow-400 hover:bg-yellow-500" : "bg-slate-300 hover:bg-slate-400"} grid justify-center content-center rounded-lg`}
                     onClick={onClick}
                 >
-                    <QwertyIcon className="w-20 h-20"/>
+                    <QwertyIcon className="w-10 h-10"/>
                 </button>
                 <select 
                     value={selectedInputId || ''} 
