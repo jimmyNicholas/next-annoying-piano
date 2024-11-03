@@ -12,7 +12,7 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
   }) => {
 
     return (
-        <div className="flex-1 grid grid-flow-col gap-2 p-2">
+        <div className="flex-1 grid grid-cols-2 gap-2 p-2 bg-cyan-100 rounded-lg m-2">
             <div className="grid grid-flow-col gap-1">         
                 <button 
                     className={`${playbackState === 'playing' ? "bg-yellow-300" : "bg-slate-300"} p-2 place-items-center rounded-lg`}
@@ -34,7 +34,7 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
                 <label
                     className={`bg-slate-300 grid justify-center content-center rounded-lg`}
                 >
-                    <UploadFileIcon className="w-16 h-16"/> 
+                    <UploadFileIcon className="w-10 h-10"/> 
                     <input 
                         type="file" 
                         accept=".mid, .midi" 
@@ -43,7 +43,7 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
                     />
                 </label>
                 <div
-                    className="text-sm text-center content-center"
+                    className="text-md text-center content-center mt-2 rounded-lg text-white bg-teal-900"
                 >
                     {midiFileText ? midiFileText : (<div>No Midi File Loaded</div>)}
                 </div>
