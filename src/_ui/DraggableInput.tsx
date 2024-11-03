@@ -23,10 +23,10 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
     const handleChange = useCallback(
         (v: number) => {
             onChange?.(v)
-            const decimalAdjustment = step !== 1 ? 100 : 1;
-            setDisplayValue(Math.round(v / step) / decimalAdjustment)
+            const stepAdjustment = step !== 1 ? 100 : 1;
+            setDisplayValue(Math.round(v / step) / stepAdjustment)
         }, 
-        [onChange]
+        [onChange, step]
     );
 
     const handleDrag = useCallback(
