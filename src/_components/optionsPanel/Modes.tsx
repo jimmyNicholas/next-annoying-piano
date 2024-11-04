@@ -56,7 +56,7 @@ const Modes: React.FC<ModeProps> = ({
                 </button>
             </div>
 
-            <div className='flex xl:flex-row max-xl:flex-col gap-2'>
+            <div className='grid grid-flow-col sm:max-md:grid-flow-row gap-2'> 
                 <div className='text-md text-wrap px-2 h-full content-center border border-2 rounded-lg text-white bg-teal-900'>
                     {modeState.description}
                 </div>
@@ -64,7 +64,7 @@ const Modes: React.FC<ModeProps> = ({
                 {modeState.modifiers?.map((mod, index) => (
                     <div 
                         key={`${mod.id}-${index}`} 
-                        className="flex-1 text-sm text-center grid grid-cols-2 p-2 rounded-lg"
+                        className="text-sm text-center place-content-center grid p-2 rounded-lg"
                     >
                         <DraggableInput 
                             label={`${mod.name}: `}
