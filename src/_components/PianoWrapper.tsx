@@ -65,7 +65,7 @@ const PianoWrapper: React.FC = () => {
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: {
-            onReset
+            //onReset
         },
         inputProps: {
             isQwertyEnabled, 
@@ -83,7 +83,8 @@ const PianoWrapper: React.FC = () => {
             getModeRef,
             setModeRef,
             updateModifier,
-            modes
+            modes,
+            onReset
         },
         outputProps: {
             effectsInterfaces
@@ -95,9 +96,8 @@ const PianoWrapper: React.FC = () => {
         keyEmitter,
         keyHandlers
     };
-
     return (
-      <div className="border-2 border-black">
+      <div className="h-full flex flex-col">
           <OptionsPanel {...optionsPanelProps} />          
           <Keyboard {...keyboardProps} />
       </div>

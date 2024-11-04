@@ -7,7 +7,7 @@ import { MIDIProvider } from "@react-midi/hooks";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[12%_80%_8%] h-lvh">
+    <div className="flex flex-col h-screen min-w-sm">
       <Header/>
       <MIDIProvider>
         <MainApp/>

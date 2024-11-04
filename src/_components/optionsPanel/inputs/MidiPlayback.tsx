@@ -12,29 +12,29 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
   }) => {
 
     return (
-        <>
-            <div className="grid grid-flow-col">         
+        <div className="flex-1 grid gap-2 p-2 bg-cyan-100 rounded-lg m-2">
+            <div className="grid grid-flow-col gap-1">         
                 <button 
-                    className={`${playbackState === 'playing' ? "bg-yellow-300" : "bg-slate-300"} border-2 border-black p-1 grid justify-center content-center`}
+                    className={`${playbackState === 'playing' ? "bg-yellow-300" : "bg-slate-300"} p-2 place-items-center rounded-lg`}
                     onClick={play}>
-                        <PlayIcon className="size-12"/> 
+                        <PlayIcon className="w-10 h-10"/> 
                 </button>
                 <button 
-                    className={`${playbackState === 'paused' ? "bg-yellow-300" : "bg-slate-300"} border-2 border-black p-1 grid justify-center content-center`}
+                    className={`${playbackState === 'paused' ? "bg-yellow-300" : "bg-slate-300"} p-2 place-items-center rounded-lg`}
                     onClick={pause}>
-                        <PauseIcon className="size-12"/>
+                        <PauseIcon className="w-10 h-10"/>
                 </button>
                 <button 
-                    className={`${playbackState === 'stopped' ? "bg-yellow-300" : "bg-slate-300"} border-2 border-black p-1 grid justify-center content-center`}
+                    className={`${playbackState === 'stopped' ? "bg-yellow-300" : "bg-slate-300"} p-2 place-items-center rounded-lg`}
                     onClick={stop}>
-                        <StopIcon className="size-12"/>
+                        <StopIcon className="w-10 h-10"/>
                 </button>
             </div>
-            <div className="grid grid-flow-col">
+            <div className="grid grid-flow-row">
                 <label
-                    className={`bg-slate-300 grid justify-center content-center`}
+                    className={`bg-slate-300 grid justify-center content-center rounded-lg`}
                 >
-                    <UploadFileIcon className="size-20"/>
+                    <UploadFileIcon className="w-10 h-10"/> 
                     <input 
                         type="file" 
                         accept=".mid, .midi" 
@@ -42,9 +42,13 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
                         className="hidden"
                     />
                 </label>
-                {midiFileText ? midiFileText : (null)}
+                <div
+                    className="text-md text-center content-center mt-2 rounded-lg text-white bg-teal-900"
+                >
+                    {midiFileText ? midiFileText : (<div>No Midi File Loaded</div>)}
+                </div>
             </div>
-        </>
+        </div>
     );
 };
 
