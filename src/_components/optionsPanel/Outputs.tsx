@@ -12,13 +12,14 @@ const Outputs: React.FC<OutputProps> = ({
     }, []);
 
     return (
-        <div className="flex-1 grid grid-flow-col bg-cyan-100 rounded-lg mb-2 mx-2 select-none">
+        <div className="flex-1 grid grid-flow-col bg-cyan-100 rounded-lg mb-2 mx-2 select-none sm:grid-flow-row lg:grid-flow-row"
+        >
              {[reverbInterface, vibratoInterface, gainInterface].map((effect, effectIndex) => (
                 <div 
                     key={effect.name !== undefined ? effect.name : effectIndex}
-                    className="p-2 bg-cyan-50 rounded-lg m-2 grid grid-cols-[18%_82%]"
+                    className="p-2 bg-cyan-50 rounded-lg m-2 grid sm:grid-cols-[18%_82%] lg:grid-cols-[18%_82%]"
                 >
-                    <h3 className="text-sm text-center">
+                    <h3 className="sm:max-lg:text-sm lg:text-base text-center content-center">
                         {effect.name || 'Effect'}
                     </h3>
                     <div
@@ -27,7 +28,7 @@ const Outputs: React.FC<OutputProps> = ({
                         {effect.options?.map((option) => (
                             <div 
                                 key={effectIndex + option.name}
-                                className="grid grid-flow-col text-xs text-center items-center cursor-ns-resize"
+                                className="grid grid-flow-col sm:max-lg:text-xs xl:text-base text-center items-center cursor-ns-resize"
                             >
                                 <DraggableInput 
                                     label={option.title}
