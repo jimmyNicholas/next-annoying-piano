@@ -54,15 +54,15 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
 
     return (
         <div 
-            className="flex select-none cursor-ns-resize"
+            className="select-none cursor-ns-resize bg-white rounded-lg m-2"
             onWheel={handleMouseWheel}
             onMouseDown={handleMouseDown}
         >
             <div
                 className="flex p-1"
             >
-                <span className="w-16">{label}</span>
-                <span className="font-mono min-w-10">{displayValue}</span>
+                <span className="w-16 px-2">{label}</span>
+                <span className="font-mono min-w-24 px-2">{displayValue}</span>
             </div>
         </div>
     );
