@@ -64,7 +64,7 @@ const Modes: React.FC<ModeProps> = ({
                 {modeState.modifiers?.map((mod, index) => (
                     <div 
                         key={`${mod.id}-${index}`} 
-                        className="text-sm text-center place-content-center grid p-2 rounded-lg"
+                        className="text-sm text-center place-content-center grid p-2 rounded-lg bg-white "
                     >
                         <DraggableInput 
                             label={`${mod.name}: `}

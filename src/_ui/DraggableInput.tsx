@@ -54,7 +54,7 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
 
     return (
         <div 
-            className="select-none cursor-ns-resize bg-white rounded-lg m-2"
+            className="select-none cursor-ns-resize rounded-lg m-2"
             onWheel={handleMouseWheel}
             onMouseDown={handleMouseDown}
         >
