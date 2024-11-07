@@ -59,7 +59,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
         >
             { [keys.slice(keys.length / 2), keys.slice(0, keys.length / 2)].map((keyArray, index) => (
                 <div 
-                    className='grid content-center'
+                    className='grid align-center justify-stretch'
                     key={index}
                 >
                     <div 
@@ -67,7 +67,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
                             relative 
                             flex 
                             h-[9.4375em]
-                            w-auto 
+                            w-auto
                             mx-auto 
                             my-auto 
                             p-6 
@@ -77,7 +77,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
                             bg-gradient-to-br from-black/30 to-black/0 
                             bg-pink-600 
                             shadow-[inset_0_0_50px_rgba(0,0,0,0.5),inset_0_1px_rgba(212,152,125,0.2),0_5px_15px_rgba(0,0,0,0.5)] box-border
-                            max-sm:scale-x-50 md:scale-x-75 lg:scale-x-100 2xl:scale-150"
+                            sm:max-lg:scale-x-75 lg:scale-100 2xl:scale-150"
                     >
                         {keyArray.map((key) => {
                             let whiteKeyMargin = '-ml-[0.5em]';

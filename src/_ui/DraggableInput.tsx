@@ -12,7 +12,7 @@ interface DraggableInputProps {
 const DRAGGING_DENOMINATOR = 200;
 
 const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value: inputValue, step, min, max }) => {
-    const [displayValue, setDisplayValue] = useState<number | null>(null)
+    const [displayValue, setDisplayValue] = useState<number>(0)
     const [value, setValue] = useState(inputValue || 0);
 
     const handleMouseWheel = useCallback<WheelEventHandler<HTMLDivElement>>(
@@ -54,15 +54,18 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
 
     return (
         <div 
-            className="select-none cursor-ns-resize bg-white rounded-lg m-2"
+            className="select-none cursor-ns-resize rounded-lg"
             onWheel={handleMouseWheel}
             onMouseDown={handleMouseDown}
         >
             <div
-                className="flex p-1"
+                className="flex flex-col justify-between items-center"
             >
-                <span className="w-16 px-2">{label}</span>
-                <span className="font-mono min-w-24 px-2">{displayValue}</span>
+                <span>{label}</span>
+                <span 
+                    className="font-mono text-right"
+                    style={{ width: '6ch' }}
+                >{displayValue}</span>
             </div>
         </div>
     );
