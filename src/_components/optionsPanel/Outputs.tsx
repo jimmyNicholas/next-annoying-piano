@@ -23,12 +23,12 @@ const Outputs: React.FC<OutputProps> = ({
                         {effect.name || 'Effect'}
                     </h3>
                     <div
-                        className="bg-white grid grid-flow-row grid-cols-3 px-2 rounded-lg"
+                        className="bg-white grid grid-flow-col rounded-lg gap-2"
                     >
                         {effect.options?.map((option) => (
                             <div 
                                 key={effectIndex + option.name}
-                                className="grid grid-flow-col sm:max-lg:text-xs xl:text-sm text-center items-center cursor-ns-resize"
+                                className="sm:max-lg:text-xs xl:text-sm text-center items-center cursor-ns-resize"
                             >
                                 <DraggableInput 
                                     label={option.title}
