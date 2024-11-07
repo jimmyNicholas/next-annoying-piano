@@ -15,17 +15,17 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
         <div className="gap-2 p-2 bg-cyan-100 rounded-lg m-2 grid grid-flow-row">
             <div className="grid grid-flow-col gap-2">         
                 <button 
-                    className={`${playbackState === 'playing' ? "bg-yellow-300" : "bg-slate-300"} p-2 place-items-center rounded-lg`}
+                    className={`${playbackState === 'playing' ? "bg-yellow-300" : "bg-slate-300"} p-2 grid place-items-center rounded-lg`}
                     onClick={play}>
                         <PlayIcon className="w-10 h-10"/> 
                 </button>
                 <button 
-                    className={`${playbackState === 'paused' ? "bg-yellow-300" : "bg-slate-300"} p-2 place-items-center rounded-lg`}
+                    className={`${playbackState === 'paused' ? "bg-yellow-300" : "bg-slate-300"} p-2 grid place-items-center rounded-lg`}
                     onClick={pause}>
                         <PauseIcon className="w-10 h-10"/>
                 </button>
                 <button 
-                    className={`${playbackState === 'stopped' ? "bg-yellow-300" : "bg-slate-300"} p-2 place-items-center rounded-lg`}
+                    className={`${playbackState === 'stopped' ? "bg-yellow-300" : "bg-slate-300"} p-2 grid place-items-center rounded-lg`}
                     onClick={stop}>
                         <StopIcon className="w-10 h-10"/>
                 </button>
