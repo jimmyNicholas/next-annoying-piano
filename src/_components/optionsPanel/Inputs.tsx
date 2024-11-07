@@ -17,8 +17,11 @@ const Inputs: React.FC<InputProps> = ({
     const { inputs, selectInput, selectedInputId } = useMIDIInputs();
 
     return (
-        <div className="grid p-2 bg-cyan-100 rounded-lg m-2">
-            <div className="grid gap-2">
+        <div className="grid p-2 bg-cyan-100 rounded-lg m-2 
+            
+        ">
+            <div className="gap-2 grid grid-flow-row"
+            >
                 <button
                     key={'enableAudio'}
                     className={`${isEnabled ? "bg-yellow-400 hover:bg-yellow-500" : "bg-slate-300 hover:bg-slate-400"} grid justify-center content-center rounded-lg`}
