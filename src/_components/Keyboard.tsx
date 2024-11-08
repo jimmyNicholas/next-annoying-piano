@@ -1,3 +1,4 @@
+import useMidiController from '@/_hooks/useMidiController';
 import { KeyboardProps } from '@/_lib/_types/types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -9,6 +10,8 @@ const Keyboard: React.FC<KeyboardProps> = ({
     const {onKeyDown, onKeyUp} = keyHandlers;
     const activeKeyRef = useRef<string | null>(null);
     const [activeKeys, setActiveKeys] = useState<string[]>([]);
+
+    useMidiController(keys, keyHandlers);
 
     const addActiveKey = useCallback((keyName: string) => {
         setActiveKeys((prev) => {
