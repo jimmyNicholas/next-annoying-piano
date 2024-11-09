@@ -34,8 +34,8 @@ export interface ModeProps {
 };
 
 export interface OutputProps {
+    polySynthInterface: EffectInterface;
     effectsInterfaces: {
-        gainInterface: EffectInterface; 
         reverbInterface: EffectInterface;
         vibratoInterface: EffectInterface;
     };
@@ -158,7 +158,6 @@ export type PolySynth = ToneType.PolySynth;
 
 // Audio Effects Types
 export type InputNode = ToneType.InputNode;
-export type Gain = ToneType.Gain;
 export type Reverb = ToneType.Reverb;
 export type Vibrato = ToneType.Vibrato;
 

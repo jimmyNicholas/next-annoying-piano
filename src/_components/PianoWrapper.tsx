@@ -21,6 +21,7 @@ const PianoWrapper: React.FC = () => {
     const { 
         hertzPlayback,
         keyEmitter, 
+        polySynthInterface,
         effectsInterfaces
     } = useAudio();
 
@@ -85,6 +86,7 @@ const PianoWrapper: React.FC = () => {
             onReset
         },
         outputProps: {
+            polySynthInterface,
             effectsInterfaces
         }
     };
