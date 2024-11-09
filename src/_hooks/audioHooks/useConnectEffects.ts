@@ -3,15 +3,14 @@ import useSynth from "./useSynth";
 import useEffects from "./useEffects";
 
 export function useConnectEffects() {
-    const polySynth = useSynth();
+    const {polySynth, polySynthInterface} = useSynth();
     const {effectsNodes, effectsInterfaces} = useEffects();
 
     useEffect(() => { 
         if (!polySynth) return;
-        const { gainNode, reverbNode, vibratoNode } = effectsNodes;
-        if (vibratoNode) { polySynth.connect(vibratoNode) };
+        const { reverbNode, vibratoNode } = effectsNodes;
         if (reverbNode) { polySynth.connect(reverbNode) };
-        if (gainNode) { polySynth.connect(gainNode) };
+        if (vibratoNode) { polySynth.connect(vibratoNode) };
        
         return () => {
             if (polySynth) {
@@ -19,6 +18,6 @@ export function useConnectEffects() {
             }
         };
     }, [polySynth, effectsNodes]);
-
-    return { polySynth, effectsInterfaces }; 
+    
+    return { polySynth, polySynthInterface, effectsInterfaces }; 
 };
