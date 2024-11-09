@@ -1,38 +1,6 @@
 import { useContext, useEffect, useRef } from "react";
-import { Gain, Reverb, Vibrato } from "@/_lib/_types/types";
-import { ToneContext } from "@/_components/MainApp";
-
-const useGainEffect = () => {
-    const tone = useContext(ToneContext);
-    const gainNode = useRef<Gain | null>(null);
-
-    useEffect(() => { 
-        if (!tone) return;
-        gainNode.current = new tone.Gain(0).toDestination();
-
-        return () => {
-            gainNode.current?.dispose();
-        };
-    }, [tone]);
-
-    return {
-        gainNode: gainNode.current,
-        gainInterface: {
-            name: gainNode.current?.name,
-            options: [
-                {
-                    title: 'Volume',
-                    name: 'volume',
-                    get: () => gainNode.current?.get().gain,
-                    set: (value: number) => gainNode.current?.set({gain: value}),
-                    min: 0,
-                    max: 1,
-                    step: 0.01,
-                }
-            ]
-        }
-    };
-};   
+import { Reverb, Vibrato } from "@/_lib/_types/types";
+import { ToneContext } from "@/_components/MainApp"; 
 
 const useReverbEffect = () => {
     const tone = useContext(ToneContext);
@@ -134,20 +102,17 @@ const useVibratoEffect = () => {
 };
 
 const useEffects = () => {
-    const {gainNode, gainInterface} = useGainEffect();
     const {reverbNode, reverbInterface} = useReverbEffect();
     const {vibratoNode, vibratoInterface} = useVibratoEffect();
-
+    
     return { 
         effectsNodes: { 
-            gainNode, 
-            reverbNode, 
-            vibratoNode
+            reverbNode,
+            vibratoNode,
         },
         effectsInterfaces: {
-            gainInterface,
             reverbInterface,
-            vibratoInterface
+            vibratoInterface,
         } 
     };
 };

@@ -8,7 +8,6 @@ import useKeyboard from "@/_hooks/useKeyboard";
 import useMidiUploader from "@/_hooks/useMidiUploader";
 import { useMidiPlayback } from "@/_hooks/useMidiPlayback";
 import useMode from "@/_hooks/useMode";
-import useMidiController from "@/_hooks/useMidiController";
 import { ToneContext } from "./MainApp";
 
 const PianoWrapper: React.FC = () => {
@@ -22,6 +21,7 @@ const PianoWrapper: React.FC = () => {
     const { 
         hertzPlayback,
         keyEmitter, 
+        polySynthInterface,
         effectsInterfaces
     } = useAudio();
 
@@ -59,13 +59,12 @@ const PianoWrapper: React.FC = () => {
     };
 
     const { isQwertyEnabled, toggleIsQwertyEnabled } = useQwertyInput(qwertyInputProps);
-    useMidiController(keys, keyHandlers);
     const { parsedMidiData, midiFileText, handleMidiUpload} = useMidiUploader();
     const { play, pause, stop, playbackState } = useMidiPlayback(parsedMidiData, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
         globalProps: {
-            onReset
+            
         },
         inputProps: {
             isQwertyEnabled, 
@@ -83,9 +82,11 @@ const PianoWrapper: React.FC = () => {
             getModeRef,
             setModeRef,
             updateModifier,
-            modes
+            modes,
+            onReset
         },
         outputProps: {
+            polySynthInterface,
             effectsInterfaces
         }
     };
@@ -95,9 +96,8 @@ const PianoWrapper: React.FC = () => {
         keyEmitter,
         keyHandlers
     };
-
     return (
-      <div className="border-2 border-black">
+      <div className="h-full flex flex-col">
           <OptionsPanel {...optionsPanelProps} />          
           <Keyboard {...keyboardProps} />
       </div>

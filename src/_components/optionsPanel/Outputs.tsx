@@ -1,78 +1,47 @@
 import { OutputProps, EffectInterface } from "@/_lib/_types/types";
-import { useCallback, useState } from "react";
+import DraggableInput from "@/_ui/DraggableInput";
+import { useCallback } from "react";
 
 const Outputs: React.FC<OutputProps> = ({
+    polySynthInterface,
     effectsInterfaces
 }) => {
-    const {gainInterface, reverbInterface, vibratoInterface} = effectsInterfaces;
+    const {reverbInterface, vibratoInterface} = effectsInterfaces;
     
     const getValueFromName = useCallback((valueName: string, effectInterface: EffectInterface) => {
         return effectInterface.options.find(({name}) => name === valueName)?.get();
     }, []);
 
-    const [reverb, setReverb] = useState<{[key: string]: number | undefined}>({});
-    const [vibrato, setVibrato] = useState<{[key: string]: number | undefined}>({});
-    const [gain, setGain] = useState<{[key: string]: number | undefined}>({});
-
     return (
-        <div className="border-2 border-black">
-            {reverbInterface.name || 'Effect'}
-            {reverbInterface.options.map((option) => (
-                <div key={reverbInterface.name + option.name} className="grid grid-cols-[25%_65%_10%]">
-                    {option.title}
-                    <input 
-                        type="range"
-                        className="w-full"
-                        value={getValueFromName(option.name, reverbInterface)}
-                        min={option.min}
-                        max={option.max}
-                        step={option.step}
-                        onChange={(e) => {
-                            option.set(Number(e.target.value));
-                            setReverb({...reverb, [option.name]: Number(e.target.value)})
-                        }}                        
-                    />
-                    {option.get()}
-                </div>
-            ))}
-            
-            {vibratoInterface.name || 'Effect'}
-            {vibratoInterface.options.map((option) => (
-                <div key={vibratoInterface.name + option.name} className="grid grid-cols-[25%_65%_10%]">
-                    {option.title}
-                    <input 
-                        type="range"
-                        className="w-full"
-                        value={getValueFromName(option.name, vibratoInterface)}
-                        min={option.min}
-                        max={option.max}
-                        step={option.step}
-                        onChange={(e) => {
-                            option.set(Number(e.target.value));
-                            setVibrato({...vibrato, [option.name]: Number(e.target.value)})
-                        }}                        
-                    />
-                    {option.get()}
-                </div>
-            ))}
-
-            {gainInterface.name || 'Effect'}
-            {gainInterface.options.map((option) => (
-                <div key={gainInterface.name + option.name} className="grid grid-cols-[25%_65%_10%]">
-                    {option.title}
-                    <input 
-                        type="range"
-                        className="w-full"
-                        value={getValueFromName(option.name, gainInterface)}
-                        min={option.min}
-                        max={option.max}
-                        step={option.step}
-                        onChange={(e) => {
-                            option.set(Number(e.target.value));
-                            setGain({...gain, [option.name]: Number(e.target.value)})
-                        }}                        
-                    />
-                    {option.get()}
+        <div className="grid grid-flow-col bg-cyan-100 rounded-lg mb-2 mx-2 select-none sm:grid-flow-row lg:grid-flow-row"
+        >
+             {[reverbInterface, vibratoInterface, polySynthInterface].map((effect, effectIndex) => (
+                <div 
+                    key={effect.name !== undefined ? effect.name : effectIndex}
+                    className="p-2 bg-cyan-50 rounded-lg m-2 grid sm:grid-cols-[18%_82%] lg:grid-cols-[18%_82%]"
+                >
+                    <h3 className="sm:max-lg:text-sm lg:text-base text-center content-center">
+                        {effect.name || 'Effect'}
+                    </h3>
+                    <div
+                        className="bg-white grid grid-flow-col rounded-lg gap-2"
+                    >
+                        {effect.options?.map((option) => (
+                            <div 
+                                key={effectIndex + option.name}
+                                className="sm:max-lg:text-xs xl:text-sm text-center items-center cursor-ns-resize"
+                            >
+                                <DraggableInput 
+                                    label={option.title}
+                                    value={getValueFromName(option.name, effect)}
+                                    min={option.min}
+                                    max={option.max}
+                                    step={option.step}
+                                    onChange={(value) => option.set(value)}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             ))}
         </div>

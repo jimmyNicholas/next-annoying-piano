@@ -1,41 +1,25 @@
-
 import { Key, KeyHandlers } from "@/_lib/_types/types";
 import { useMIDINote } from "@react-midi/hooks";
-import { useEffect, useRef } from "react"; 
+import { useCallback, useEffect } from "react"; 
 
 const useMidiController = (
     keys: Key[],
     keyHandlers: KeyHandlers
 ) => {
     const midiNote = useMIDINote();
-    const prevNotesRef = useRef<number[]>([]);
-
-    function findMidiNumber(midiNumber: number) {
-        return prevNotesRef.current.find((num: number) => num === midiNumber);
-    };
     
+    const findMidiNote = useCallback((midiNumber: number) => {
+        const key = keys.find((key) => key.midiNumber === midiNumber);
+        return key?.name;
+    }, [keys]);
+
     useEffect(() => {
-        if (!midiNote) { return };
+        if (!midiNote) return;
         const { onKeyDown, onKeyUp } = keyHandlers;
-        const midiNumber = midiNote.note;
-
-        function findMidiNote(midiNumber: number) {
-            const key = keys.find((key) => key.midiNumber === midiNumber);
-            return key?.name;
-        };
-
-        if (!findMidiNumber(midiNumber)) {
-            prevNotesRef.current.push(midiNumber);
-            const key = findMidiNote(midiNumber)
-            if (!key) { return };
-            onKeyDown(key);
-        } else if (findMidiNumber(midiNumber)) {
-            prevNotesRef.current = prevNotesRef.current.filter((i) => i !== midiNumber);
-            const key = findMidiNote(midiNumber)
-            if (!key) { return };
-            onKeyUp(key);
-        }
-    }, [midiNote, keys, keyHandlers]);
+        const key = findMidiNote(midiNote.note)
+        if (!key) { return }  
+        midiNote.on ? onKeyDown(key) : onKeyUp(key);
+    }, [midiNote, findMidiNote, keyHandlers]);
 };
 
 export default useMidiController;

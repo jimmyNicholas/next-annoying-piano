@@ -2,16 +2,16 @@ import {ResetIcon} from '@/_assets/icons'
 import { GlobalProps } from '@/_lib/_types/types';
 
 const Global: React.FC<GlobalProps> = ({
-    onReset   
+    //onReset   
 }) => {
     return (
-        <div className="border-2 border-black grid grid-cols-2">
+        <div className="flex p-2">
             <button
                 key={'reset'}
-                className="bg-rose-400 m-2 active:bg-rose-300 flex justify-center"
-                onClick={onReset}
+                className="bg-rose-500 hover:bg-rose-600 text-white rounded-lg px-6 transition-colors shadow-md items-center"
+                //onClick={onReset}
             >
-                <ResetIcon className='p-2'/>
+                <ResetIcon className='w-10 h-10'/>
             </button>
         </div>
     );
