@@ -39,6 +39,7 @@ const useVibratoEffect = (): EffectHookReturn<Vibrato> => {
     const tone = useContext(ToneContext);
     const vibratoNode = useRef<Vibrato | null>(null);
 
+    // Initialise new effect and handle cleanup
     useEffect(() => { 
         if (!tone) return;
 
@@ -50,6 +51,7 @@ const useVibratoEffect = (): EffectHookReturn<Vibrato> => {
         };
     }, [tone]);
 
+    // Define effect parameter interface
     const vibratoInterface: EffectInterface = {
         name: vibratoNode.current?.name ?? 'Vibrato',
         options: [

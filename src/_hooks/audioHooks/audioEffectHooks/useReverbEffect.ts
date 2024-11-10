@@ -39,6 +39,7 @@ const useReverbEffect = (): EffectHookReturn<Reverb> => {
     const tone = useContext(ToneContext);
     const reverbNode = useRef<Reverb | null>(null);
 
+    // Initialise new effect and handle cleanup
     useEffect(() => { 
         if (!tone) return;
 
@@ -50,6 +51,7 @@ const useReverbEffect = (): EffectHookReturn<Reverb> => {
         };
     }, [tone]);
 
+    // Define effect parameter interface
     const effectInterface: EffectInterface = {
         name: reverbNode.current?.name ?? 'Reverb',
         options: [
