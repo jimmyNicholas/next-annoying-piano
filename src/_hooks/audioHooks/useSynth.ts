@@ -59,7 +59,7 @@ const useSynth = (): UseSynthHooks => {
 
     // Define synth parameter interface
     const polySynthInterface = {
-        name: polySynth.current?.name,
+        name: polySynth.current?.name ?? 'PolySynth',
         options: [
             {
                 title: 'Volume',
