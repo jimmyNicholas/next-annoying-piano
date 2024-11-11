@@ -43,6 +43,7 @@ const useMidiController = (
 ) => {
     const midiNote = useMIDINote();
     
+    // Searches keys with midi number for coresponding key name 
     const findMidiNote = useCallback((midiNumber: number) => {
         const key = keys.find((key) => key.midiNumber === midiNumber);
         return key?.name;
