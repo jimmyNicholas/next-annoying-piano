@@ -134,7 +134,7 @@ export const getHertzTable = ({
 
     if (numberOfKeys < 0) { 
         throw new Error(
-            `Invalid input: start note ${startPitch + startOctave} is higher that end note ${endPitch + endOctave}`
+            `Invalid input: start note ${startPitch + startOctave} is higher than end note ${endPitch + endOctave}`
         );
     };
     
