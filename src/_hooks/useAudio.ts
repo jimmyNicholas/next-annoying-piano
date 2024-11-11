@@ -1,8 +1,8 @@
 import { EffectInterface, Emitter, HertzPlayback } from '@/_lib/_types/types';
-import { useConnectEffects } from './audioHooks/useConnectEffects';
+import useConnectEffects from './audioHooks/useConnectEffects';
 import useHertzPlayback from './audioHooks/useHertzPlayback';
 
-interface UseAudioHooks {
+interface AudioReturn {
     hertzPlayback: HertzPlayback;
     keyEmitter: Emitter | null;
     polySynthInterface: EffectInterface;
@@ -38,14 +38,14 @@ interface UseAudioHooks {
  *   console.log(`Note pressed: ${note}`);
  * });
  * 
- * @returns {UseAudioHooks} An object containing:
+ * @returns {AudioReturn} An object containing:
  *  - hertzPlayback: Controls for playing and releasing frequencies
  *  - keyEmitter: Event emitter for keyboard events
  *  - polySynthInterface: Interface for controlling the polyphonic synthesizer
  *  - effectsInterfaces: Interfaces for controlling audio effects
  */
 
-const useAudio = (): UseAudioHooks => {
+const useAudio = (): AudioReturn => {
     // Initialise synth and effects chain
     const { 
         polySynth, 
