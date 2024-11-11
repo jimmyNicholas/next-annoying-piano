@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from "react";
 import { EffectInterface, PolySynth } from "@/_lib/_types/types";
 import { ToneContext } from "@/_components/MainApp";
 
-interface UseSynthHooks {
+interface SynthReturn {
     polySynth: PolySynth | null;
     polySynthInterface: EffectInterface;
 }
@@ -37,12 +37,12 @@ interface UseSynthHooks {
  *   polySynth.triggerAttack('C4');
  * }
  * 
- * @returns {UseSynthHooks} Synth and synth control interfaces
+ * @returns {SynthReturn} Synth and synth control interfaces
  * - polySynth: A polyphonic synthesizer (null before initialization)
  * - polySynthInterface: Polyphonic synthesizer parameter controls
  * - Currently supports volume control (-60dB to 0dB)
  */
-const useSynth = (): UseSynthHooks => {
+const useSynth = (): SynthReturn => {
     const tone = useContext(ToneContext);
     const polySynth = useRef<PolySynth | null>(null);
 
