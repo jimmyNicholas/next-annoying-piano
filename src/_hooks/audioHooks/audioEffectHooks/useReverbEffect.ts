@@ -52,39 +52,6 @@ const useReverbEffect = (): EffectHookReturn<Reverb> => {
     }, [tone]);
 
     // Define effect parameter interface
-    const effectInterface: EffectInterface = {
-        name: reverbNode.current?.name ?? 'Reverb',
-        options: [
-            {
-                title: 'Decay',
-                name: 'decay',
-                get: () => reverbNode.current?.get().decay ?? 5,
-                set: (value: number) => reverbNode.current?.set({ decay: value }),
-                min: 0.01,
-                max: 10,
-                step: 0.01,
-            },
-            {
-                title: 'Pre-Delay',
-                name: 'preDelay',
-                get: () => reverbNode.current?.get().preDelay ?? 0.01,
-                set: (value: number) => reverbNode.current?.set({ preDelay: value }),
-                min: 0.01,
-                max: 10,
-                step: 0.01,
-            },
-            {
-                title: 'Wet',
-                name: 'wet',
-                get: () => reverbNode.current?.get().wet ?? 0,
-                set: (value: number) => reverbNode.current?.set({ wet: value }),
-                min: 0,
-                max: 1,
-                step: 0.01,
-            },
-        ]
-    };
-
     const reverbInterface: EffectInterface = {
         name: reverbNode.current?.name ?? 'Reverb',
         options: [
