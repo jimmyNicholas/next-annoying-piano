@@ -1,108 +1,61 @@
-import { useContext, useEffect, useRef } from "react";
-import { Reverb, Vibrato } from "@/_lib/_types/types";
-import { ToneContext } from "@/_components/MainApp"; 
+import { EffectInterface, Reverb, Vibrato } from "@/_lib/_types/types";
+import useReverbEffect from "./audioEffectHooks/useReverbEffect";
+import useVibratoEffect from "./audioEffectHooks/useVibratoEffect";
 
-const useReverbEffect = () => {
-    const tone = useContext(ToneContext);
-    const reverbNode = useRef<Reverb | null>(null);
-
-    useEffect(() => { 
-        if (!tone) return;
-        reverbNode.current = new tone.Reverb(5).toDestination();
-
-        return () => {
-            reverbNode.current?.dispose();
-        };
-    }, [tone]);
-
-    return {
-        reverbNode: reverbNode.current,
-        reverbInterface: {
-            name: reverbNode.current?.name,
-            options: [
-                {
-                    title: 'Decay',
-                    name: 'decay',
-                    get: () => reverbNode.current?.get().decay,
-                    set: (value: number) => reverbNode.current?.set({decay: value}),
-                    min: 0.01,
-                    max: 10,
-                    step: 0.01,
-                },
-                {
-                    title: 'Pre-Delay',
-                    name: 'preDelay',
-                    get: () => reverbNode.current?.get().preDelay,
-                    set: (value: number) => reverbNode.current?.set({preDelay: value}),
-                    min: 0.01,
-                    max: 10,
-                    step: 0.01,
-                },
-                {
-                    title: 'Wet', 
-                    name: 'wet',
-                    get: () => reverbNode.current?.get().wet,
-                    set: (value: number) => reverbNode.current?.set({wet: value}),
-                    min: 0,
-                    max: 1,
-                    step: 0.01,
-                },
-            ]
-        }
+interface EffectsReturn {
+    effectsNodes: {
+        reverbNode: Reverb | null;
+        vibratoNode: Vibrato | null;
     };
-};   
-
-const useVibratoEffect = () => {
-    const tone = useContext(ToneContext);
-    const vibratoNode = useRef<Vibrato | null>(null);
-
-    useEffect(() => { 
-        if (!tone) return;
-        vibratoNode.current = new tone.Vibrato().toDestination();
-        return () => {
-            vibratoNode.current?.dispose();
-        };
-    }, [tone]);
-
-    return {
-        vibratoNode: vibratoNode.current,
-        vibratoInterface: {
-            name: vibratoNode.current?.name,
-            options: [
-                {
-                    title: 'Frequency', 
-                    name: 'frequency',
-                    get: () => vibratoNode.current?.get().frequency as number,
-                    set: (value: number) => vibratoNode.current?.set({frequency: value}),
-                    min: 1,
-                    max: 100,
-                    step: 1,
-                },
-                {
-                    title: 'Depth', 
-                    name: 'depth',
-                    get: () => vibratoNode.current?.get().depth,
-                    set: (value: number) => vibratoNode.current?.set({depth: value}),
-                    min: 0,
-                    max: 1,
-                    step: 0.01,
-                },
-                {
-                    title: 'Wet', 
-                    name: 'wet',
-                    get: () => vibratoNode.current?.get().wet,
-                    set: (value: number) => vibratoNode.current?.set({wet: value}),
-                    min: 0,
-                    max: 1,
-                    step: 0.01,
-                },
-            ],
-        }
+    effectsInterfaces: {
+        reverbInterface: EffectInterface;
+        vibratoInterface: EffectInterface;
     };
 };
 
-const useEffects = () => {
+/**
+ * Custom hook that aggregates multiple audio effect hooks into a single interface.
+ * 
+ * @description
+ * This hook serves as a central manager for audio effects by:
+ * 1. Initializing individual effect hooks (reverb and vibrato)
+ * 2. Organizing effect nodes and their control interfaces
+ * 3. Providing a unified interface for accessing all effects
+ * 
+ * Each effect hook manages its own Web Audio nodes and parameter controls,
+ * while this hook combines them into a structured format for easier consumption
+ * by parent components.
+ * 
+ * @returns {EffectsReturn} An object containing:
+ * - effectsNodes: Audio processing nodes for each effect
+ *   - reverbNode: Web Audio node for reverb processing
+ *   - vibratoNode: Web Audio node for vibrato processing
+ * - effectsInterfaces: Control interfaces for modifying effect parameters
+ *   - reverbInterface: Controls for reverb parameters
+ *   - vibratoInterface: Controls for vibrato parameters
+ * 
+ * @example
+ * ```tsx
+ * function AudioProcessor() {
+ *   const { effectsNodes, effectsInterfaces } = useEffects();
+ *   
+ *   // Connect audio source to effects
+ *   audioSource.connect(effectsNodes.reverbNode);
+ *   audioSource.connect(effectsNodes.vibratoNode);
+ *   
+ *   // Adjust effect parameters
+ *   reverbInterface.options.find(opt => opt.name === 'decay')?.set(3.5);
+ *   vibratoInterface.options.find(opt => opt.name === 'frequency')?.set(6);
+ *   
+ *   return <div>Audio Effects Controls</div>;
+ * }
+ * ```
+*/
+const useEffects = (): EffectsReturn => {
+    // Initialize reverb effect and its interface
     const {reverbNode, reverbInterface} = useReverbEffect();
+
+    // Initialize vibrato effect and its interface
     const {vibratoNode, vibratoInterface} = useVibratoEffect();
     
     return { 

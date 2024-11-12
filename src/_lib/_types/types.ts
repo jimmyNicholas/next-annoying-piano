@@ -153,6 +153,9 @@ export interface HertzPlayback {
     stopHertz: (keyName: string) => void;
 };
 
+// Audio Event Types
+export type Emitter = ToneType.Emitter;
+
 // Audio Synth Types
 export type PolySynth = ToneType.PolySynth;
 
