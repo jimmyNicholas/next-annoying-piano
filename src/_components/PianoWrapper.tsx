@@ -2,7 +2,7 @@ import OptionsPanel from "./optionsPanel/OptionsPanel";
 import Keyboard from "./Keyboard";
 import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
 import { useContext, useEffect, useMemo, useState } from "react";
-import { useQwertyInput } from "@/_hooks/useQwertyInput";
+import useQwertyInput from "@/_hooks/useQwertyInput";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMidiUploader from "@/_hooks/useMidiUploader";
