@@ -6,7 +6,7 @@ import { useQwertyInput } from "@/_hooks/useQwertyInput";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMidiUploader from "@/_hooks/useMidiUploader";
-import { useMidiPlayback } from "@/_hooks/useMidiPlayback";
+import useMidiPlayback from "@/_hooks/useMidiPlayback";
 import useMode from "@/_hooks/useMode";
 import { ToneContext } from "./MainApp";
 
