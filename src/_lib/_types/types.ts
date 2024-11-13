@@ -123,20 +123,7 @@ export interface BaseKeyName {
     baseOctave: number;
 };
 
-export interface MidiPlaybackState {
-    fileName: string;
-    tracks: {
-        name: string;
-        muted: boolean;
-        noteEvents: NoteEvent[];
-    }[],
-};
-
-export interface NoteEvent {
-    name: string;
-    startTime: number;
-    duration: number;
-};
+export type MidiPlaybackState = 'stopped' | 'playing' | 'paused';
 
 // Audio Output Types
 import * as ToneType from "tone";
