@@ -1,7 +1,12 @@
 import { MidiPlaybackProps } from "@/_lib/_types/types";
 import { UploadFileIcon } from "@/_assets/icons";
 import { PlayIcon, PauseIcon, StopIcon } from "@/_assets/icons";
+import MidiPlaybackButton from "./MidiPlaybackButton"
 
+/**
+ * MidiPlayback component provides controls for MIDI file playback and upload functionality
+ * @component
+*/
 const MidiPlayback: React.FC<MidiPlaybackProps> = ({
     midiFileText, 
     handleMidiUpload,
@@ -14,21 +19,21 @@ const MidiPlayback: React.FC<MidiPlaybackProps> = ({
     return (
         <div className="gap-2 p-2 bg-cyan-100 rounded-lg m-2 grid grid-flow-row">
             <div className="grid grid-flow-col gap-2">         
-                <button 
-                    className={`${playbackState === 'playing' ? "bg-yellow-300" : "bg-slate-300"} p-2 grid place-items-center rounded-lg`}
-                    onClick={play}>
-                        <PlayIcon className="w-10 h-10"/> 
-                </button>
-                <button 
-                    className={`${playbackState === 'paused' ? "bg-yellow-300" : "bg-slate-300"} p-2 grid place-items-center rounded-lg`}
-                    onClick={pause}>
-                        <PauseIcon className="w-10 h-10"/>
-                </button>
-                <button 
-                    className={`${playbackState === 'stopped' ? "bg-yellow-300" : "bg-slate-300"} p-2 grid place-items-center rounded-lg`}
-                    onClick={stop}>
-                        <StopIcon className="w-10 h-10"/>
-                </button>
+                <MidiPlaybackButton 
+                    action="play"
+                    onClick={play}
+                    currentState={playbackState}
+                />
+                <MidiPlaybackButton 
+                    action="pause"
+                    onClick={pause}
+                    currentState={playbackState}
+                />
+                <MidiPlaybackButton 
+                    action="stop"
+                    onClick={stop}
+                    currentState={playbackState}
+                />
             </div>
             <div className="grid grid-flow-col gap-2">
                 <label

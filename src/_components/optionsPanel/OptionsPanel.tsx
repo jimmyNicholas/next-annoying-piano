@@ -1,6 +1,6 @@
 //import Global from "./Global";
 import Inputs from "./Inputs";
-import MidiPlayback from "./inputs/MidiPlayback";
+import MidiPlayback from "./midi/MidiPlayback";
 import Modes from "./Modes";
 import Outputs from "./Outputs";
 import { OptionsPanelProps } from "@/_lib/_types/types";
