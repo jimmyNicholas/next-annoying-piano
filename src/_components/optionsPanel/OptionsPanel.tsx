@@ -1,20 +1,39 @@
-//import Global from "./Global";
-import Inputs from "./Inputs";
-import MidiPlayback from "./midi/MidiPlayback";
-import Modes from "./Modes";
-import Outputs from "./Outputs";
-import { OptionsPanelProps } from "@/_lib/_types/types";
+import Inputs, { InputProps } from "./Inputs";
+import MidiPlayback, { MidiPlaybackProps } from "./midi/MidiPlayback";
+import Modes, { ModeProps } from "./Modes";
+import Outputs, { OutputsProps } from "./Outputs";
 
+export interface OptionsPanelProps {
+    inputProps: InputProps;
+    midiPlaybackProps: MidiPlaybackProps;
+    modeProps: ModeProps;
+    outputsProps: OutputsProps;
+}
+
+/**
+ * Props for the options panel component
+ * @interface OptionsPanelProps
+ * @property {InputProps} inputProps - MIDI controller and keyboard input settings
+ * @property {MidiPlaybackProps} midiPlaybackProps - MIDI file upload and playback settings
+ * @property {ModeProps} modeProps - Mode selection settings
+ * @property {OutputProps} outputProps - Output configuration settings
+ */
+
+/**
+ * Main control panel component organizing all music application settings
+ * Combines input selection, MIDI playback, mode selection, and output controls
+ * @param {OptionsPanelProps} props - The component props
+ * @returns {JSX.Element} Rendered options panel
+ */
 const OptionsPanel: React.FC<OptionsPanelProps> = ({
-    //globalProps,
     inputProps,
+    midiPlaybackProps,
     modeProps,
-    outputProps
-}) => {
-    const {midiPlaybackProps} = inputProps;
+    outputsProps
+}: OptionsPanelProps): JSX.Element => {
+
     return (
         <div className="bg-cyan-600 grid grid-flow-col sm:max-2xl:grid-flow-row">  
-            {/* <Global {...globalProps} /> */}
             <div
                 className="grid sm:max-2xl:grid-cols-[40%_60%]"
             >
@@ -22,7 +41,7 @@ const OptionsPanel: React.FC<OptionsPanelProps> = ({
                 <MidiPlayback {...midiPlaybackProps}/>
             </div>
             <Modes {...modeProps} />
-            <Outputs {...outputProps}/>
+            <Outputs {...outputsProps}/>
         </div>
     );
 };

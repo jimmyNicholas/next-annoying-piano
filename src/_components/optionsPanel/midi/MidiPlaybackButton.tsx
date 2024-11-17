@@ -1,11 +1,9 @@
 import { PlayIcon, PauseIcon, StopIcon } from "@/_assets/icons";
-import { MidiPlaybackState } from "@/_lib/_types/types";
 
 /**
  * Type for the different states of MIDI playback
  */
 type PlaybackAction = 'play' | 'pause' | 'stop';
-
 
 /**
  * Props interface for the MidiPlaybackButton component
@@ -29,9 +27,6 @@ const MidiPlaybackButton: React.FC<MidiPlaybackButtonProps> = ({
     onClick,
     currentState
 }) => {
-
-    console.log('ok');
-    
     /**
      * Maps action types to their corresponding icons
      */
