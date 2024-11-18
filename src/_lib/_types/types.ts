@@ -1,47 +1,18 @@
-// Options Panel Types
-export interface OptionsPanelProps {
-    globalProps: GlobalProps;
-    inputProps: InputProps;
-    modeProps: ModeProps;
-    outputProps: OutputProps;
-};
+import * as ToneType from "tone";
 
-export interface GlobalProps {
+/**
+ * @namespace ModeConfiguration
+ */
 
-};
-
-export interface InputProps {
-    isQwertyEnabled: boolean;
-    toggleIsQwertyEnabled: () => void;
-    midiPlaybackProps: MidiPlaybackProps;
-};
-
-export interface MidiPlaybackProps {
-    midiFileText: string | null;
-    handleMidiUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    play: () => void; 
-    pause: () => void;
-    stop: () => void;
-    playbackState:  'stopped' | 'playing' | 'paused';
-};
-
-export interface ModeProps {
-    getModeRef: () => Mode;
-    setModeRef: (newMode: Mode) => void;
-    updateModifier: (newValue: number, index: number) => void;
-    modes: Mode[];
-    onReset: () => void;
-};
-
-export interface OutputProps {
-    polySynthInterface: EffectInterface;
-    effectsInterfaces: {
-        reverbInterface: EffectInterface;
-        vibratoInterface: EffectInterface;
-    };
-};
-
-// Mode Types
+/**
+ * Represents a musical mode with modification capabilities
+ * @interface Mode
+ * @property {string} id - Unique identifier for the mode
+ * @property {string} name - Display name of the mode
+ * @property {string} description - Description of the mode's musical characteristics
+ * @property {ModeModifiers[]} [modifiers] - Optional array of modifiers that can alter the mode
+ * @property {(hertzModifiers: HertzModifiers, hertzTable: HertzTable) => void} modify - Function to apply mode modifications
+ */
 export interface Mode {
     id: string;
     name: string;
@@ -50,6 +21,16 @@ export interface Mode {
     modify: (hertzModifiers: HertzModifiers, hertzTable: HertzTable) => void;
 }
 
+/**
+ * Represents a modifier that can be applied to a mode
+ * @interface ModeModifiers
+ * @property {string} id - Unique identifier for the modifier
+ * @property {string} name - Display name of the modifier
+ * @property {number} min - Minimum value for the modifier
+ * @property {number} value - Current value of the modifier
+ * @property {number} max - Maximum value for the modifier
+ * @property {number} step - Step increment for the modifier
+ */
 export interface ModeModifiers {
     id: string,
     name: string;
@@ -59,20 +40,18 @@ export interface ModeModifiers {
     step: number;
 }
 
-//Keyboard Types
-export interface KeyboardProps {
-    keys: Key[],
-    keyEmitter: ToneType.Emitter | null,
-    keyHandlers: KeyHandlers;
-}
+/**
+ * @namespace KeyboardConfiguration
+ */
 
-export interface Key {
-    midiNumber: number;
-    name: string;
-    pitch: string;
-    octave: number;
-};
-
+/**
+ * Defines the range of a keyboard
+ * @interface KeyboardRange
+ * @property {string} startPitch - Starting pitch (e.g., "C", "F#")
+ * @property {number} startOctave - Starting octave number
+ * @property {string} endPitch - Ending pitch
+ * @property {number} endOctave - Ending octave number
+ */
 export interface KeyboardRange {
     startPitch: string; 
     startOctave: number; 
@@ -80,95 +59,118 @@ export interface KeyboardRange {
     endOctave: number;
 };
 
-// Hertz State Types
-export interface ModeSelect {
-    mode: string;
-    hertzModifiers: HertzModifiers;
-    hertzTable: HertzTable;
-};
+/**
+ * @namespace FrequencyManagement
+ */
 
+/**
+ * Tracks the current and last played keys for hertz calculations
+ * @interface HertzModifiers
+ * @property {string} lastKey - Previously played key
+ * @property {string} currentKey - Currently playing key
+ */
 export interface HertzModifiers {
     lastKey: string;
     currentKey: string;
 }
 
+/**
+ * Lookup table for key frequencies
+ * @interface HertzTable
+ * @property {number} [key: string] - Frequency in hertz for each key
+ */
 export interface HertzTable {
     [key: string]: number;
 };
 
-// Key Handler Types
+/**
+ * Represents a musical key with its properties
+ * @interface Key
+ * @property {number} midiNumber - MIDI note number
+ * @property {string} name - Full name of the key (e.g., "C4")
+ * @property {string} pitch - Pitch class (e.g., "C", "F#")
+ * @property {number} octave - Octave number
+ */
+export interface Key {
+    midiNumber: number;
+    name: string;
+    pitch: string;
+    octave: number;
+};
+
+/**
+ * @namespace KeyHandling
+ */
+
+/**
+ * Handlers for keyboard events
+ * @interface KeyHandlers
+ * @property {(keyName: string) => void} onKeyDown - Handler for key press
+ * @property {(keyName: string) => void} onKeyUp - Handler for key release
+ */
 export interface KeyHandlers {
     onKeyDown: (keyName: string) => void;
     onKeyUp: (keyName: string) => void;
 }
 
-// User Input Types
-export interface QwertyInputProps {
-    octaveRange: OctaveRange;
-    keyHandlers: KeyHandlers;
-};
+export type Emitter = ToneType.Emitter;
 
-interface OctaveRange {
-    octaveMin: number;
-    currentOctave: number;
-    octaveMax: number; 
-};
+/**
+ * @namespace MidiPlayback
+ */
 
-export interface QwertyMap {
-    [key: string]: BaseKeyName;
-};
+/**
+ * Possible states for MIDI playback
+ * @type {('stopped' | 'playing' | 'paused')}
+ */
+export type MidiPlaybackState = 'stopped' | 'playing' | 'paused';
 
-export interface BaseKeyName {
-    pitch: string;
-    baseOctave: number;
-};
-
-export interface MidiPlaybackState {
-    fileName: string;
-    tracks: {
-        name: string;
-        muted: boolean;
-        noteEvents: NoteEvent[];
-    }[],
-};
-
-export interface NoteEvent {
-    name: string;
-    startTime: number;
-    duration: number;
-};
-
-// Audio Output Types
-import * as ToneType from "tone";
+/**
+ * @namespace ToneTypes
+ */
 export { ToneType };
+export type PolySynth = ToneType.PolySynth;
 
-
-export interface Note {
-    keyName: string;
-    hertz: number;
-};
-
+/**
+ * Interface for playing and stopping frequency playback
+ * @interface HertzPlayback
+ * @property {(keyName: string, hertz: number) => void} playHertz - Start playing a frequency
+ * @property {(keyName: string) => void} stopHertz - Stop playing a frequency
+ */
 export interface HertzPlayback {
     playHertz: (keyName: string, hertz:number) => void;
     stopHertz: (keyName: string) => void;
 };
 
-// Audio Event Types
-export type Emitter = ToneType.Emitter;
-
-// Audio Synth Types
-export type PolySynth = ToneType.PolySynth;
-
-// Audio Effects Types
+/**
+ * @namespace AudioEffects
+ */
 export type InputNode = ToneType.InputNode;
 export type Reverb = ToneType.Reverb;
 export type Vibrato = ToneType.Vibrato;
 
+/**
+ * Interface for audio effects
+ * @interface EffectInterface
+ * @property {string | undefined} name - Name of the effect
+ * @property {EffectOptions[]} options - Array of configurable options for the effect
+ */
 export interface EffectInterface {
     name: string | undefined;
     options: EffectOptions[];
 };
 
+/**
+ * Configuration options for an audio effect
+ * @interface EffectOptions
+ * @property {string} title - Display title for the option
+ * @property {string} name - Internal name of the option
+ * @property {() => number | undefined} get - Getter function for the option value
+ * @property {(value: number) => void} set - Setter function for the option value
+ * @property {number} min - Minimum value
+ * @property {number} max - Maximum value
+ * @property {number} step - Step increment
+ */
 interface EffectOptions {
     title: string;
     name: string;

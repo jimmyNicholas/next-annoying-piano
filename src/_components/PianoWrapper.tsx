@@ -1,8 +1,7 @@
-import OptionsPanel from "./optionsPanel/OptionsPanel";
-import Keyboard from "./Keyboard";
-import { KeyboardProps, OptionsPanelProps, QwertyInputProps } from '@/_lib/_types/types';
 import { useContext, useEffect, useMemo, useState } from "react";
-import useQwertyInput from "@/_hooks/useQwertyInput";
+import OptionsPanel, { OptionsPanelProps } from "./optionsPanel/OptionsPanel";
+import Keyboard, { KeyboardProps } from "./Keyboard";
+import useQwertyInput, { QwertyInputProps } from "@/_hooks/useQwertyInput";
 import useAudio from "@/_hooks/useAudio";
 import useKeyboard from "@/_hooks/useKeyboard";
 import useMidiUploader from "@/_hooks/useMidiUploader";
@@ -63,20 +62,17 @@ const PianoWrapper: React.FC = () => {
     const { play, pause, stop, playbackState } = useMidiPlayback(parsedMidiData, keyHandlers);
 
     const optionsPanelProps: OptionsPanelProps = {
-        globalProps: {
-            
-        },
         inputProps: {
             isQwertyEnabled, 
             toggleIsQwertyEnabled,
-            midiPlaybackProps: {
-              midiFileText, 
-              handleMidiUpload,
-              play, 
-              pause, 
-              stop, 
-              playbackState
-            }
+        },
+        midiPlaybackProps: {
+            midiFileText, 
+            handleMidiUpload,
+            play, 
+            pause, 
+            stop, 
+            playbackState
         },
         modeProps: {
             getModeRef,
@@ -85,7 +81,7 @@ const PianoWrapper: React.FC = () => {
             modes,
             onReset
         },
-        outputProps: {
+        outputsProps: {
             polySynthInterface,
             effectsInterfaces
         }

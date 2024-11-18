@@ -1,7 +1,25 @@
 import useMidiController from '@/_hooks/useMidiController';
-import { KeyboardProps } from '@/_lib/_types/types';
+import { Key, KeyHandlers, ToneType } from '@/_lib/_types/types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+export interface KeyboardProps {
+    keys: Key[],
+    keyEmitter: ToneType.Emitter | null,
+    keyHandlers: KeyHandlers;
+}
+
+/**
+ * Keyboard Component
+ * Renders an interactive piano keyboard that responds to both MIDI and pointer events
+ * 
+ * @component
+ * @param {Object} props
+ * @param {Array<Key>} props.keys - Array of key objects containing pitch and name information
+ * @param {EventEmitter} props.keyEmitter - Event emitter for keyboard events
+ * @param {Object} props.keyHandlers - Object containing key event handlers
+ * @param {(keyName: string) => void} props.keyHandlers.onKeyDown - Handler for key press events
+ * @param {(keyName: string) => void} props.keyHandlers.onKeyUp - Handler for key release events
+ */
 const Keyboard: React.FC<KeyboardProps> = ({
     keys,
     keyEmitter,
@@ -24,6 +42,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
         setActiveKeys((prev) => prev.filter(key => key !== keyName));
     }, [setActiveKeys]);
 
+    // Effect to handle key events from emitter
     useEffect(() => {
         if (!keyEmitter) return;
         keyEmitter.on('keyDown', ({keyName}:{keyName: string}) => {
@@ -57,14 +76,17 @@ const Keyboard: React.FC<KeyboardProps> = ({
     }, [onKeyUp, removeActiveKey]);
     
     return (
+        // Main keyboard container with wood texture background
         <div 
             className='grid h-full bg-[url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/187/vwood.png)]'
         >
+            {/* Split keyboard into two rows for responsive layout */}
             { [keys.slice(keys.length / 2), keys.slice(0, keys.length / 2)].map((keyArray, index) => (
                 <div 
                     className='grid align-center justify-stretch'
                     key={index}
                 >
+                    {/* Piano keys container with styling */}
                     <div 
                         className="
                             relative 
@@ -93,7 +115,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
                             return (
                                 <React.Fragment key={key.name}> 
                                     {key.pitch[1] === '#' ? 
-                                        //black key
+                                        //Render black key
                                         <button
                                             onPointerDown={() => handleOnKeyDown(key.name)}
                                             onPointerUp={() => handleOnKeyUp(key.name)}
@@ -118,7 +140,7 @@ const Keyboard: React.FC<KeyboardProps> = ({
                                         >
                                         </button> 
                                         : 
-                                        //white key
+                                        //Render white key
                                         <button 
                                             onPointerDown={() => handleOnKeyDown(key.name)}
                                             onPointerUp={() => handleOnKeyUp(key.name)}
