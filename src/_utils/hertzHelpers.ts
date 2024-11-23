@@ -22,6 +22,16 @@ import { KeyboardRange, HertzTable } from "@/_lib/_types/types";
  * ```
  */
 export const calculateHertz = (baseHertz: number, interval: number): number => {
+    if (
+        typeof baseHertz !== 'number' ||
+        typeof interval !== 'number' ||
+        !Number.isInteger(interval) ||
+        !Number.isFinite(baseHertz) ||  
+        !Number.isFinite(interval) 
+    ) {
+        throw new Error('Invalid input');
+    }
+
     if (interval === 0) {
         return baseHertz;
     }
@@ -36,18 +46,36 @@ export const calculateHertz = (baseHertz: number, interval: number): number => {
  * Determines the number of semitones between two notes, taking into account
  * both the pitch class (C, C#, etc.) and octave number.
  * 
- * @param {string} targetName - Target note name (e.g., 'C', 'F#')
- * @param {number} targetOctave - Target note octave
  * @param {string} baseName - Reference note name
  * @param {number} baseOctave - Reference note octave
+ * @param {string} targetName - Target note name (e.g., 'C', 'F#')
+ * @param {number} targetOctave - Target note octave
  * @returns {number} Number of semitones between the notes (positive or negative)
 */
-function getInterval(
-    targetName: string, 
-    targetOctave: number, 
+export function getInterval(
     baseName: string, 
-    baseOctave: number
+    baseOctave: number,
+    targetName: string, 
+    targetOctave: number
 ): number {
+    if (
+        typeof targetName !== 'string' || 
+        typeof targetOctave !== 'number' ||
+        !Number.isInteger(targetOctave) || 
+        typeof baseName !== 'string' || 
+        typeof baseOctave !== 'number' ||
+        !Number.isInteger(baseOctave)
+    ) {
+        throw new Error('Invalid input');
+    }
+    
+    if (
+        !notePitches.includes(baseName) || 
+        !notePitches.includes(targetName)
+    ) {
+        throw new Error('Invalid note name');
+    };
+
     const baseIndex = notePitches.indexOf(baseName);
     const targetIndex = notePitches.indexOf(targetName);
 
@@ -70,12 +98,26 @@ function getInterval(
  * @param {number} targetOctave - Octave number
  * @returns {number} Frequency in Hertz
 */
-function convertPitchToHertz(targetName: string, targetOctave: number): number {
+export function convertPitchToHertz(targetName: string, targetOctave: number): number {
+    if (
+        typeof targetName !== 'string' ||
+        typeof targetOctave !== 'number' ||
+        !Number.isInteger(targetOctave)
+    ) {
+    throw new Error('Invalid input');
+    }
+
     const baseName: string = 'A';
     const baseOctave: number = 4;
     const baseHertz: number = 440; // A4 = 440 Hz (concert pitch)
 
-    const interval = getInterval(targetName, targetOctave, baseName, baseOctave);
+    if (
+        !notePitches.includes(targetName)
+    ) {
+        throw new Error('Invalid note name');
+    };
+
+    const interval = getInterval(baseName, baseOctave, targetName, targetOctave);
     return calculateHertz(baseHertz, interval);
 };
 
@@ -129,8 +171,30 @@ export const getHertzTable = ({
     endPitch, 
     endOctave
 }: KeyboardRange): HertzTable => {
+    if (typeof startPitch !== 'string' || 
+        typeof startOctave !== 'number' || 
+        typeof endPitch !== 'string' || 
+        typeof endOctave !== 'number'
+    ) {
+        throw new Error('Invalid input');
+    }
+    
+    if (
+        !notePitches.includes(startPitch) || 
+        !notePitches.includes(endPitch)
+    ) {
+        throw new Error(`Invalid pitch. Must be one of: ${notePitches.join(', ')}`);
+    }
+
+    if (
+        !Number.isInteger(startOctave) || 
+        !Number.isInteger(endOctave)
+    ) {
+        throw new Error('Octave must be an integer');
+    }
+
     const startPitchIndex = notePitches.indexOf(startPitch);
-    const numberOfKeys = getInterval(endPitch, endOctave, startPitch, startOctave);
+    const numberOfKeys = getInterval(startPitch, startOctave, endPitch, endOctave);
 
     if (numberOfKeys < 0) { 
         throw new Error(
