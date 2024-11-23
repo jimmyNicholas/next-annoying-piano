@@ -35,19 +35,47 @@ interface DraggableInputProps {
 /** Denominator used to control drag sensitivity */
 const DRAGGING_DENOMINATOR = 200;
 
+const getDecimalPlaces = (num: number): number => {
+    const match = String(num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+    if (!match) return 0;
+    return Math.max(
+        0,
+        (match[1] ? match[1].length : 0) - (match[2] ? +match[2] : 0)
+    );
+};
+
+const getDisplayPrecision = (step: number): number => {
+    if (step >= 1) return 0;
+    return getDecimalPlaces(step);
+};
+
+
 const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value: inputValue, step, min, max }) => {
     /** Tracks the formatted display value */
     const [displayValue, setDisplayValue] = useState<number>(0);
     /** Tracks the current numeric value */
     const [value, setValue] = useState(inputValue || 0);
+    const precision = getDisplayPrecision(step);
+
+    const clampValue = useCallback((newValue: number): number => {
+        const rounded = Math.round(newValue / step) * step;
+        const fixed = Number(rounded.toFixed(precision));
+        return Math.max(min, Math.min(max, fixed));
+    }, [min, max, step, precision]);
 
     /**
      * Handles mouse wheel events to increment/decrement the value
      * @param e - Wheel event from the div element
     */
     const handleMouseWheel = useCallback<WheelEventHandler<HTMLDivElement>>(
-        (e) => setValue(e.deltaY < 0 ? Math.max(min, value - step) : Math.min(max, value + step)),
-        [max, min, step, value]
+        (e) => {
+            const newValue = clampValue(
+                value + (e.deltaY < 0 ? step : -step)
+            );
+            setValue(newValue);
+        },
+            //setValue(e.deltaY < 0 ? Math.max(min, value - step) : Math.min(max, value + step)),
+        [step, value, clampValue]
     );
 
     /**
@@ -56,11 +84,12 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
     */
     const handleChange = useCallback(
         (v: number) => {
-            onChange?.(v)
-            const stepAdjustment = step !== 1 ? 100 : 1;
-            setDisplayValue(Math.round(v / step) / stepAdjustment)
+            const clampedValue = clampValue(v);
+            onChange?.(clampedValue)
+            setDisplayValue(Number(clampedValue.toFixed(precision)));
+            //setDisplayValue(Math.round(v / step) / stepAdjustment)
         }, 
-        [onChange, step]
+        [onChange, precision, clampValue]
     );
 
     /**
@@ -72,9 +101,10 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
         (e: MouseEvent) => {
             e.preventDefault()
             setValue((prev) => 
-                Math.max(min, Math.min(max, prev + -e.movementY * ((max - min) / DRAGGING_DENOMINATOR)))
+                clampValue(prev + -e.movementY * ((max - min) / DRAGGING_DENOMINATOR))
+                //Math.max(min, Math.min(max, prev + -e.movementY * ((max - min) / DRAGGING_DENOMINATOR)))
             );
-        }, [max, min]
+        }, [clampValue, max, min]
     );
 
     /**
@@ -97,8 +127,13 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
      * Updates display value whenever the internal value changes
     */
     useEffect(() => {
-        handleChange(value)
-    }, [handleChange, value])
+        //handleChange(value)
+        const clampedValue = clampValue(value);
+        if (clampedValue !== value) {
+            setValue(clampedValue);
+        }
+        handleChange(clampedValue);
+    }, [handleChange, value, clampValue])
 
     return (
         <div 
