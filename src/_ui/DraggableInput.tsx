@@ -51,9 +51,7 @@ const getDisplayPrecision = (step: number): number => {
 
 
 const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value: inputValue, step, min, max }) => {
-    /** Tracks the formatted display value */
     const [displayValue, setDisplayValue] = useState<number>(0);
-    /** Tracks the current numeric value */
     const [value, setValue] = useState(inputValue || 0);
     const precision = getDisplayPrecision(step);
 
@@ -74,7 +72,6 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
             );
             setValue(newValue);
         },
-            //setValue(e.deltaY < 0 ? Math.max(min, value - step) : Math.min(max, value + step)),
         [step, value, clampValue]
     );
 
@@ -87,7 +84,6 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
             const clampedValue = clampValue(v);
             onChange?.(clampedValue)
             setDisplayValue(Number(clampedValue.toFixed(precision)));
-            //setDisplayValue(Math.round(v / step) / stepAdjustment)
         }, 
         [onChange, precision, clampValue]
     );
@@ -102,7 +98,6 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
             e.preventDefault()
             setValue((prev) => 
                 clampValue(prev + -e.movementY * ((max - min) / DRAGGING_DENOMINATOR))
-                //Math.max(min, Math.min(max, prev + -e.movementY * ((max - min) / DRAGGING_DENOMINATOR)))
             );
         }, [clampValue, max, min]
     );
@@ -127,7 +122,6 @@ const DraggableInput: React.FC<DraggableInputProps> = ({ label, onChange, value:
      * Updates display value whenever the internal value changes
     */
     useEffect(() => {
-        //handleChange(value)
         const clampedValue = clampValue(value);
         if (clampedValue !== value) {
             setValue(clampedValue);
