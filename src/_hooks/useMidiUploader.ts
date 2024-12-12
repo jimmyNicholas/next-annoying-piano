@@ -1,6 +1,6 @@
 import parseMidiFile from "@/_services/parseMidiFile";
 import { Midi } from "@tonejs/midi";
-import { useCallback, useRef, useState} from "react";
+import { useRef, useState} from "react";
 
 interface MidiUploaderState {
     parsedMidiData: Midi | null;
@@ -39,22 +39,20 @@ const useMidiUploader = (): MidiUploaderState => {
      * Handles MIDI file upload and parsing
      * Updates state with parsed MIDI data or error message
     */
-    const handleMidiUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-
-        // Reset file input
+    const handleMidiUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
         e.target.value = '';
 
-        if (!files?.length) {
+        if (!file) {
             setMidiFileText("No file selected");
             parsedMidiData.current = null;
             return;
         };
 
-        const file = files[0];
-
         // Validate file type
-        if (!file.type.includes('midi') && !file.name.match(/\.(mid|midi)$/i)) {
+        if (!file.name.match(/\.(mid|midi)$/i)) {
+            console.log('here');
+            
             setMidiFileText("Invalid file type. Please select a MIDI file");
             parsedMidiData.current = null;
             return;
@@ -62,26 +60,21 @@ const useMidiUploader = (): MidiUploaderState => {
 
         // Clear previous state
         setMidiFileText(null);
-        parsedMidiData.current = null;
 
         parseMidiFile(file)
             .then((parsedMidi) => {
-                // Validate parsed data
-                if (!parsedMidi?.tracks?.length) {
-                    throw new Error("Invalid MIDI file: No tracks found");
-                }
                 setMidiFileText(file.name);
                 parsedMidiData.current = parsedMidi;
             })
             .catch((error: Error) => {
-                // Handle parsing errors
+                //Handle parsing errors
                 const errorMessage = error instanceof Error 
                     ? error.message 
                     : "Failed to parse MIDI file";
                 setMidiFileText(errorMessage)
                 parsedMidiData.current = null;
             });
-    }, []);
+    };
     
     return {
         parsedMidiData: parsedMidiData.current, 
