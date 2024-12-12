@@ -1,13 +1,22 @@
 import { useCallback, useContext, useEffect, useRef } from "react";
-import { Emitter, Note, PolySynth } from "@/_lib/_types/types";
+import { Emitter, HertzPlayback, PolySynth } from "@/_lib/_types/types";
 import { ToneContext } from "@/_components/MainApp";
 
 interface HertzPlaybackReturn {
-    hertzPlayback: {
-      playHertz: (keyName: string, hertz: number) => void;
-      stopHertz: (keyName: string) => void;
-    };
+    hertzPlayback: HertzPlayback;
     keyEmitter: Emitter | null;
+};
+
+/**
+ * Represents a musical note with its identifier and frequency
+ * 
+ * @interface Note
+ * @property {string} keyName - Unique identifier for the note (e.g., 'C4', 'A3')
+ * @property {number} hertz - Frequency of the note in Hz (e.g., 440 for A4)
+ */
+interface Note {
+    keyName: string;
+    hertz: number;
 };
 
 /**

@@ -1,15 +1,13 @@
-import { KeyHandlers } from "@/_lib/_types/types";
+import { KeyHandlers, MidiPlaybackState } from "@/_lib/_types/types";
 import { Midi } from "@tonejs/midi";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { ToneContext } from "@/_components/MainApp";
-
-type PlaybackState = 'stopped' | 'playing' | 'paused';
 
 interface MidiPlaybackControl {
     play: () => Promise<void>;
     pause: () => void;
     stop: () => void;
-    playbackState: 'stopped' | 'playing' | 'paused';
+    playbackState: MidiPlaybackState;
 }
 
 interface NoteEvent {
@@ -79,7 +77,8 @@ const useMidiPlayback = (
     {onKeyDown, onKeyUp}: KeyHandlers
 ): MidiPlaybackControl => {
     const tone = useContext(ToneContext);
-    const [playbackState, setPlaybackState] = useState<PlaybackState>('stopped');
+    const loadedMidiDataRef = useRef<Midi | null>(parsedMidiData);
+    const [playbackState, setPlaybackState] = useState<MidiPlaybackState>('stopped');
     const activeNotes = useRef<Set<string>>(new Set());
 
     /**
@@ -138,26 +137,27 @@ const useMidiPlayback = (
 
     // Handle MIDI data changes
     useEffect(() => {
-        if (!tone || !parsedMidiData) {
+        if (!tone || !loadedMidiDataRef.current) {
             cleanup();
             return;
         }
 
         cleanup();
-        scheduleEvents(parsedMidiData);
+        scheduleEvents(loadedMidiDataRef.current);
 
         return () => {
             cleanup();
         };
-    }, [tone, parsedMidiData, cleanup, scheduleEvents]);
+    }, [tone, loadedMidiDataRef, cleanup, scheduleEvents]);
 
     // Playback control functions
     const play = useCallback(async() => {
-        if (!tone || playbackState === 'playing' || !parsedMidiData) return;
+        console.log(loadedMidiDataRef.current);
+        if (!tone || playbackState === 'playing' || !loadedMidiDataRef.current) return;
 
         tone.getTransport().start();
         setPlaybackState('playing');
-    }, [tone, playbackState, setPlaybackState, parsedMidiData]);
+    }, [tone, playbackState, setPlaybackState, loadedMidiDataRef]);
 
     const pause = useCallback(() => {
         if (!tone || playbackState === 'paused') return;
@@ -173,6 +173,17 @@ const useMidiPlayback = (
         cleanup();
         setPlaybackState('stopped');
     }, [tone, playbackState, setPlaybackState, cleanup]);
+
+    // Refresh, clean up and schedule midi data on change
+    useEffect(() => {
+        if (parsedMidiData !== loadedMidiDataRef.current) {
+            loadedMidiDataRef.current = parsedMidiData;
+            cleanup();
+            if (parsedMidiData) {
+                scheduleEvents(parsedMidiData);
+            }
+        }
+    }, [parsedMidiData, cleanup, scheduleEvents]);
 
     return {
         play,

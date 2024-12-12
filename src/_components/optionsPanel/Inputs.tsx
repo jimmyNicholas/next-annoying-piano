@@ -1,12 +1,29 @@
-import { InputProps } from "@/_lib/_types/types";
 import { useCallback, useState } from "react";
 import { useMIDIInputs } from '@react-midi/hooks'
 import { QwertyIcon } from "@/_assets/icons";
 
+export interface InputProps {
+    isQwertyEnabled: boolean;
+    toggleIsQwertyEnabled: () => void;
+};
+
+/**
+ * Props for the input control component
+ * @interface InputProps
+ * @property {boolean} isQwertyEnabled - Whether QWERTY keyboard input is enabled
+ * @property {() => void} toggleIsQwertyEnabled - Function to toggle QWERTY keyboard input
+ */
+
+/**
+ * Component that manages MIDI controller selection and QWERTY keyboard input
+ * Uses react-midi-hooks for MIDI device integration
+ * @param {InputProps} props - The component props
+ * @returns {JSX.Element} Rendered input controls
+ */
 const Inputs: React.FC<InputProps> = ({
     isQwertyEnabled,
     toggleIsQwertyEnabled,
-}) => {
+}: InputProps): JSX.Element => {
     const [isEnabled, setIsEnabled] = useState<boolean>(isQwertyEnabled);
     
     const onClick = useCallback(() =>  {

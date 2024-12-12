@@ -1,15 +1,39 @@
 import { ResetIcon } from '@/_assets/icons';
-import { Mode, ModeProps } from '@/_lib/_types/types';
+import { Mode } from '@/_lib/_types/types';
 import DraggableInput from '@/_ui/DraggableInput';
 import { useCallback, useEffect, useState } from 'react';
 
+export interface ModeProps {
+    getModeRef: () => Mode;
+    setModeRef: (newMode: Mode) => void;
+    updateModifier: (newValue: number, index: number) => void;
+    modes: Mode[];
+    onReset: () => void;
+};
+
+/**
+ * Props for the mode selection component
+ * @interface ModeProps
+ * @property {() => Mode} getModeRef - Function to get the current mode reference
+ * @property {(newMode: Mode) => void} setModeRef - Function to set a new mode
+ * @property {(newValue: number, index: number) => void} updateModifier - Function to update mode modifiers
+ * @property {Mode[]} modes - Array of available modes
+ * @property {() => void} onReset - Function to reset mode to default state
+ */
+
+/**
+ * Component for selecting and configuring musical modes
+ * Provides mode selection, modifier controls, and reset functionality
+ * @param {ModeProps} props - The component props
+ * @returns {JSX.Element} Rendered mode controls
+ */
 const Modes: React.FC<ModeProps> = ({
     getModeRef,
     setModeRef,
     updateModifier,
     modes,
     onReset
-}) => {
+}: ModeProps): JSX.Element => {
     const [modeState, setModeState] = useState<Mode>(getModeRef());
     const [updateCounter, setUpdateCounter] = useState<number>(0);
 
@@ -62,7 +86,7 @@ const Modes: React.FC<ModeProps> = ({
                 sm:grid-flow-col
                 '
             > 
-                <div className='text-lg text-wrap px-2 h-full content-center border border-2 rounded-lg text-white bg-teal-900'>
+                <div className='text-lg text-wrap px-2 h-full content-center border-2 rounded-lg text-white bg-teal-900'>
                     {modeState.description}
                 </div>
 

@@ -1,11 +1,34 @@
-import { OutputProps, EffectInterface } from "@/_lib/_types/types";
+import { EffectInterface } from "@/_lib/_types/types";
 import DraggableInput from "@/_ui/DraggableInput";
 import { useCallback } from "react";
 
-const Outputs: React.FC<OutputProps> = ({
+export interface OutputsProps {
+    polySynthInterface: EffectInterface;
+    effectsInterfaces: {
+        reverbInterface: EffectInterface;
+        vibratoInterface: EffectInterface;
+    };
+};
+
+/**
+ * Props for the audio output controls
+ * @interface OutputsProps
+ * @property {EffectInterface} polySynthInterface - Controls for the polyphonic synthesizer
+ * @property {Object} effectsInterfaces - Audio effect controls
+ * @property {EffectInterface} effectsInterfaces.reverbInterface - Controls for reverb effect
+ * @property {EffectInterface} effectsInterfaces.vibratoInterface - Controls for vibrato effect
+ */
+
+/**
+ * Component managing audio output settings and effects
+ * Controls synthesizer parameters and audio effects like reverb and vibrato
+ * @param {OutputsProps} props - The component props
+ * @returns {JSX.Element} Rendered output controls
+ */
+const Outputs: React.FC<OutputsProps> = ({
     polySynthInterface,
     effectsInterfaces
-}) => {
+}: OutputsProps): JSX.Element => {
     const {reverbInterface, vibratoInterface} = effectsInterfaces;
     
     const getValueFromName = useCallback((valueName: string, effectInterface: EffectInterface) => {
