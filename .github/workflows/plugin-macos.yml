@@ -1,0 +1,39 @@
+name: Plugin (macOS)
+
+on:
+  push:
+    paths:
+      - "plugin/**"
+      - ".github/workflows/plugin-macos.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: >
+          cmake -S plugin -B plugin/build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0
+
+      - name: Build
+        run: cmake --build plugin/build --config Release -j 4
+
+      # Apple silicon will not load unsigned code, so give the bundle an ad hoc signature.
+      # Zip with ditto because upload-artifact drops the executable permission inside bundles.
+      - name: Sign and package
+        run: |
+          VST3="plugin/build/TheAnnoyingPiano_artefacts/Release/VST3/The Annoying Piano.vst3"
+          codesign --force --deep --sign - "$VST3"
+          codesign --verify --deep --strict "$VST3"
+          mkdir -p dist
+          ditto -c -k --keepParent "$VST3" "dist/The Annoying Piano VST3.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TheAnnoyingPiano-macOS
+          path: dist/

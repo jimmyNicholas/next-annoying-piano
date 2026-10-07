@@ -63,7 +63,7 @@ Whether MPE survives this track to track routing is the biggest unknown, so tick
 
 - **Framework:** JUCE 8, built with CMake. JUCE is downloaded at configure time.
 - **Platform:** macOS. Windows is out of scope for now.
-- **Formats:** VST3 and AU, registered as an instrument with MIDI output so Ableton can route from it. It outputs silent audio.
+- **Format:** VST3 only, registered as an instrument with MIDI output so Ableton can route from it. It outputs silent audio. AU is left out because Live only accepts MIDI output from VST3 plugins (see `ABLETON-RESEARCH.md`).
 - **Builds:** a GitHub Actions workflow builds the Mac version on every push, from ticket 01 onwards, so each stage can be downloaded and tested without a local C++ toolchain.
 - **Code layout:** the pitch engine has no JUCE dependency, so it can be unit tested on its own. The JUCE layer turns incoming MIDI into retuned MPE output and adds the parameters and the editor.
 - **Threads:** all pitch state lives on the audio thread. The editor only reads a copy that is published each audio block.
