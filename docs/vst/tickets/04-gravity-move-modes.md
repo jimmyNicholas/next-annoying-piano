@@ -8,7 +8,7 @@
 - Reset the pitch table when the mode changes.
 
 ## Prototype
-In Ableton's generic device view you can switch modes and automate strength and semitones while playing.
+In Ableton's generic device view you can switch modes and automate strength and semitones while playing. Gravity's in-between pitches are audible.
 
 ## Done when
 - Tests pass for all three modes.
