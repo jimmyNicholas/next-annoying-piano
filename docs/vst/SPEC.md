@@ -2,9 +2,9 @@
 
 ## Goal
 
-Turn The Annoying Piano (TAP) web app into a plugin for Ableton Live 12 (Suite, on a Mac) that retunes notes as you play and sends them on to any Ableton instrument. It should keep TAP's core idea: every key you release changes the pitch of keys you play later.
+Turn The Annoying Piano (TAP) web app into a plugin for Ableton Live 11 Suite on an Intel Mac (macOS 13) that retunes notes as you play and sends them on to any Ableton instrument. It should keep TAP's core idea: every key you release changes the pitch of keys you play later.
 
-TAP makes no sound itself. Ableton's instruments and effects (Grand Piano, Wavetable, Drift, Reverb and so on) provide the sound.
+TAP makes no sound itself. Ableton's instruments and effects (Wavetable, Sampler, Drift, Reverb and so on) provide the sound.
 
 ## Background
 
@@ -38,7 +38,7 @@ A MIDI note can only be a whole semitone, but Gravity creates pitches in between
 
 - Each note gets its own MIDI channel (channels 2 to 16, so up to 15 notes at once; channel 1 carries pedal and other shared messages).
 - TAP sends the nearest whole note plus a pitch bend on that note's channel to reach the exact frequency. The bend range is 48 semitones, the MPE default.
-- In Live 12 every Ableton instrument supports MPE.
+- In Live 11, MPE works in Wavetable, Sampler and Simpler, and from Live 11.3 also in Drift, Analog, Collision, Tension and Electric. Operator does not support it. Semitone mode (below) covers the rest.
 
 A second **semitone mode** sends plain MIDI on one channel with each pitch rounded to the nearest semitone, for instruments without MPE. Swap and Move are exact in this mode; Gravity is rounded.
 
@@ -77,7 +77,7 @@ Every ticket ends in a prototype you can try in Ableton, or a test you can run f
 
 1. **Output:** TAP sends retuned MIDI (MPE) to Ableton instruments instead of having its own synth (option B).
 2. **Velocity:** passed through.
-3. **Platform:** Ableton Live 12 Suite on a Mac. Builds come from GitHub Actions (set up in ticket 01).
+3. **Platform:** Ableton Live 11 Suite on an Intel Mac running macOS 13. Builds come from GitHub Actions (set up in ticket 01).
 4. **Sustain pedal:** a key counts as released when the pedal lifts, not when the finger lifts.
 5. **Draft code:** the uncommitted draft in `plugin/` is reused ticket by ticket, but only after each piece has been reviewed. Its synth and effects code is parked.
 
