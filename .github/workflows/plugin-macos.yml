@@ -1,10 +1,7 @@
 name: Plugin (macOS)
 
+# Parked: the VST is replaced by the Max for Live device in m4l/. Run by hand if needed.
 on:
-  push:
-    paths:
-      - "plugin/**"
-      - ".github/workflows/plugin-macos.yml"
   workflow_dispatch:
 
 jobs:
