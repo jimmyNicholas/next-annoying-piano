@@ -1,3 +1,5 @@
+> **Replaced.** The VST route is parked. Current plan: [`../m4l/SPEC.md`](../m4l/SPEC.md) and [`../m4l/HANDOFF.md`](../m4l/HANDOFF.md).
+
 # Spec: The Annoying Piano as a VST
 
 ## Goal

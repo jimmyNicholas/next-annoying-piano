@@ -1,3 +1,5 @@
+> **Replaced.** The VST route is parked. Current plan: [`../m4l/SPEC.md`](../m4l/SPEC.md) and [`../m4l/HANDOFF.md`](../m4l/HANDOFF.md).
+
 # Handoff: TAP VST for Ableton
 
 Last updated 2026-10-10 (after the ticket 02 test). Branch: `claude/codebase-vst-ableton-puxbqz`.
