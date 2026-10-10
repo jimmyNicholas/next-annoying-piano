@@ -23,6 +23,9 @@ jobs:
       - name: Build
         run: cmake --build plugin/build --config Release -j 4
 
+      - name: Unit tests
+        run: ctest --test-dir plugin/build -C Release --output-on-failure
+
       # Apple silicon will not load unsigned code, so give the bundle an ad hoc signature.
       # Zip with ditto because upload-artifact drops the executable permission inside bundles.
       - name: Sign and package

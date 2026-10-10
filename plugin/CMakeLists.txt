@@ -33,7 +33,8 @@ juce_add_plugin(TheAnnoyingPiano
     FORMATS VST3)
 
 target_sources(TheAnnoyingPiano PRIVATE
-    Source/PluginProcessor.cpp)
+    Source/PluginProcessor.cpp
+    Source/MpeRouter.cpp)
 
 target_compile_definitions(TheAnnoyingPiano PUBLIC
     JUCE_WEB_BROWSER=0
@@ -47,3 +48,25 @@ target_link_libraries(TheAnnoyingPiano
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
+
+option(TAP_BUILD_TESTS "Build the unit tests" ON)
+
+if(TAP_BUILD_TESTS)
+    enable_testing()
+
+    juce_add_console_app(TapTests PRODUCT_NAME "TapTests")
+    target_sources(TapTests PRIVATE
+        tests/MpeRouterTests.cpp
+        Source/MpeRouter.cpp)
+    target_compile_definitions(TapTests PRIVATE
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0)
+    target_link_libraries(TapTests
+        PRIVATE
+            juce::juce_audio_basics
+        PUBLIC
+            juce::juce_recommended_config_flags
+            juce::juce_recommended_warning_flags)
+
+    add_test(NAME TapTests COMMAND TapTests)
+endif()

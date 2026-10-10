@@ -2,7 +2,7 @@
 
 A VST3 plugin for Ableton Live 11 or later on a Mac. TAP makes no sound of its own: it retunes the notes you play and sends them on to any Ableton instrument. See [`docs/vst/SPEC.md`](../docs/vst/SPEC.md) for the plan.
 
-At this stage (ticket 01) TAP passes notes through unchanged. It exists to prove the build and the Ableton routing work.
+At this stage (ticket 02) TAP sends every note on its own MIDI channel with its own pitch bend (MPE), and a temporary **Detune** control shifts the black keys. It exists to prove that per-note pitch reaches Ableton's instruments.
 
 ## Get a build
 
@@ -30,6 +30,20 @@ TAP goes on one track and your instrument on another, because Ableton does not l
 Play on Track 1 and you should hear Track 2's instrument.
 
 If you cannot see the MIDI From section, turn on **View**, then **In/Out**.
+
+## Test the MPE route (ticket 02)
+
+Use an instrument that supports MPE in Live 11: **Wavetable** or **Sampler**.
+
+1. Set up the two tracks as above, with Wavetable on Track 2.
+2. If Track 2's input or Wavetable offers an **MPE** option, turn it on. In Live 11 it may be in the device's right-click menu or next to the MIDI From choice.
+3. Open TAP's window on Track 1. Set **Detune Keys** to **Black keys only** and **Detune** to **+50** cents.
+4. Play a white key: it should be in tune.
+5. Play a black key: it should be a quarter tone sharp.
+6. **The real test:** hold a white key, then add a black key. The white key must stay in tune. If it jumps in pitch when the black key starts, each note is not getting its own pitch.
+7. Also try a big chord of more than 15 notes with the sustain pedal, then let go. No notes should stay stuck.
+
+Note what happens with MPE turned on and off on Track 2, if that option exists.
 
 ## Build it yourself
 

@@ -2,6 +2,8 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
+#include "MpeRouter.h"
+
 /**
     TAP makes no sound of its own. It receives MIDI, will retune it in later
     tickets, and sends it on to an Ableton instrument on another track.
@@ -12,7 +14,7 @@ class TapAudioProcessor : public juce::AudioProcessor
 public:
     TapAudioProcessor();
 
-    void prepareToPlay (double, int) override {}
+    void prepareToPlay (double, int) override;
     void releaseResources() override {}
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
@@ -33,9 +35,15 @@ public:
     const juce::String getProgramName (int) override           { return {}; }
     void changeProgramName (int, const juce::String&) override {}
 
-    void getStateInformation (juce::MemoryBlock&) override {}
-    void setStateInformation (const void*, int) override {}
+    void getStateInformation (juce::MemoryBlock&) override;
+    void setStateInformation (const void*, int) override;
+
+    juce::AudioProcessorValueTreeState apvts;
 
 private:
+    MpeRouter router;
+    std::atomic<float>* detuneParam = nullptr;
+    std::atomic<float>* detuneKeysParam = nullptr;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TapAudioProcessor)
 };
