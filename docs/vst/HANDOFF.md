@@ -1,6 +1,6 @@
 # Handoff: TAP VST for Ableton
 
-Last updated 2026-10-10. Branch: `claude/codebase-vst-ableton-puxbqz`.
+Last updated 2026-10-10 (after the ticket 02 test). Branch: `claude/codebase-vst-ableton-puxbqz`.
 
 ## Goal
 
@@ -11,7 +11,7 @@ Turn The Annoying Piano web app into a VST3 that retunes notes as you play and s
 | Ticket | State |
 | --- | --- |
 | 01 Scaffold, Mac build, MIDI pass-through | **Done.** Confirmed in Live 11: TAP shows in MIDI From, Wavetable plays, no stuck notes. |
-| 02 MPE output spike | **Built and pushed. Waiting for the user to test** (steps in `plugin/README.md`). |
+| 02 MPE output spike | **Failed in Live 11.** Build loaded (grep found "Detune Keys"), Detune at +100, but no pitch change on Wavetable through MIDI From. Likely Live merges routed MIDI onto one channel, so bends hit Wavetable's normal small bend range. Not yet confirmed by recording a clip. |
 | 03 to 08 | Not started |
 
 Latest green Mac build: GitHub Actions run 37565464015, artifact `TheAnnoyingPiano-macOS` (universal, ad hoc signed VST3).
@@ -34,7 +34,7 @@ Latest green Mac build: GitHub Actions run 37565464015, artifact `TheAnnoyingPia
 ## Open risks
 
 1. ~~Does Live 11 accept VST3 MIDI output through "MIDI From"?~~ Yes, confirmed in ticket 01.
-2. **Does MPE survive the MIDI From routing?** Ticket 02 exists to answer this. Fallback: semitone mode (ticket 05) or Max for Live.
+2. **Does MPE survive the MIDI From routing?** Apparently not in Live 11 (ticket 02). Options put to the user: A. Max for Live MIDI effect on the same track (recommended), B. semitone mode only in the current VST (Gravity rounded), C. retest in Live 12. **Waiting for the user to choose.**
 
 ## Known issues, not ours
 
@@ -57,6 +57,6 @@ The user runs a read-only `diagnose.sh` in Cursor (not committed) that checks br
 
 ## Next steps
 
-1. Get the user's ticket 02 result. The key check: hold a white key, add a detuned black key, and the white key must not move.
-2. If it passes, start ticket 03 (pitch engine and Swap). Reuse `TapEngine` from commit `89272e4` after review, and feed its cents offsets into `MpeRouter`.
-3. If per-note pitch fails (all notes move together), record what the user saw, then choose a fallback with them: semitone mode (ticket 05 brought forward) or Max for Live.
+1. Optionally confirm the ticket 02 failure: record Track 2 and check whether pitch bend or separate channels appear in the clip.
+2. Get the user's choice of A, B or C (see Open risks), then rewrite `SPEC.md` and the tickets to match before writing code.
+3. The user is installing Matt Pocock's "Skills For Real Engineers" plugin. If it is available, use `grill-me`, `to-spec` and `to-tickets` for the replan.
