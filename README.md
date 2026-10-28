@@ -8,6 +8,10 @@
 
 TAP (The Annoying Piano) is an experimental digital piano that dynamically alters pitch during performance, creating emergent compositions through real-time note manipulation. This instrument challenges traditional piano paradigms by introducing controlled unpredictability into the playing experience, enabling musicians and sound artists to explore new territories of non-idiomatic improvisation and algorithmic composition.
 
+## Max for Live device
+
+TAP is also a Max for Live MIDI effect for Ableton Live. It moved, with its history, to [audio-plugins](https://github.com/jimmyNicholas/audio-plugins) on 2026-10-28. The parked VST attempt is still in this repo's history, up to commit [0a32ae3](https://github.com/jimmyNicholas/next-annoying-piano/tree/0a32ae3c66791c799293ea429a45cd05134a4cf1/plugin).
+
 ## Features
 
 - Multi-input support:
